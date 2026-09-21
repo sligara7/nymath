@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:94baae7965ed049707a9c82a740deda35de986152f54d8f1f97987bcceb0a2c9",
+  "content_hash": "sha256:480eb470721066bbc0f915560aa93521fea57844c9ed8601508c332bcb2b1186",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -226,6 +226,28 @@
     {
       "edge_type": "AUTHORED_BY",
       "from_id": "dec:idea-ronie-and-ember",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:idea-she-tricks-back",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:claude-code"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:idea-tricksters",
       "properties": {
         "authored_at": "2026-09-21",
         "roles": [
@@ -540,6 +562,26 @@
     },
     {
       "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-she-tricks-back",
+      "properties": {
+        "evidence": "This is that idea run backwards — there is nobody to trick and no established convention of false claims unless the trickster mechanic lands first.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:idea-tricksters"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-tricksters",
+      "properties": {
+        "evidence": "Refuting a false claim by building the counterexample is the teaching mechanic run backwards, and reuses the same lattice. Without teaching-by-construction there is nothing to refute WITH.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:she-teaches-ember"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
       "from_id": "dec:she-teaches-ember",
       "properties": {
         "evidence": "Training only means anything if there is a creature to train, and the specific mechanic — the tail fin with set angle positions — is a drake's, taken from the film the owner named.",
@@ -722,6 +764,14 @@
     },
     {
       "edge_type": "MITIGATES",
+      "from_id": "dec:idea-tricksters",
+      "properties": {
+        "evidence": "During the quest her only control is 'go on', which is thin. A creature trying to fool Ember while he works would give her something real to do without taking the quest away from him."
+      },
+      "to_id": "req:ember-goes-alone"
+    },
+    {
+      "edge_type": "MITIGATES",
       "from_id": "dec:she-teaches-ember",
       "properties": {
         "evidence": "That decision demands reasoning over speed and lucky guesses but named no mechanic that could enforce it. Teaching enforces it structurally: a construction she has to build cannot be arrived at by tapping one of four options."
@@ -853,6 +903,14 @@
       "to_id": "dec:grade3-is-a-gate"
     },
     {
+      "edge_type": "RISKS",
+      "from_id": "dec:idea-tricksters",
+      "properties": {
+        "evidence": "A true-or-false tap is a coin flip — more guessable than the four-option quiz that decision already forbids. The idea threatens the design's central rule unless refutation is done by building, and is recorded with that objection attached."
+      },
+      "to_id": "dec:built-for-understanding"
+    },
+    {
       "edge_type": "SATISFIES",
       "from_id": "cap:game-loop",
       "properties": {},
@@ -941,6 +999,14 @@
         "evidence": "The idea was raised in the same breath as the Grade 5 requirement and exists to mark crossing into it — asking for Grade 5 progression forces the question of how the crossing is shown to her."
       },
       "to_id": "req:grade5-if-she-keeps-going"
+    },
+    {
+      "edge_type": "TRIGGERS",
+      "from_id": "dec:idea-tricksters",
+      "properties": {
+        "evidence": "It would be the first thing in this design to serve one of the eight Mathematical Practices that rule prints on every grade overview — MP.3, critiquing the reasoning of others — so accepting it widens what the design must trace against the standard."
+      },
+      "to_id": "envrule:nys-next-gen-math-standards"
     },
     {
       "edge_type": "TRIGGERS",
@@ -1529,6 +1595,29 @@
       }
     },
     {
+      "node_id": "dec:idea-she-tricks-back",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "RECORDED AS BRAINSTORMING, NOT AS A PROPOSAL, and it is Claude's extension of the owner's idea rather than the owner's own. The inversion: she constructs a FALSE claim herself and tries it on a creature — one convincing enough to be believed. The creature checks it and either falls for it or catches her. Nobody has asked for this; it is recorded because it follows from what the owner said about his own game, where the delight eventually flips and the child starts trying it on the parent.",
+        "kind": "exploratory",
+        "name": "OPEN — does she get to build the lie, and trick the creature back?",
+        "rationale": "Claude's idea, 2026-09-21, extending the owner's. WHY IT IS WORTH MORE THAN IT LOOKS: to build a lie that will be believed you have to understand the truth completely and then depart from it deliberately and by a controlled amount. \"Make 6 x 7 wrong, but only just\" requires knowing that it is 42 AND knowing what a plausible near-miss looks like — 43, or 36 from the neighbouring fact, rather than 900. That is a step beyond refutation, and it cannot be done by guessing at all. The error she builds also SHOWS what she thinks a typical mistake looks like, which is a window into her own model that nothing else in this design opens. OBJECTIONS. (1) IT ASKS A CHILD TO PRACTISE DECEIVING, and although the target is an imaginary creature in a game her father built, that is a judgement for her father and not for this design. (2) IT IS THE HARDEST THING PROPOSED SO FAR and probably belongs above Grade 3, if anywhere. (3) It shares the standing hazard with the trickster idea: a false statement she authored must not be left standing on the screen as though it were true.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "dec:idea-tricksters",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "RECORDED AS BRAINSTORMING, NOT AS A PROPOSAL. Creatures along the way try to get Ronie and Ember to agree to something false — the owner's example being 2 + 2 = 5, and his own game with his daughter being \"3 + 3 = 7\" and waiting for \"Dad, no it's not!\". Shapes to choose between, which differ more than they look. (a) ROADSIDE ENCOUNTERS during a quest: a creature blocks the way with a claim, and it must be dealt with before passing. (b) A NAMED RECURRING TRICKSTER who turns up across grades and whose tricks get subtler as she gets better — an antagonist she comes to know. (c) TRICKS AIMED AT EMBER during the quest he takes alone, which finally gives her something to DO while watching, since right now her only control is \"go on\". (d) A TRICK LAYER over the existing lessons rather than a new place — the creature interrupts a lesson she is already in. Not decided, and (b) and (c) combine rather than compete.",
+        "kind": "exploratory",
+        "name": "OPEN — do tricky creatures assert false arithmetic for her to refute?",
+        "no_relation_note": "The only near match offered was dec:idea-ronie-and-ember, which is about what she and the game are CALLED. It has already been answered (she types her name) and has no bearing on whether a creature lies to her — the overlap is that both mention Ronie, which is similarity rather than relatedness. The nodes this one genuinely touches are dec:built-for-understanding, dec:she-teaches-ember, req:ember-goes-alone and envrule:nys-next-gen-math-standards, and those relations are drawn in the review_relations call that follows.",
+        "rationale": "Owner's idea, 2026-09-21, from a game he actually plays with his daughter — which is the strongest evidence any mechanic in this design has, because it is already known to work on this specific child. WHY IT IS MORE THAN A JOKE. The eight Mathematical Practices printed on every grade's overview page in the NYS standards include MP.3, \"Construct viable arguments and critique the reasoning of others\", and its text says mathematically proficient students \"can recognize and use counterexamples\" and \"distinguish correct logic or reasoning from that which is flawed, and — if there is a flaw in an argument — explain what it is\". It then says, in as many words, that \"Elementary students can construct arguments using concrete referents such as objects, drawings, diagrams, and actions\". That is a description of refuting a trickster on the nest. The design currently touches none of the eight practices; this would be the first, and it would arrive through the door the standard itself points at. Catching a falsehood is also a genuinely harder act than producing an answer: to notice that something is wrong you need a model to check it against, not a procedure to run. FOUR OBJECTIONS, ALL REAL. (1) TRUE OR FALSE IS A COIN FLIP — a tap that says \"no\" is more guessable than the four-option quiz this design already forbids, so a bare yes/no would be the worst mechanic in the game. It survives only if she must SHOW the flaw by building it, which is the teaching mechanic turned round and which MP.3 asks for anyway. (2) THE TRICKSTER MUST SOMETIMES BE RIGHT, or the game collapses into \"always tap no\" and she stops reading the claim. Agreeing with a true statement has to be a winning move, and that is what makes it judgement rather than reflex. (3) EMBER MUST NOT BE THE TRICKSTER. His wrongness is innocent and she is teaching him; a pet who lies to her breaks the one relationship the game is built on. The trickster is somebody else. (4) A FALSEHOOD MUST NEVER SIT UNCORRECTED ON THE SCREEN. She is nine and still forming these facts; a wrong equation left standing can be the thing she remembers. It has to be visibly destroyed the moment she refutes it, and the creature has to be legible as a liar from the first glance.",
+        "status": "proposed"
+      }
+    },
+    {
       "node_id": "dec:pet-you-grow",
       "node_type": "Decision",
       "properties": {
@@ -2056,7 +2145,7 @@
       }
     }
   ],
-  "prev_content_hash": "sha256:cca3a2dff1b355d192982eedcb45e258efb1b01ddeeefdce64704775cda9c7c3",
+  "prev_content_hash": "sha256:94baae7965ed049707a9c82a740deda35de986152f54d8f1f97987bcceb0a2c9",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -2655,7 +2744,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "33fc3b7b88c0c61e6557d44db19a0f5847a75972",
+    "commit": "95744ea751a3dd923be3df9476b58671df1e6162",
     "dirty": false
   }
 }
