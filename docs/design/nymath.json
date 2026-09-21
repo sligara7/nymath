@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:4332b79516128bb15aa47e48ab29b1cb1842ef5b1f103e8d4919d0a86319d8e9",
+  "content_hash": "sha256:dcf9d39e3b821ee56288e4897e20ffbe3b6fe952dbbb2bda09b43b892cf11453",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -72,6 +72,48 @@
     {
       "edge_type": "AT_EPOCH",
       "from_id": "snap:epoch:preserved-on-write:cap:grade3-warmup",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cmp:ambience",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cmp:ember",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cmp:lesson-content",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cmp:lesson-engine",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cmp:memory",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cmp:shell",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cmp:teaching-surface",
       "properties": {},
       "to_id": "epoch:preserved-on-write"
     },
@@ -248,6 +290,78 @@
     },
     {
       "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:lesson-engine",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:lesson-content"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:shell",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:ambience"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:shell",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:ember"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:shell",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:lesson-content"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:shell",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:lesson-engine"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:shell",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:memory"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:shell",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:teaching-surface"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "cmp:teaching-surface",
+      "properties": {
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:ambience"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
       "from_id": "dec:ember-the-drake",
       "properties": {
         "evidence": "Ember is the concrete answer to the question dec:pet-you-grow explicitly left open — what the creature IS and what the earned currency is. It has no meaning unless the game is a pet you grow.",
@@ -390,6 +504,48 @@
     },
     {
       "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cmp:ambience",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cmp:ambience"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cmp:ember",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cmp:ember"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cmp:lesson-content",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cmp:lesson-content"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cmp:lesson-engine",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cmp:lesson-engine"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cmp:memory",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cmp:memory"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cmp:shell",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cmp:shell"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cmp:teaching-surface",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cmp:teaching-surface"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
       "from_id": "dec:idea-ronie-and-ember",
       "properties": {},
       "to_id": "snap:epoch:preserved-on-write:dec:idea-ronie-and-ember"
@@ -409,6 +565,96 @@
         "evidence": "That decision demands reasoning over speed and lucky guesses but named no mechanic that could enforce it. Teaching enforces it structurally: a construction she has to build cannot be arrived at by tapping one of four options."
       },
       "to_id": "dec:built-for-understanding"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:audio-js",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:ambience"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:ember-js",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:ember"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:grade3-content",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cap:grade3-warmup"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:grade3-content",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:lesson-content"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:index-html",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:shell"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:lessons-js",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:lesson-engine"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:main-js",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:shell"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:nest-js",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:teaching-surface"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:save-js",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:memory"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:style-css",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cmp:shell"
     },
     {
       "edge_type": "RISKS",
@@ -511,6 +757,96 @@
         "evidence": "Accepting this rewrites the core loop from feeding to training — the hoard stays but stops being the point, so the capability's description and everything downstream of it changes."
       },
       "to_id": "cap:game-loop"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:grade3-lessons-solvable",
+      "properties": {},
+      "to_id": "cap:grade3-warmup"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:grade3-lessons-solvable",
+      "properties": {},
+      "to_id": "cmp:lesson-engine"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:grade3-lessons-solvable",
+      "properties": {},
+      "to_id": "cmp:teaching-surface"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:audio-js",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:audio-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:ember-js",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:ember-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:grade3-content",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:grade3-content"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:index-html",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:index-html"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:lessons-js",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:lessons-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:main-js",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:main-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:nest-js",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:nest-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:save-js",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:save-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:style-css",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:style-css"
     }
   ],
   "graph_id": "dad8f529a065ac9b",
@@ -528,6 +864,97 @@
       }
     },
     {
+      "node_id": "art:audio-js",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:fcc3dc84b376fd343222f7f181f10a0861dcb70ab3869f64402a0e4f839f7396",
+        "checksum_basis": "measured",
+        "description": "Wind, a cave drone and far-off bells, synthesized in the browser. No audio files ship with the page.",
+        "location": "js/audio.js",
+        "name": "js/audio.js",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:ember-js",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:2e60aa854c4b01ff037817b0b4fca5e6bc370b524a2ff3e17913a35750b9cc3e",
+        "checksum_basis": "measured",
+        "description": "Ember as inline SVG with six moods. The face is a translate away from the body so all six stay in register.",
+        "location": "js/ember.js",
+        "name": "js/ember.js",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:grade3-content",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "data",
+        "checksum": "sha256:284bb3644ff14d0cf5368519162cb28dd89b0da18b6117647213a0d5522c7b63",
+        "checksum_basis": "measured",
+        "description": "The Grade 3 lessons as data — five lessons, seven stages, each naming the NY-3 codes it serves. No logic in it, so adding a grade means writing one of these.",
+        "location": "content/grade3.js",
+        "name": "content/grade3.js",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:index-html",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:c9e5b5ac87355853a8812929f2df8d14767da35546497cc83dbf8d15acc20a57",
+        "checksum_basis": "measured",
+        "description": "The single page. Holds the door, the scene and the reveal, and loads the scripts in dependency order.",
+        "location": "index.html",
+        "name": "index.html",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:lessons-js",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:adb0e40f4641667ac9350f3f5876104c8e8a90ca1ac713ee9e5c88a7535ca3cb",
+        "checksum_basis": "measured",
+        "description": "Four rules that judge what she built, and the readout that describes what is there without ever saying she is wrong.",
+        "location": "js/lessons.js",
+        "name": "js/lessons.js",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:main-js",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:8dda02afd84bd4f2350ab5a2de407bb64b454c87e96d70f8c36e9f43f3f0a7b2",
+        "checksum_basis": "measured",
+        "description": "Boot and stage flow: the door, the deep link, loading a stage, and the reveal.",
+        "location": "js/main.js",
+        "name": "js/main.js",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:nest-js",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:a8ba3f5d549a61acd3823cb4b09a7afdabec3fc82d2c439bd2002f59a51783f7",
+        "checksum_basis": "measured",
+        "description": "The lattice she taps. Knows nothing about any lesson — it reports what she laid and lets the rule decide. Sized off the viewport every time.",
+        "location": "js/nest.js",
+        "name": "js/nest.js",
+        "status": "realized"
+      }
+    },
+    {
       "node_id": "art:nys-standards-pdf",
       "node_type": "Artifact",
       "properties": {
@@ -535,6 +962,32 @@
         "description": "The source of truth for what the game must teach. The user put it in this folder and said to review it. Grade 3 and Grade 4 sections are the ones that matter here.",
         "location": "nys-next-generation-mathematics-p-12-standards.pdf",
         "name": "NYS Next Generation Mathematics P-12 Standards (PDF)",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:save-js",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:56ec41e3ea61fd1a355a575f8fcfe25f9356e5ee6dd8115a777b87e62946f935",
+        "checksum_basis": "measured",
+        "description": "Her progress in localStorage, every read and write wrapped so a blocked store loses the save rather than the game.",
+        "location": "js/save.js",
+        "name": "js/save.js",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:style-css",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:a94b33fdc23412b2f9b68b49c6dfdd9a8d314dc2c766a97e7d92411efbc5d05a",
+        "checksum_basis": "measured",
+        "description": "A cave at dusk, laid out for a phone held upright. Carries the rule that the stone she places is the brightest thing on screen after Ember.",
+        "location": "css/style.css",
+        "name": "css/style.css",
         "status": "realized"
       }
     },
@@ -637,7 +1090,7 @@
         "name": "Ambience",
         "provenance": "authored",
         "purpose": "Wind, a low cave drone and occasional soft bells, synthesized in the browser with the Web Audio API rather than downloaded — the same route musicjug took, so the site carries no audio files. Also the small sounds of laying a stone and of Ember understanding something. Muteable, and the mute is remembered.",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -649,7 +1102,7 @@
         "name": "Ember",
         "provenance": "authored",
         "purpose": "The drake himself: drawn as inline SVG so he scales on any phone and costs no image download, with moods (curious, muddled, thinking, delighted, sleepy) and a speech line. He is the one who gets things wrong, so a mistake belongs to him rather than to her.",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -661,7 +1114,7 @@
         "name": "Lesson content, keyed by standard",
         "provenance": "authored",
         "purpose": "The grade's lessons as plain data: each one names the NY standard codes it serves, what Ember gets wrong, what she is asked to show him, the rule that decides whether she has, and what Ember says when he gets it. Adding a grade means adding one of these files. No lesson contains code.",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -673,7 +1126,7 @@
         "name": "The lesson engine",
         "provenance": "authored",
         "purpose": "Walks her through a lesson's stages: sets up Ember's wrong attempt, watches what she builds, runs the lesson's named check rule, and shows the reveal — the maths sentence that was true all along. The check rules live here so that content stays data; adding a rule is the only reason this file grows.",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -685,7 +1138,7 @@
         "name": "What she has taught him",
         "provenance": "authored",
         "purpose": "Her progress in the phone's own storage — which lessons Ember has learned, where she is, whether sound is muted. No account, no server, nothing leaves the phone.",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -697,7 +1150,7 @@
         "name": "The page",
         "provenance": "authored",
         "purpose": "The single page she opens: layout for a phone held upright, the top bar, and the boot that wakes Ember on her first tap (which is also what browsers require before any sound may play).",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -709,7 +1162,7 @@
         "name": "The teaching surface",
         "provenance": "authored",
         "purpose": "The thing she actually touches to show Ember something — for Grade 3 the nest: a lattice she taps to lay stones, and slots around the outside for the twig rim. It knows nothing about any particular lesson; it renders a state, reports taps, and a lesson's check rule decides whether what she built is right. Every later grade's picture (fraction bars, protractor, coordinate map) is meant to plug in here rather than fork the game.",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -853,6 +1306,96 @@
         "reference": "nys-next-generation-mathematics-p-12-standards.pdf (2017; rev. 2024) — Grade 3 pp.45-54, Grade 4 pp.55-66",
         "rule_type": "standard",
         "statement": "The math content of this game must match the New York State Next Generation Mathematics Learning Standards for Grades 3 and 4. Every piece of content traces to a standard code (NY-3.* / NY-4.*), and coverage is judged against the standard's own cluster structure — not against a topic list we invented. Grade 4 whole numbers are limited to 1,000,000; Grade 4 fractions are limited to denominators 2, 3, 4, 5, 6, 8, 10, 12 and 100."
+      }
+    },
+    {
+      "node_id": "frag:art:audio-js",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered js/audio.js"
+      }
+    },
+    {
+      "node_id": "frag:art:ember-js",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered js/ember.js"
+      }
+    },
+    {
+      "node_id": "frag:art:grade3-content",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered content/grade3.js"
+      }
+    },
+    {
+      "node_id": "frag:art:index-html",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered index.html"
+      }
+    },
+    {
+      "node_id": "frag:art:lessons-js",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered js/lessons.js"
+      }
+    },
+    {
+      "node_id": "frag:art:main-js",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered js/main.js"
+      }
+    },
+    {
+      "node_id": "frag:art:nest-js",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered js/nest.js"
+      }
+    },
+    {
+      "node_id": "frag:art:save-js",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered js/save.js"
+      }
+    },
+    {
+      "node_id": "frag:art:style-css",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered css/style.css"
       }
     },
     {
@@ -1065,6 +1608,76 @@
       }
     },
     {
+      "node_id": "snap:epoch:preserved-on-write:cmp:ambience",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:audio-js\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}}]",
+        "state": "{\"kind\":\"module\",\"level\":\"component\",\"name\":\"Ambience\",\"provenance\":\"authored\",\"purpose\":\"Wind, a low cave drone and occasional soft bells, synthesized in the browser with the Web Audio API rather than downloaded — the same route musicjug took, so the site carries no audio files. Also the small sounds of laying a stone and of Ember understanding something. Muteable, and the mute is remembered.\",\"status\":\"planned\"}",
+        "target_id": "cmp:ambience",
+        "target_type": "Component"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cmp:ember",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:ember-js\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}}]",
+        "state": "{\"kind\":\"module\",\"level\":\"component\",\"name\":\"Ember\",\"provenance\":\"authored\",\"purpose\":\"The drake himself: drawn as inline SVG so he scales on any phone and costs no image download, with moods (curious, muddled, thinking, delighted, sleepy) and a speech line. He is the one who gets things wrong, so a mistake belongs to him rather than to her.\",\"status\":\"planned\"}",
+        "target_id": "cmp:ember",
+        "target_type": "Component"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cmp:lesson-content",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Capability\",\"other_id\":\"cap:grade3-warmup\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:grade3-content\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}}]",
+        "state": "{\"kind\":\"module\",\"level\":\"component\",\"name\":\"Lesson content, keyed by standard\",\"provenance\":\"authored\",\"purpose\":\"The grade's lessons as plain data: each one names the NY standard codes it serves, what Ember gets wrong, what she is asked to show him, the rule that decides whether she has, and what Ember says when he gets it. Adding a grade means adding one of these files. No lesson contains code.\",\"status\":\"planned\"}",
+        "target_id": "cmp:lesson-content",
+        "target_type": "Component"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cmp:lesson-engine",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Capability\",\"other_id\":\"cap:game-loop\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:lessons-js\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}},{\"direction\":\"in\",\"edge_type\":\"VERIFIES\",\"other_type\":\"Verification\",\"other_id\":\"ver:grade3-lessons-solvable\",\"properties\":{}}]",
+        "state": "{\"kind\":\"module\",\"level\":\"component\",\"name\":\"The lesson engine\",\"provenance\":\"authored\",\"purpose\":\"Walks her through a lesson's stages: sets up Ember's wrong attempt, watches what she builds, runs the lesson's named check rule, and shows the reveal — the maths sentence that was true all along. The check rules live here so that content stays data; adding a rule is the only reason this file grows.\",\"status\":\"planned\"}",
+        "target_id": "cmp:lesson-engine",
+        "target_type": "Component"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cmp:memory",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Capability\",\"other_id\":\"cap:remembers-her-progress\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:save-js\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}}]",
+        "state": "{\"kind\":\"module\",\"level\":\"component\",\"name\":\"What she has taught him\",\"provenance\":\"authored\",\"purpose\":\"Her progress in the phone's own storage — which lessons Ember has learned, where she is, whether sound is muted. No account, no server, nothing leaves the phone.\",\"status\":\"planned\"}",
+        "target_id": "cmp:memory",
+        "target_type": "Component"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cmp:shell",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Capability\",\"other_id\":\"cap:one-idea-per-screen\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"in\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Capability\",\"other_id\":\"cap:runs-static-in-browser\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:index-html\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:main-js\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:style-css\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}}]",
+        "state": "{\"kind\":\"module\",\"level\":\"component\",\"name\":\"The page\",\"provenance\":\"authored\",\"purpose\":\"The single page she opens: layout for a phone held upright, the top bar, and the boot that wakes Ember on her first tap (which is also what browsers require before any sound may play).\",\"status\":\"planned\"}",
+        "target_id": "cmp:shell",
+        "target_type": "Component"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cmp:teaching-surface",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Capability\",\"other_id\":\"cap:visual-math-models\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:nest-js\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}},{\"direction\":\"in\",\"edge_type\":\"VERIFIES\",\"other_type\":\"Verification\",\"other_id\":\"ver:grade3-lessons-solvable\",\"properties\":{}}]",
+        "state": "{\"kind\":\"module\",\"level\":\"component\",\"name\":\"The teaching surface\",\"provenance\":\"authored\",\"purpose\":\"The thing she actually touches to show Ember something — for Grade 3 the nest: a lattice she taps to lay stones, and slots around the outside for the twig rim. It knows nothing about any particular lesson; it renders a state, reports taps, and a lesson's check rule decides whether what she built is right. Every later grade's picture (fraction bars, protractor, coordinate map) is meant to plug in here rather than fork the game.\",\"status\":\"planned\"}",
+        "target_id": "cmp:teaching-surface",
+        "target_type": "Component"
+      }
+    },
+    {
       "node_id": "snap:epoch:preserved-on-write:dec:idea-ronie-and-ember",
       "node_type": "Snapshot",
       "properties": {
@@ -1073,9 +1686,23 @@
         "target_id": "dec:idea-ronie-and-ember",
         "target_type": "Decision"
       }
+    },
+    {
+      "node_id": "ver:grade3-lessons-solvable",
+      "node_type": "Verification",
+      "properties": {
+        "description": "69 checks, run with `node test/lessons.test.js`, no dependencies and no build. For every stage it asserts that the intended solution FITS the lattice the lesson gives her, that the rule accepts it, that an empty nest does not, and that no {placeholder} is left unfilled in the reveal. It also asserts Ember's ragged nest fails its own lesson (otherwise she has nothing to fix), that the free-choice lesson really accepts 3x4, 4x3 and 2x6 while rejecting a single row of 12, and that the perimeter stage accepts 2x5 and 1x6 while rejecting the 3x4 it started from. It drives the REAL nest through a DOM shim rather than a second copy of the logic, and cross-checks the shim's report against the real one first — a reimplementation would agree with itself and miss the bug worth catching, which is a lesson whose target cannot be built on the lattice it was given.",
+        "findings": "69/69 passing as of 2026-09-21. It has already earned its keep once: it caught a task line of 70 characters that would have wrapped badly on a phone, which is the kind of thing nobody notices by reading. NOT COVERED, and worth saying plainly: this checks that the lessons are solvable and internally consistent. It cannot tell anyone whether a nine-year-old understands fractions, and nothing in this design can yet.",
+        "kind": "verification",
+        "level": "acceptance",
+        "location": "test/lessons.test.js",
+        "method": "test",
+        "name": "Every Grade 3 stage is solvable, and Ember's own attempt is not",
+        "status": "passing"
+      }
     }
   ],
-  "prev_content_hash": "sha256:a6d4ef5b28fba0472ef9a3ccf03a609df6e7caf1965ef857a34628c7a81bcfe2",
+  "prev_content_hash": "sha256:4332b79516128bb15aa47e48ab29b1cb1842ef5b1f103e8d4919d0a86319d8e9",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -1674,7 +2301,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "b1d37eca155de33830e2b27d5534d2d7d456a9dd",
+    "commit": "c4a0f233a07ee5d3d48a053dc6fe235a924321bd",
     "dirty": false
   }
 }
