@@ -1,6 +1,62 @@
 {
-  "content_hash": "sha256:a6d4ef5b28fba0472ef9a3ccf03a609df6e7caf1965ef857a34628c7a81bcfe2",
+  "content_hash": "sha256:4332b79516128bb15aa47e48ab29b1cb1842ef5b1f103e8d4919d0a86319d8e9",
   "edges": [
+    {
+      "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:game-loop",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:lesson-engine"
+    },
+    {
+      "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:grade3-warmup",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:lesson-content"
+    },
+    {
+      "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:one-idea-per-screen",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:shell"
+    },
+    {
+      "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:remembers-her-progress",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:memory"
+    },
+    {
+      "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:runs-static-in-browser",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:shell"
+    },
+    {
+      "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:visual-math-models",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:teaching-surface"
+    },
+    {
+      "edge_type": "ANTICIPATES",
+      "from_id": "dec:idea-quests-and-riddles",
+      "properties": {
+        "evidence": "A riddle answered by BUILDING rather than answering needs the same lattice the lessons use, so the capability already planned is what would carry riddles too — the rim lesson's second stage is already one of these without being called a riddle."
+      },
+      "to_id": "cap:visual-math-models"
+    },
     {
       "edge_type": "AT_EPOCH",
       "from_id": "snap:epoch:preserved-on-write:cap:game-loop",
@@ -16,6 +72,12 @@
     {
       "edge_type": "AT_EPOCH",
       "from_id": "snap:epoch:preserved-on-write:cap:grade3-warmup",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:dec:idea-ronie-and-ember",
       "properties": {},
       "to_id": "epoch:preserved-on-write"
     },
@@ -76,6 +138,28 @@
     },
     {
       "edge_type": "AUTHORED_BY",
+      "from_id": "dec:idea-quests-and-riddles",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:idea-ronie-and-ember",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
       "from_id": "dec:pet-you-grow",
       "properties": {
         "approved_at": "2026-09-21",
@@ -89,9 +173,11 @@
       "edge_type": "AUTHORED_BY",
       "from_id": "dec:she-teaches-ember",
       "properties": {
+        "approved_at": "2026-09-21",
         "authored_at": "2026-09-21",
         "roles": [
-          "author"
+          "author",
+          "approver"
         ]
       },
       "to_id": "who:ajs7"
@@ -179,6 +265,36 @@
         "weight_basis": "estimated"
       },
       "to_id": "dec:pet-you-grow"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-quests-and-riddles",
+      "properties": {
+        "evidence": "Shape (e), Ember attempting a quest alone, only exists because teaching is the loop — what he can do out there is exactly what she managed to teach him. Without the teaching frame a quest is just more exercises.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:she-teaches-ember"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-ronie-and-ember",
+      "properties": {
+        "evidence": "The two were raised in one breath and pull on each other: being named is what makes a quest hers rather than an errand, and quests are the main thing a named character would be FOR. Answering either alone risks answering it wrongly.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:idea-quests-and-riddles"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-ronie-and-ember",
+      "properties": {
+        "evidence": "The whole privacy question exists only because that requirement makes the repository public. On a private host the naming question would be purely an aesthetic one.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "req:github-pages-hosting"
     },
     {
       "edge_type": "DEPENDS_ON",
@@ -273,6 +389,12 @@
       "to_id": "snap:epoch:preserved-on-write:cap:grade3-warmup"
     },
     {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "dec:idea-ronie-and-ember",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:dec:idea-ronie-and-ember"
+    },
+    {
       "edge_type": "MITIGATES",
       "from_id": "dec:ember-the-drake",
       "properties": {
@@ -287,6 +409,22 @@
         "evidence": "That decision demands reasoning over speed and lucky guesses but named no mechanic that could enforce it. Teaching enforces it structurally: a construction she has to build cannot be arrived at by tapping one of four options."
       },
       "to_id": "dec:built-for-understanding"
+    },
+    {
+      "edge_type": "RISKS",
+      "from_id": "dec:idea-quests-and-riddles",
+      "properties": {
+        "evidence": "Shape (c), a riddle answered by typing or picking a number, can be got right by luck and would break the rule that nothing is guessable. The idea is recorded with that objection attached rather than argued down."
+      },
+      "to_id": "dec:built-for-understanding"
+    },
+    {
+      "edge_type": "RISKS",
+      "from_id": "dec:idea-quests-and-riddles",
+      "properties": {
+        "evidence": "Quests lengthen whatever they are added to, and that decision already carries the risk that a long Grade 3 gate is a game she stops playing. Adding quests to Grade 3 first would aim straight at the recorded hazard."
+      },
+      "to_id": "dec:grade3-is-a-gate"
     },
     {
       "edge_type": "SATISFIES",
@@ -491,6 +629,90 @@
       }
     },
     {
+      "node_id": "cmp:ambience",
+      "node_type": "Component",
+      "properties": {
+        "kind": "module",
+        "level": "component",
+        "name": "Ambience",
+        "provenance": "authored",
+        "purpose": "Wind, a low cave drone and occasional soft bells, synthesized in the browser with the Web Audio API rather than downloaded — the same route musicjug took, so the site carries no audio files. Also the small sounds of laying a stone and of Ember understanding something. Muteable, and the mute is remembered.",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cmp:ember",
+      "node_type": "Component",
+      "properties": {
+        "kind": "module",
+        "level": "component",
+        "name": "Ember",
+        "provenance": "authored",
+        "purpose": "The drake himself: drawn as inline SVG so he scales on any phone and costs no image download, with moods (curious, muddled, thinking, delighted, sleepy) and a speech line. He is the one who gets things wrong, so a mistake belongs to him rather than to her.",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cmp:lesson-content",
+      "node_type": "Component",
+      "properties": {
+        "kind": "module",
+        "level": "component",
+        "name": "Lesson content, keyed by standard",
+        "provenance": "authored",
+        "purpose": "The grade's lessons as plain data: each one names the NY standard codes it serves, what Ember gets wrong, what she is asked to show him, the rule that decides whether she has, and what Ember says when he gets it. Adding a grade means adding one of these files. No lesson contains code.",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cmp:lesson-engine",
+      "node_type": "Component",
+      "properties": {
+        "kind": "module",
+        "level": "component",
+        "name": "The lesson engine",
+        "provenance": "authored",
+        "purpose": "Walks her through a lesson's stages: sets up Ember's wrong attempt, watches what she builds, runs the lesson's named check rule, and shows the reveal — the maths sentence that was true all along. The check rules live here so that content stays data; adding a rule is the only reason this file grows.",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cmp:memory",
+      "node_type": "Component",
+      "properties": {
+        "kind": "module",
+        "level": "component",
+        "name": "What she has taught him",
+        "provenance": "authored",
+        "purpose": "Her progress in the phone's own storage — which lessons Ember has learned, where she is, whether sound is muted. No account, no server, nothing leaves the phone.",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cmp:shell",
+      "node_type": "Component",
+      "properties": {
+        "kind": "module",
+        "level": "component",
+        "name": "The page",
+        "provenance": "authored",
+        "purpose": "The single page she opens: layout for a phone held upright, the top bar, and the boot that wakes Ember on her first tap (which is also what browsers require before any sound may play).",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cmp:teaching-surface",
+      "node_type": "Component",
+      "properties": {
+        "kind": "module",
+        "level": "component",
+        "name": "The teaching surface",
+        "provenance": "authored",
+        "purpose": "The thing she actually touches to show Ember something — for Grade 3 the nest: a lattice she taps to lay stones, and slots around the outside for the twig rim. It knows nothing about any particular lesson; it renders a state, reports taps, and a lesson's check rule decides whether what she built is right. Every later grade's picture (fraction bars, protractor, coordinate map) is meant to plug in here rather than fork the game.",
+        "status": "planned"
+      }
+    },
+    {
       "node_id": "who:ajs7",
       "node_type": "Contributor",
       "properties": {
@@ -556,6 +778,28 @@
       }
     },
     {
+      "node_id": "dec:idea-quests-and-riddles",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "RECORDED AS BRAINSTORMING, NOT AS A PROPOSAL. The owner wants quests involving maths puzzles and riddles. Four shapes, which are not variations of one idea — they are different games. (a) QUESTS AS DRESSING: each existing lesson gets a destination and a reason. \"The nest must be finished before the frost.\" Nearly free, since it is words around what is already built, and it adds no new mathematics. (b) QUESTS AS TRANSFER: after she has TAUGHT Ember something, a quest makes him USE it somewhere unfamiliar — the skill applied out of context, which is the hardest and most valuable thing in learning and the thing worksheets never reach. Expensive: new content and probably new interactions. (c) RIDDLES AS GATES: a raven, a troll, a locked door asks a riddle whose answer is a number. Familiar and atmospheric. (d) QUESTS AS A MAP: a world of places, each with a resident and a problem, that she and Ember travel between — the world-map shape rejected earlier in favour of the pet, reconsidered here as a LAYER OVER the pet rather than instead of it. A fifth, which nobody proposed and which falls out of the teaching frame: (e) EMBER GOES ALONE. She teaches him, then watches him attempt the quest himself, and what he can do is exactly what she managed to teach him. The quest becomes the proof.",
+        "kind": "exploratory",
+        "name": "OPEN — do quests and riddles sit on top of the teaching, and in what shape?",
+        "rationale": "Owner's idea, 2026-09-21, in a /brainstorm, prompted by thinking about dragons. Recorded with its objections rather than argued down. THE ONE REAL HAZARD, and it applies to (c) hardest: a riddle whose answer you TYPE OR PICK is a quiz wearing a costume, and dec:built-for-understanding rules that out — no four-option taps, nothing that can be got right by luck. A riddle survives here only if it is ANSWERED BY BUILDING: \"I have four sides, my rim is 14, and I am not a square — what am I?\" is a riddle she solves on the nest lattice and cannot guess. Notably the design already contains one of these without having called it a riddle: the second stage of the rim lesson is exactly that question. SECOND OBJECTION: Grade 3 is a gate, and dec:grade3-is-a-gate already carries the risk that a long gate is a game she abandons. Quests lengthen it. If they go anywhere first, Grade 4 is the safer place. THIRD: scope. Five lessons exist; Grades 4 and 5 are unwritten. Quests are a second content axis crossing the first, and two axes multiply. WHAT ARGUES FOR (e) AND (b): they are the only shapes that add a new kind of understanding rather than new scenery, and (e) costs least of the two because Ember attempting a task he was taught reuses the lesson content backwards. It is also the emotionally right ending — the teacher watching the pupil go alone.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "dec:idea-ronie-and-ember",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "RECORDED AS BRAINSTORMING, NOT AS A PROPOSAL. The owner's daughter is Ronie, and he suggested the game becomes \"The Adventures of Ronie and Ember\". Two separate things are tangled in that and they can be answered apart. (a) THE TITLE — what the page is called. (b) THE FRAME — whether Ronie is a NAMED CHARACTER inside the game rather than an unnamed someone doing the teaching. Today the design has no player character at all: she is a pair of hands. Naming her makes her Hiccup to Ember's Toothless, which is what the owner's own reference film is about. Options on the table: title only; title and character; character but with a name she types in herself on first run; neither.",
+        "kind": "exploratory",
+        "name": "OPEN — is the game called The Adventures of Ronie &amp; Ember, with Ronie in it?",
+        "rationale": "Owner's idea, 2026-09-21, offered inside a /brainstorm. Cheap: the title is one line of HTML, and a named character is mostly words in Ember's mouth — he can address her by name, which costs nothing and changes a great deal. What to weigh against it. (1) THE REPOSITORY IS PUBLIC. A first name alone is low risk and a great many family projects carry one, but it is the owner's call to make knowingly rather than by default, and far easier to settle now than to scrub out of a git history later. A name she types in on first run buys the same warmth with nothing committed to the repo. (2) A named character pulls towards a STORY, and dec:ember-the-drake was chosen partly because a story is the least replayable of the shapes considered. (3) It cuts the other way too: being named is what makes a quest hers rather than an errand, so this question and the quest question want answering together.",
+        "status": "proposed"
+      }
+    },
+    {
       "node_id": "dec:pet-you-grow",
       "node_type": "Decision",
       "properties": {
@@ -570,11 +814,12 @@
       "node_id": "dec:she-teaches-ember",
       "node_type": "Decision",
       "properties": {
+        "chose": "Accepted in full, 2026-09-21: the core loop is teaching Ember, not feeding him. The owner raised it as \"maybe\" and settled it on being shown that it answers both of the design's open questions — how she earns, and how we would know she understood — with a single mechanic. Feeding and the hoard stay, but they are no longer the point. Nothing was rejected in the process; this REPLACES the feeding-only loop, which was never a deliberate choice, only the shape the game had before anyone thought of a better one.",
         "decision": "The core loop is not feeding a pet, it is TRAINING one. Ember attempts the mathematics himself and gets it wrong in believable, specific ways; she has to show him the right way by building the picture — laying the array, cutting the fraction bar, setting the tail angle. Progress is Ember learning, not a score going up. Feeding and the hoard remain, but they are no longer the point.",
         "kind": "choice",
         "name": "She TEACHES Ember — the How to Train Your Dragon frame",
         "rationale": "Owner's idea, 2026-09-21, offered as \"maybe\" and naming How to Train Your Dragon — LEFT PROPOSED, awaiting his word. Claude's assessment, which is why it is recorded prominently rather than filed as a tweak: this answers the two questions the design had open and could not answer, and it answers them with one mechanic. (1) HOW SHE EARNS: teaching cannot be guessed. A four-option tap can be got right by luck; showing Ember where the line of symmetry falls cannot. That is exactly what dec:built-for-understanding demands and what a quiz could never enforce. (2) HOW WE KNOW SHE UNDERSTOOD: she understood it if she can teach it. The protege effect is real and well-evidenced — a learner preparing to teach learns more than one preparing to be tested — and this frame gets it for free rather than bolting on an assessment. (3) A THIRD BENEFIT NOBODY ASKED FOR: a wrong answer becomes \"Ember has not got it yet\" instead of \"you failed\". For a nine-year-old being walked back through a grade she has already done, that difference is not cosmetic. (4) IT IS FAITHFUL TO THE FILM, which matters because the film is the owner's reference: Hiccup earns Toothless by UNDERSTANDING him rather than dominating him, and the tail fin he builds has set positions Hiccup must learn to fly — a cheat sheet of angles. That is NY-4.MD.5-7 and NY-4.G.1 handed over intact.",
-        "status": "proposed"
+        "status": "accepted"
       }
     },
     {
@@ -818,9 +1063,19 @@
         "target_id": "cap:grade3-warmup",
         "target_type": "Capability"
       }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:dec:idea-ronie-and-ember",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[]",
+        "state": "{\"decision\":\"RECORDED AS BRAINSTORMING, NOT AS A PROPOSAL. The owner's daughter is Ronie, and he suggested the game becomes \\\"The Adventures of Ronie &amp; Ember\\\". Two separate things are tangled in that and they can be answered apart. (a) THE TITLE — what the page is called. (b) THE FRAME — whether Ronie is a NAMED CHARACTER inside the game rather than an unnamed someone doing the teaching. Today the design has no player character at all: she is a pair of hands. Naming her makes her Hiccup to Ember's Toothless, which is what the owner's own reference film is about. Options: title only; title and character; character but a name she types in herself on first run; neither.</decision>\\n<parameter name=\\\"rationale\\\">Owner's idea, 2026-09-21, inside a /brainstorm. Cheap: the title is one line of HTML, and a named character is mostly words in Ember's dialogue — he can address her by name, which costs nothing and changes a great deal. What to weigh against it. (1) THE REPOSITORY IS PUBLIC. A first name alone is low risk and thousands of family projects carry one, but it is the owner's call to make knowingly rather than by default, and it is much easier to decide now than to scrub later from a git history. A name typed in on first run gets the same warmth with nothing committed to the repo. (2) A named character pulls toward a STORY, and dec:ember-the-drake was chosen partly because a story is the least replayable of the shapes considered. (3) It cuts the other way too: being named is what makes a quest hers rather than an errand, so this question and the quest question below should be answered together.\",\"kind\":\"exploratory\",\"name\":\"OPEN — is the game called The Adventures of Ronie &amp; Ember, with Ronie in it?\",\"status\":\"proposed\"}",
+        "target_id": "dec:idea-ronie-and-ember",
+        "target_type": "Decision"
+      }
     }
   ],
-  "prev_content_hash": "sha256:7c4002373171c0f85ccd3e65bec617e570c5836d2040a33f1b2b1425227116a2",
+  "prev_content_hash": "sha256:a6d4ef5b28fba0472ef9a3ccf03a609df6e7caf1965ef857a34628c7a81bcfe2",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -1416,5 +1671,10 @@
     "node_types": 28,
     "reflow2_version": "0.66.0",
     "schema_version": 1
+  },
+  "taken_at": {
+    "branch": "main",
+    "commit": "b1d37eca155de33830e2b27d5534d2d7d456a9dd",
+    "dirty": false
   }
 }
