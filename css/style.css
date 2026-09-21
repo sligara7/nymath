@@ -1,0 +1,289 @@
+/* Ember — a cave at dusk.
+
+   One colour rule runs through all of this: the STONE she places is the
+   brightest thing on screen after Ember himself. Not the buttons, not the
+   text. What she is building has to be what her eye goes to.
+
+   Built for a phone held upright in one hand. Everything is sized off the
+   viewport rather than off pixels, because the range of phones a nine-year-old
+   might be handed is enormous and none of them are the one I tested on. */
+
+:root {
+  --bg:        #17212b;   /* dusk, just before the fire is lit */
+  --bg-lift:   #1e2b38;
+  --ink:       #f3e9d8;   /* parchment */
+  --ink-soft:  #a8b6c2;
+  --ember:     #ff8a3d;   /* him */
+  --ember-hot: #ffc14d;
+  --stone:     #b9c7d2;   /* what she lays */
+  --stone-dim: #3a4b5c;   /* where a stone could go */
+  --twig:      #c08b52;
+  --good:      #7fd1a0;
+
+  --gap: clamp(10px, 3vw, 18px);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+/* [hidden] is a UA rule, and every author rule beats it — so `display: flex`
+   on .scene or .reveal-wrap silently un-hides them. Found the hard way: the
+   reveal overlay was painting over the front door. */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font: 500 16px/1.45 ui-rounded, "SF Pro Rounded", system-ui, -apple-system, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+body {
+  /* A soft glow low on the screen, as if the fire is just out of frame. */
+  background-image: radial-gradient(120% 55% at 50% 108%, #2b3a49 0%, transparent 70%);
+  background-attachment: fixed;
+}
+
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+
+/* --- the door ------------------------------------------------------------ */
+
+.door {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  padding: calc(var(--safe-t) + 24px) 20px calc(var(--safe-b) + 24px);
+  text-align: center;
+}
+
+.door h1 {
+  margin: 0;
+  font-size: clamp(38px, 13vw, 64px);
+  letter-spacing: 0.02em;
+  color: var(--ember-hot);
+  text-shadow: 0 0 36px rgba(255, 138, 61, 0.35);
+}
+
+.door-art { width: min(58vw, 240px); }
+.door-line { margin: 0; color: var(--ink-soft); font-size: clamp(15px, 4.2vw, 19px); }
+.door-foot { margin: 0; min-height: 1.4em; color: var(--ink-soft); font-size: 13px; opacity: 0.75; }
+
+/* --- the bar -------------------------------------------------------------- */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: calc(var(--safe-t) + 8px) 14px 8px;
+  background: linear-gradient(var(--bg) 70%, transparent);
+}
+
+.where { display: flex; flex-direction: column; min-width: 0; }
+.lesson-name { font-size: 14px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* The standard code is here on purpose and small on purpose. It is for the
+   grown-up checking that this really does cover the grade; she will never
+   read it, and it must never look like something she is supposed to. */
+.std { font-size: 10px; letter-spacing: 0.08em; color: var(--ink-soft); opacity: 0.6; }
+
+.sound {
+  flex: none;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--bg-lift);
+  color: var(--ember);
+  font-size: 17px;
+}
+.sound.off { color: var(--ink-soft); opacity: 0.5; }
+
+/* --- the scene ------------------------------------------------------------ */
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+  padding: 0 14px calc(var(--safe-b) + 20px);
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.him {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+.ember-holder { flex: none; width: clamp(92px, 30vw, 130px); }
+
+.bubble {
+  flex: 1 1 auto;
+  min-width: 0;
+  position: relative;
+  background: var(--bg-lift);
+  border-radius: 16px 16px 16px 4px;
+  padding: 12px 14px;
+}
+.bubble p { margin: 0; font-size: clamp(14px, 4vw, 16px); }
+
+/* Ember's voice is his own — warm, and never the same colour as an
+   instruction, so she can tell in a glance who is talking to her. */
+.bubble p em { color: var(--ember-hot); font-style: normal; font-weight: 700; }
+
+.task {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(15px, 4.4vw, 18px);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.surface { width: 100%; display: flex; justify-content: center; }
+
+.readout {
+  min-height: 2.6em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(15px, 4.4vw, 19px);
+  color: var(--ink-soft);
+}
+.readout b { color: var(--stone); font-variant-numeric: tabular-nums; }
+
+/* Skip-counting chips: 4, 8, 12 — they appear one at a time as each row of
+   the nest is finished, so the pattern arrives by itself. */
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--bg-lift);
+  color: var(--stone);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  animation: pop 0.22s ease-out;
+}
+.chip.last { background: var(--ember); color: #22160c; }
+
+@keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* --- buttons -------------------------------------------------------------- */
+
+.actions { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }
+
+.big {
+  padding: 15px 28px;
+  min-width: min(74vw, 260px);
+  border-radius: 999px;
+  background: var(--ember);
+  color: #22160c;
+  font-size: clamp(16px, 4.6vw, 19px);
+  font-weight: 700;
+  box-shadow: 0 6px 22px rgba(255, 138, 61, 0.25);
+}
+.big:active { transform: translateY(1px); }
+
+.ghost { padding: 10px 18px; border-radius: 999px; color: var(--ink-soft); font-size: 14px; }
+.ghost:active { color: var(--ink); }
+
+/* --- the nest ------------------------------------------------------------- */
+
+.nest { position: relative; touch-action: manipulation; }
+
+.cell {
+  position: absolute;
+  border-radius: 22%;
+  background: var(--stone-dim);
+  transition: background 0.14s, transform 0.14s;
+}
+.cell.on { background: var(--stone); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.18); }
+
+/* Ember's own stones, before she has touched them: duller and a little green,
+   so the board reads as HIS mess at first glance and becomes hers as she
+   works. The instant she moves one, it stops being his. */
+.cell.on.his { background: #6f8472; box-shadow: none; }
+
+/* Stones carried over from the previous stage stay warm, so when a hard fact
+   is broken into two easy ones she can see both pieces at once. */
+.cell.kept { background: var(--ember-hot); }
+
+.cell:active { transform: scale(0.88); }
+
+.twig {
+  position: absolute;
+  border-radius: 999px;
+  background: var(--stone-dim);
+  transition: background 0.14s, transform 0.14s;
+}
+.twig.on { background: var(--twig); }
+.twig:active { transform: scale(0.8); }
+
+/* --- the reveal ----------------------------------------------------------- */
+
+.reveal-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 16, 22, 0.82);
+  animation: fade 0.25s ease-out;
+}
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.reveal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-lift);
+  border-radius: 22px;
+  padding: 24px 20px;
+  text-align: center;
+  animation: rise 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+@keyframes rise { from { transform: translateY(22px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.reveal .sentence {
+  margin: 4px 0 14px;
+  font-size: clamp(26px, 9vw, 40px);
+  font-weight: 700;
+  color: var(--ember-hot);
+  font-variant-numeric: tabular-nums;
+}
+.reveal .said { margin: 0 0 18px; color: var(--ink); font-size: clamp(14px, 4.2vw, 17px); }
+.reveal .said em { color: var(--ember-hot); font-style: normal; font-weight: 700; }
+.reveal .learned { margin: 0 0 18px; color: var(--good); font-size: 14px; }
+.reveal svg { display: block; margin: 0 auto 16px; max-width: 100%; }
+
+/* --- the end of the grade -------------------------------------------------- */
+
+.finale { text-align: center; padding: 10px 0 0; }
+.finale h2 { margin: 0 0 8px; color: var(--ember-hot); font-size: clamp(22px, 7vw, 30px); }
+.finale p { margin: 0 0 14px; color: var(--ink-soft); font-size: clamp(14px, 4.2vw, 16px); }
+.finale .taught { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; text-align: left; }
+.finale .taught span { font-size: 13px; color: var(--ink-soft); }
+.finale .taught span::before { content: "✦ "; color: var(--good); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

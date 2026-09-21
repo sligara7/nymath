@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ember</title>
+<meta name="description" content="Teach a drake his arithmetic. New York State Grade 3.">
+<meta name="theme-color" content="#17212b">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ember">
+<meta property="og:description" content="He hatched knowing nothing. Teach him.">
+<meta property="og:url" content="https://sligara7.github.io/nymath/">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Everything lives on one page. She never navigates; the scene changes
+     around her. On a phone, a page transition is a chance to lose someone. -->
+
+<header class="bar" id="bar" hidden>
+  <div class="where">
+    <span class="lesson-name" id="lessonName"></span>
+    <span class="std" id="lessonStd"></span>
+  </div>
+  <button class="sound" id="soundBtn" aria-label="Sound on or off">
+    <span id="soundIcon">◈</span>
+  </button>
+</header>
+
+<!-- THE DOOR. Nothing plays until she taps, because no browser will let sound
+     start on its own — so the tap that begins the game is the same tap that
+     turns the wind on. One gesture, doing two jobs, and she never sees the
+     second one. -->
+<main class="door" id="door">
+  <div class="door-art" id="doorArt"></div>
+  <h1>Ember</h1>
+  <p class="door-line">He hatched yesterday.<br>He does not know anything yet.</p>
+  <button class="big" id="startBtn">Go and meet him</button>
+  <p class="door-foot" id="doorFoot"></p>
+</main>
+
+<main class="scene" id="scene" hidden>
+
+  <!-- Ember and what he is saying. He gets things wrong up here so that
+       nothing down in the nest ever reads as HER being wrong. -->
+  <section class="him">
+    <div class="ember-holder" id="emberHolder"></div>
+    <div class="bubble" id="bubble"><p id="emberSays"></p></div>
+  </section>
+
+  <!-- What she is being asked to show him. One line, never two. -->
+  <p class="task" id="task"></p>
+
+  <!-- The nest: the picture she builds. -->
+  <section class="surface" id="surface"></section>
+
+  <!-- The arithmetic, made visible as she builds. Empty until it has
+       something true to say. -->
+  <div class="readout" id="readout"></div>
+
+  <div class="actions">
+    <button class="ghost" id="clearBtn" hidden>Start his nest again</button>
+    <button class="big" id="nextBtn" hidden>Next</button>
+  </div>
+
+</main>
+
+<!-- The reveal: the maths sentence that was true the whole time she was
+     building. It arrives AFTER she has built it, never before — that order is
+     the entire pedagogy of this thing. -->
+<div class="reveal-wrap" id="revealWrap" hidden>
+  <div class="reveal" id="reveal"></div>
+</div>
+
+<script src="content/grade3.js"></script>
+<script src="js/save.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/ember.js"></script>
+<script src="js/nest.js"></script>
+<script src="js/lessons.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
