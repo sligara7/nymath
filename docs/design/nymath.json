@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:cca3a2dff1b355d192982eedcb45e258efb1b01ddeeefdce64704775cda9c7c3",
+  "content_hash": "sha256:94baae7965ed049707a9c82a740deda35de986152f54d8f1f97987bcceb0a2c9",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -334,6 +334,78 @@
         ]
       },
       "to_id": "who:claude-code"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:accept-981e129b89bc3e4a",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:style-css"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:quest-and-naming",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:index-html"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:quest-and-naming",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:lessons-js"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:quest-and-naming",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:main-js"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:quest-and-naming",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:nest-js"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:quest-and-naming",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:save-js"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:quest-and-naming",
+      "properties": {
+        "accepted_baseline": false,
+        "action": "added"
+      },
+      "to_id": "cap:she-names-herself"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:quest-and-naming",
+      "properties": {
+        "accepted_baseline": false,
+        "action": "added"
+      },
+      "to_id": "cap:the-quest"
     },
     {
       "edge_type": "COMPLIES_WITH",
@@ -1043,7 +1115,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:c9e5b5ac87355853a8812929f2df8d14767da35546497cc83dbf8d15acc20a57",
+        "checksum": "sha256:c347c43885d93ae959e0b1678cc2a273fcdae072a2fb28192eb21b582b946b3a",
         "checksum_basis": "measured",
         "description": "The single page. Holds the door, the scene and the reveal, and loads the scripts in dependency order.",
         "location": "index.html",
@@ -1056,7 +1128,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:adb0e40f4641667ac9350f3f5876104c8e8a90ca1ac713ee9e5c88a7535ca3cb",
+        "checksum": "sha256:21e6418996724549ec7419c667b4845abcf46f1f323206a6ec66fd1c1edcce82",
         "checksum_basis": "measured",
         "description": "Four rules that judge what she built, and the readout that describes what is there without ever saying she is wrong.",
         "location": "js/lessons.js",
@@ -1069,7 +1141,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:8dda02afd84bd4f2350ab5a2de407bb64b454c87e96d70f8c36e9f43f3f0a7b2",
+        "checksum": "sha256:eb02b75da12eb1bc86f4c07a47bed969da01aebf884d4d2be13b43057480efbd",
         "checksum_basis": "measured",
         "description": "Boot and stage flow: the door, the deep link, loading a stage, and the reveal.",
         "location": "js/main.js",
@@ -1082,7 +1154,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:a8ba3f5d549a61acd3823cb4b09a7afdabec3fc82d2c439bd2002f59a51783f7",
+        "checksum": "sha256:324a562ad9093a3e7cc80b718c5602030e63e7ca7f0c679f72ed33a74e0ec9ed",
         "checksum_basis": "measured",
         "description": "The lattice she taps. Knows nothing about any lesson — it reports what she laid and lets the rule decide. Sized off the viewport every time.",
         "location": "js/nest.js",
@@ -1132,7 +1204,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:56ec41e3ea61fd1a355a575f8fcfe25f9356e5ee6dd8115a777b87e62946f935",
+        "checksum": "sha256:c5686e8b4c3c28ac92c0639569bd13665faf3bbd8df2e19152f72942923f7e7d",
         "checksum_basis": "measured",
         "description": "Her progress in localStorage, every read and write wrapped so a blocked store loses the save rather than the game.",
         "location": "js/save.js",
@@ -1145,7 +1217,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:a94b33fdc23412b2f9b68b49c6dfdd9a8d314dc2c766a97e7d92411efbc5d05a",
+        "checksum": "sha256:48df6d64efb5fcda60b6612b6e54fbbc9819d307d41a2ca49ce7d517433f65f7",
         "checksum_basis": "measured",
         "description": "A cave at dusk, laid out for a phone held upright. Carries the rule that the stone she places is the brightest thing on screen after Ember.",
         "location": "css/style.css",
@@ -1261,6 +1333,28 @@
         "name": "Pictures you can touch",
         "provenance": "authored",
         "status": "planned"
+      }
+    },
+    {
+      "node_id": "chg:accept-981e129b89bc3e4a",
+      "node_type": "ChangeEvent",
+      "properties": {
+        "change_type": "documentation",
+        "detected_at": "2026-09-21",
+        "name": "Styling only for the name field and the recall chip — no design meaning beyond the two features already recorded.",
+        "subject": "system"
+      }
+    },
+    {
+      "node_id": "chg:quest-and-naming",
+      "node_type": "ChangeEvent",
+      "properties": {
+        "change_type": "new_feature",
+        "detected_at": "2026-09-21",
+        "name": "Ember goes alone, and she tells him her name",
+        "rationale": "The quest is the design's first answer to a hole open since genesis: nothing in it could tell whether she had understood anything. A pupil performing unaided is the oldest answer there is, and it costs nothing extra because what he can do out there is just the lesson content read backwards. The naming settles the privacy question the public repository created — typed in rather than written in, so the source carries no child's name. Not chosen, and kept on record: quests as dressing, riddles at gates, a world map. The riddle shape was the one that had to be refused outright, because a riddle answered by typing is a quiz in a costume and the design forbids anything guessable.",
+        "subject": "system",
+        "summary": "Two ideas were promoted out of brainstorming on the owner's word and built the same day. She now types her name on first run — kept on her phone, never in the public repository — and Ember uses it. And when she has taught him all five Grade 3 lessons, he stores forty-two fish for winter without her over eighteen beats, reaching for each lesson by name while the shelf builds itself under his narration. The nest gained the ability to perform as well as be tapped, and the rim now runs round whatever was actually built rather than round the lattice."
       }
     },
     {
@@ -1962,7 +2056,7 @@
       }
     }
   ],
-  "prev_content_hash": "sha256:dcf9d39e3b821ee56288e4897e20ffbe3b6fe952dbbb2bda09b43b892cf11453",
+  "prev_content_hash": "sha256:cca3a2dff1b355d192982eedcb45e258efb1b01ddeeefdce64704775cda9c7c3",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -2561,7 +2655,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "6590893bfcdb9ca770ad89b36cd6dfab6de47894",
+    "commit": "33fc3b7b88c0c61e6557d44db19a0f5847a75972",
     "dirty": false
   }
 }
