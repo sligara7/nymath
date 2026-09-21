@@ -9,7 +9,8 @@
     soundBtn: $("soundBtn"), soundIcon: $("soundIcon"),
     door: $("door"), doorArt: $("doorArt"), startBtn: $("startBtn"), doorFoot: $("doorFoot"),
     scene: $("scene"), emberHolder: $("emberHolder"), bubble: $("bubble"), emberSays: $("emberSays"),
-    task: $("task"), surface: $("surface"), readout: $("readout"),
+    task: $("task"), surface: $("surface"), readout: $("readout"), recalls: $("recalls"),
+    naming: $("naming"), namingArt: $("namingArt"), nameInput: $("nameInput"), nameBtn: $("nameBtn"),
     clearBtn: $("clearBtn"), nextBtn: $("nextBtn"),
     revealWrap: $("revealWrap"), reveal: $("reveal")
   };
@@ -18,6 +19,7 @@
   let li = 0, si = 0;         /* which lesson, which stage */
   let stage = null, lesson = null;
   let passed = false;          /* so the reveal fires once, not on every tap */
+  let onQuest = false;
 
   /* ---- the door ---------------------------------------------------------- */
 
@@ -55,11 +57,13 @@
     /* Her first tap is the only moment a browser will let sound begin, so it
        does both jobs at once and she never sees the second one. */
     const s = Save.get();
-    if (s.lesson >= G.lessons.length) { enter({ l: G.lessons.length, st: 0 }); return; }
-    enter({
-      l: Math.min(s.lesson, G.lessons.length - 1),
-      st: Math.min(s.stage, G.lessons[Math.min(s.lesson, G.lessons.length - 1)].stages.length - 1)
-    });
+    /* Waking the sound must ride her very first tap, whichever screen it lands
+       on, because no browser gives a second chance at it. */
+    Ambience.wake();
+    Ambience.setMuted(s.muted);
+    paintSound();
+    if (!s.name) { askName(); return; }
+    goFromSave();
   });
 
   /* ---- sound ------------------------------------------------------------- */
@@ -96,6 +100,8 @@
 
     el.nextBtn.hidden = true;
     el.clearBtn.hidden = stage.mode === "rim";
+    el.recalls.innerHTML = "";
+    onQuest = false;
 
     Nest.mount(el.surface, {
       rows: stage.grid.rows,
@@ -153,9 +159,32 @@
     } else {
       si++;
     }
-    if (li >= G.lessons.length) { Save.at(G.lessons.length, 0); finale(); return; }
+    if (li >= G.lessons.length) { Save.at(G.lessons.length, 0); startQuest(); return; }
     loadStage();
   }
+
+  /* ---- the quest he takes alone ------------------------------------------- */
+
+  function startQuest(fromBeat) {
+    onQuest = true;
+    stage = null;
+    el.revealWrap.hidden = true;
+    el.bubble.hidden = false;
+    el.lessonName.textContent = QUEST3.name;
+    el.lessonStd.textContent = QUEST3.standards.join(" · ");
+    el.task.textContent = "";
+    el.clearBtn.hidden = true;
+    el.nextBtn.hidden = true;
+
+    Quest.start(QUEST3, {
+      ember: el.emberHolder, says: el.emberSays, recalls: el.recalls,
+      surface: el.surface, readout: el.readout, go: el.nextBtn
+    }, () => { Save.questDone(); finale(); }, fromBeat);
+  }
+
+  el.nextBtn.addEventListener("click", () => {
+    if (onQuest) Quest.next();
+  });
 
   /* ---- the end of the grade ---------------------------------------------- */
 
@@ -168,22 +197,35 @@
     el.clearBtn.hidden = true;
     el.nextBtn.hidden = true;
     el.bubble.hidden = true;
+    el.recalls.innerHTML = "";
+    onQuest = false;
 
     Ember.drawSleeping(el.emberHolder);
 
     const taught = G.lessons.map(l => "<span>" + l.name + " — " + l.standards.join(", ") + "</span>").join("");
 
+    const E = QUEST3.end;
     el.surface.innerHTML =
       '<div class="finale">' +
-        "<h2>" + G.finale.title + "</h2>" +
-        "<p>" + G.finale.line + "</p>" +
+        "<h2>" + E.title + "</h2>" +
+        "<p>" + Lessons.fill(E.line) + "</p>" +
         '<div class="taught">' + taught + "</div>" +
-        "<p>" + G.finale.next + "</p>" +
+        "<p>" + E.next + "</p>" +
+        '<button class="ghost" id="questAgainBtn">Watch him do it again</button>' +
         '<button class="ghost" id="againBtn">Teach him all of it again</button>' +
       "</div>";
 
+    $("questAgainBtn").addEventListener("click", () => {
+      el.bubble.hidden = false;
+      el.surface.innerHTML = "";
+      startQuest();
+    });
+
     $("againBtn").addEventListener("click", () => {
+      const name = Save.get().name;
       Save.reset();
+      Save.setName(name);           /* he does not forget who she is */
+      applyName();
       li = 0; si = 0;
       el.bubble.hidden = false;
       el.surface.innerHTML = "";
@@ -193,7 +235,14 @@
 
   /* Last, deliberately: entering a stage paints the readout, and the readout
      cannot paint until the nest's change listener above exists. */
-  const jump = deepLink();
-  if (jump) enter({ l: jump.l, st: jump.st });
+  const qm = /^#quest(?:\.(\d+))?$/.exec(location.hash || "");
+  if (qm) {
+    Ambience.wake(); paintSound();
+    el.door.hidden = true; el.bar.hidden = false; el.scene.hidden = false;
+    startQuest(Number(qm[1] || 0));
+  } else {
+    const jump = deepLink();
+    if (jump) enter({ l: jump.l, st: jump.st });
+  }
 
 })();

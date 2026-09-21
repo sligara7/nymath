@@ -41,6 +41,18 @@
   <p class="door-foot" id="doorFoot"></p>
 </main>
 
+<!-- He asks who she is. Her name never leaves her phone and is never in this
+     repository — which is the whole reason it is typed rather than written in. -->
+<main class="door" id="naming" hidden>
+  <div class="door-art" id="namingArt"></div>
+  <p class="door-line" id="namingSays">Oh. Hello.<br>Who are <em>you</em>?</p>
+  <input class="namefield" id="nameInput" type="text" inputmode="text"
+         autocomplete="off" autocorrect="off" spellcheck="false"
+         maxlength="14" placeholder="type your name" aria-label="Your name">
+  <button class="big" id="nameBtn">Tell him</button>
+  <p class="door-foot">It stays on this phone.</p>
+</main>
+
 <main class="scene" id="scene" hidden>
 
   <!-- Ember and what he is saying. He gets things wrong up here so that
@@ -52,6 +64,9 @@
 
   <!-- What she is being asked to show him. One line, never two. -->
   <p class="task" id="task"></p>
+
+  <!-- On the quest only: the lesson Ember is reaching for, named. -->
+  <p class="recalls" id="recalls"></p>
 
   <!-- The nest: the picture she builds. -->
   <section class="surface" id="surface"></section>
@@ -75,11 +90,13 @@
 </div>
 
 <script src="content/grade3.js"></script>
+<script src="content/quest3.js"></script>
 <script src="js/save.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/ember.js"></script>
 <script src="js/nest.js"></script>
 <script src="js/lessons.js"></script>
+<script src="js/quest.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -95,9 +95,21 @@ const Lessons = (function () {
 
   /* ---- filling the reveal ----------------------------------------------- */
 
+  /* Her name, once she has given it. Ember's lines go into innerHTML, so it
+     is escaped here as well as sanitised on the way into storage — belt and
+     braces on the one string in this game that a person typed. */
+  let playerName = "";
+  const esc = t => String(t).replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
   function fill(text, rep) {
-    const s = rep.shape;
+    const s = (rep && rep.shape) || { rows: 0, cols: 0, total: 0 };
     return String(text || "")
+      /* The comma is eaten along with the placeholder when there is no name,
+         so "You're not coming, {name}?" degrades to "You're not coming?"
+         rather than to "You're not coming, you?". */
+      .replace(/(,\s*)?\{name\}/g, (_, comma) =>
+        playerName ? (comma || "") + esc(playerName) : "")
       .replace(/\{rows\}/g, s.rows)
       .replace(/\{cols\}/g, s.cols)
       .replace(/\{total\}/g, s.total)
@@ -105,5 +117,5 @@ const Lessons = (function () {
       .replace(/\{perimeter\}/g, 2 * (s.rows + s.cols));
   }
 
-  return { RULES, passes, describe, fill, chips };
+  return { RULES, passes, describe, fill, chips, setName(n) { playerName = n || ""; } };
 })();

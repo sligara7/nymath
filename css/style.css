@@ -287,3 +287,39 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* --- she tells him her name ------------------------------------------------ */
+
+.namefield {
+  width: min(70vw, 260px);
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bg-lift);
+  color: var(--ink);
+  font: inherit;
+  font-size: clamp(17px, 5vw, 20px);   /* 17px or more, or iOS zooms the page */
+  text-align: center;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.namefield::placeholder { color: var(--ink-soft); opacity: 0.5; font-size: 15px; }
+.namefield:focus { outline: 2px solid var(--ember); outline-offset: 2px; }
+
+/* --- the quest ------------------------------------------------------------- */
+
+/* The line that makes the quest a proof rather than a scene: the lesson he is
+   reaching for, named, in her colour rather than his. */
+.recalls { margin: -4px 0 0; min-height: 1.3em; text-align: center; }
+.recall {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(127, 209, 160, 0.12);
+  color: var(--good);
+  font-size: 13px;
+  animation: pop 0.24s ease-out;
+}
+.recall b { color: var(--good); font-weight: 700; }
+
+.finale .ghost { display: block; margin: 6px auto 0; }

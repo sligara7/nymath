@@ -11,7 +11,7 @@
 const Save = (function () {
   const KEY = "nymath.ember.v1";
 
-  const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false });
+  const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false, name: "", questDone: false });
 
   function read() {
     try {
@@ -22,7 +22,9 @@ const Save = (function () {
         lesson: Number.isInteger(s.lesson) ? s.lesson : 0,
         stage: Number.isInteger(s.stage) ? s.stage : 0,
         learned: Array.isArray(s.learned) ? s.learned : [],
-        muted: !!s.muted
+        muted: !!s.muted,
+        name: typeof s.name === "string" ? s.name : "",
+        questDone: !!s.questDone
       };
     } catch (e) {
       return blank();
@@ -41,6 +43,16 @@ const Save = (function () {
     taught(id) { if (!state.learned.includes(id)) state.learned.push(id); flush(); },
     hasTaught: (id) => state.learned.includes(id),
     setMuted(v) { state.muted = !!v; flush(); },
+
+    /* Letters, spaces, hyphens and apostrophes only, and short. Sanitised on
+       the way IN so that nothing downstream has to remember to — it is put
+       straight into Ember's speech, which is markup. */
+    setName(v) {
+      state.name = String(v || "").replace(/[^\p{L}\p{M}' -]/gu, "").trim().slice(0, 14);
+      flush();
+      return state.name;
+    },
+    questDone() { state.questDone = true; flush(); },
     /* Offered on the door once there is something to come back to. */
     started: () => state.lesson > 0 || state.stage > 0 || state.learned.length > 0,
     reset() { state = blank(); flush(); }

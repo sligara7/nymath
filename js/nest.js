@@ -22,6 +22,9 @@ const Nest = (function () {
   let lockedStones = new Set();
   let rim = new Set();        /* twig slot ids */
   let cellEls = new Map(), twigEls = new Map();
+  /* Where the rim runs. Usually the whole lattice, but during the quest Ember
+     walls whatever he actually built, which may sit anywhere on it. */
+  let rimRect = null;
   let listener = null;
   let doneRows = new Set();   /* rows already celebrated, so it fires once */
 
@@ -29,7 +32,7 @@ const Nest = (function () {
 
   function cellSize() {
     const wAvail = host.clientWidth || 320;
-    const extra = cfg.mode === "rim" ? 1.4 : 0;   /* room for the rim slots */
+    const extra = (cfg.mode === "rim" || cfg.willRim) ? 1.4 : 0;
     const byW = (wAvail / (cfg.cols + extra)) / (1 + GAP_RATIO);
     const hAvail = Math.max(180, window.innerHeight * 0.40);
     const byH = (hAvail / (cfg.rows + extra)) / (1 + GAP_RATIO);
@@ -41,7 +44,9 @@ const Nest = (function () {
     const s = cellSize();
     const gap = Math.round(s * GAP_RATIO);
     const step = s + gap;
-    const pad = cfg.mode === "rim" ? Math.round(s * 0.7) : 0;
+    /* Room for the rim is reserved from the start even when the rim comes
+       later, so the shelf does not jump sideways the moment he walls it. */
+    const pad = (cfg.mode === "rim" || cfg.willRim) ? Math.round(s * 0.7) : 0;
 
     box.style.width = (cfg.cols * step - gap + pad * 2) + "px";
     box.style.height = (cfg.rows * step - gap + pad * 2) + "px";
@@ -55,16 +60,23 @@ const Nest = (function () {
     });
 
     const tw = Math.round(s * 0.62), th = Math.round(s * 0.26);
-    twigEls.forEach((el, id) => {
+    const R = rimRect;
+    if (R) twigEls.forEach((el, id) => {
       const side = id[0], i = Number(id.slice(1));
       const horiz = side === "t" || side === "b";
       el.style.width = (horiz ? tw : th) + "px";
       el.style.height = (horiz ? th : tw) + "px";
-      const cx = pad + i * step + s / 2, cy = pad + i * step + s / 2;
-      if (side === "t") { el.style.left = (cx - tw / 2) + "px"; el.style.top = Math.round(pad * 0.18) + "px"; }
-      if (side === "b") { el.style.left = (cx - tw / 2) + "px"; el.style.top = (pad + cfg.rows * step - gap + Math.round(pad * 0.18)) + "px"; }
-      if (side === "l") { el.style.top = (cy - tw / 2) + "px"; el.style.left = Math.round(pad * 0.18) + "px"; }
-      if (side === "r") { el.style.top = (cy - tw / 2) + "px"; el.style.left = (pad + cfg.cols * step - gap + Math.round(pad * 0.18)) + "px"; }
+      const cx = pad + (R.c0 + i) * step + s / 2;
+      const cy = pad + (R.r0 + i) * step + s / 2;
+      const inset = Math.round(pad * 0.18);
+      const top0 = pad + R.r0 * step - Math.round(pad * 0.62);
+      const bot0 = pad + (R.r0 + R.rows) * step - gap + inset;
+      const left0 = pad + R.c0 * step - Math.round(pad * 0.62);
+      const right0 = pad + (R.c0 + R.cols) * step - gap + inset;
+      if (side === "t") { el.style.left = (cx - tw / 2) + "px"; el.style.top = top0 + "px"; }
+      if (side === "b") { el.style.left = (cx - tw / 2) + "px"; el.style.top = bot0 + "px"; }
+      if (side === "l") { el.style.top = (cy - tw / 2) + "px"; el.style.left = left0 + "px"; }
+      if (side === "r") { el.style.top = (cy - tw / 2) + "px"; el.style.left = right0 + "px"; }
     });
   }
 
@@ -109,6 +121,31 @@ const Nest = (function () {
     announce();
   }
 
+  /* Build the twig slots round a rectangle. Interactive in the rim lesson;
+     inert during the quest, where Ember lays them himself. */
+  function makeRim(rect, interactive) {
+    rimRect = rect;
+    twigEls.forEach(el => el.remove ? el.remove() : 0);
+    twigEls = new Map();
+    const ids = [];
+    for (let c = 0; c < rect.cols; c++) { ids.push("t" + c); ids.push("b" + c); }
+    for (let r = 0; r < rect.rows; r++) { ids.push("l" + r); ids.push("r" + r); }
+    ids.forEach(id => {
+      const d = document.createElement("div");
+      d.className = "twig";
+      if (interactive) d.addEventListener("pointerdown", ev => { ev.preventDefault(); tapTwig(id); });
+      box.appendChild(d);
+      twigEls.set(id, d);
+    });
+    layout();
+  }
+
+  /* A default written as `ms or 55` turns a deliberate zero into 55, which is
+     how the quest's instant replay came out animated anyway. Zero is a real
+     answer here, so the default is chosen on null rather than on falsiness. */
+  const pace = (ms, dflt) => (ms == null ? dflt : ms);
+  const sleep = ms => new Promise(r => (ms > 0 ? setTimeout(r, ms) : r()));
+
   const api = {
 
     mount(el, config) {
@@ -149,23 +186,16 @@ const Nest = (function () {
           const k = key(r, c);
           const d = document.createElement("div");
           d.className = "cell";
-          if (cfg.mode !== "rim") d.addEventListener("pointerdown", ev => { ev.preventDefault(); tapCell(k); });
+          if (cfg.mode !== "rim" && !cfg.passive) d.addEventListener("pointerdown", ev => { ev.preventDefault(); tapCell(k); });
           box.appendChild(d);
           cellEls.set(k, d);
         }
       }
 
+      rimRect = null;
       if (cfg.mode === "rim") {
-        const slots = [];
-        for (let c = 0; c < cfg.cols; c++) { slots.push("t" + c); slots.push("b" + c); }
-        for (let r = 0; r < cfg.rows; r++) { slots.push("l" + r); slots.push("r" + r); }
-        slots.forEach(id => {
-          const d = document.createElement("div");
-          d.className = "twig";
-          d.addEventListener("pointerdown", ev => { ev.preventDefault(); tapTwig(id); });
-          box.appendChild(d);
-          twigEls.set(id, d);
-        });
+        const f = cfg.fill || { rows: cfg.rows, cols: cfg.cols };
+        makeRim({ r0: 0, c0: 0, rows: f.rows, cols: f.cols }, !cfg.passive);
       }
 
       host.appendChild(box);
@@ -205,7 +235,7 @@ const Nest = (function () {
         total: stones.size,
         rowCounts: api.rowCounts(),
         rim: rim.size,
-        rimNeeded: cfg && cfg.mode === "rim" ? 2 * (cfg.rows + cfg.cols) : 0,
+        rimNeeded: rimRect ? 2 * (rimRect.rows + rimRect.cols) : 0,
         mode: cfg ? cfg.mode : "floor"
       };
     },
@@ -216,6 +246,48 @@ const Nest = (function () {
       if (cfg.fill) for (let r = 0; r < cfg.fill.rows; r++) for (let c = 0; c < cfg.fill.cols; c++) stones.add(key(r, c));
       hisStones = new Set((cfg.his || []).map(p => key(p[0], p[1])));
       hisStones.forEach(k => stones.add(k));
+      announce();
+    },
+
+    /* ---- what Ember does when he goes alone -----------------------------
+       She is watching, not tapping, so these lay stones one at a time on a
+       timer. Each returns a promise, which is what lets a quest beat say
+       "build this, then speak". */
+
+    async lay(rows, cols, ms) {
+      const want = [];
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) want.push(key(r, c));
+      for (const k of want) {
+        if (!stones.has(k)) { stones.add(k); Ambience.stone(); announce(); await sleep(pace(ms, 55)); }
+      }
+      announce();
+    },
+
+    /* Turning the shelf: every stone at (r,c) moves to (c,r). The point she
+       taught him is that nothing is lost doing it, so nothing is. */
+    async turnIt(ms) {
+      const before = [...stones];
+      stones = new Set();
+      announce();
+      await sleep(pace(ms, 180));
+      for (const k of before) {
+        const [r, c] = k.split(",").map(Number);
+        stones.add(key(c, r));
+        Ambience.stone();
+        announce();
+        await sleep(pace(ms, 40));
+      }
+      announce();
+    },
+
+    async layRim(ms) {
+      const sh = api.shape();
+      if (!sh.ok) return;
+      makeRim({ r0: sh.r0, c0: sh.c0, rows: sh.rows, cols: sh.cols }, false);
+      const ids = [...twigEls.keys()];
+      for (const id of ids) {
+        rim.add(id); Ambience.stone(); announce(); await sleep(pace(ms, 45));
+      }
       announce();
     },
 

@@ -2,8 +2,10 @@
 
 A math game for one fourth grader, built around a drake you have to teach.
 
-**Not playable yet.** This repo currently holds the design and the standards it
-has to meet. The game comes next.
+**[Play it →](https://sligara7.github.io/nymath/)**
+
+Grade 3 is playable: five lessons, and a quest Ember takes on his own at the
+end of it. Grades 4 and 5 are designed but not written.
 
 ## What it is
 
@@ -23,6 +25,17 @@ He grows across three grades, and his growth is the mathematics:
 Grade 3 is a gate — he can't get his wings until it's cleared. Grade 5 is a
 door, open to her if she keeps going.
 
+## He goes alone
+
+When she has taught him all five, Ember goes off to store food for winter
+without her, and she watches. He lays it out in rows, breaks six sevens into
+a thirty he knows and a twelve he can count, turns the shelf when it does not
+fit, and walls it — naming her lesson each time he reaches for one. Halfway
+through he nearly confuses the wall with the floor, and catches himself.
+
+That is the only assessment in this game, and it is the honest one: what he
+can do out there is exactly what she managed to teach him.
+
 ## Why it's built this way
 
 Everything here answers to one choice: **she should understand it**, not score
@@ -33,6 +46,15 @@ the picture — laying the array, cutting the fraction bar, setting the tail fin
 
 Teaching Ember is how that gets enforced, and how we find out whether it
 worked. You understand a thing if you can teach it.
+
+## Her name
+
+On first run Ember asks who she is and she types it in. From then on he uses
+her name and the game titles itself after her.
+
+Her name is kept in her phone's own storage and nowhere else. **It is not in
+this repository**, which is public — that is why it is typed rather than
+written in.
 
 ## The standards
 
@@ -60,3 +82,15 @@ how to work on this repo without silently undoing a decision.
 
 Plain HTML, CSS and JavaScript. No server, no build step, no account, no login.
 It runs on a phone, held in one hand, and it is served from GitHub Pages.
+
+The ambience — wind, a cave drone, far-off bells — is synthesized in the
+browser rather than downloaded, so no audio files ship with the page. There is
+a mute button and it is remembered.
+
+Tests: `node test/lessons.test.js`. No dependencies. They check that every
+lesson can actually be finished on the lattice it is given, and that Ember's
+own attempt fails his own lesson.
+
+Side doors, for checking one part without replaying the rest: `#l3` opens the
+third lesson, `#l4.2` its second stage, `#quest` the quest, `#quest.11` one
+beat of it.
