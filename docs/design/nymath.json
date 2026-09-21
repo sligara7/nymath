@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:dcf9d39e3b821ee56288e4897e20ffbe3b6fe952dbbb2bda09b43b892cf11453",
+  "content_hash": "sha256:cca3a2dff1b355d192982eedcb45e258efb1b01ddeeefdce64704775cda9c7c3",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -43,6 +43,22 @@
     },
     {
       "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:she-names-herself",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:memory"
+    },
+    {
+      "edge_type": "ALLOCATED_TO",
+      "from_id": "cap:the-quest",
+      "properties": {
+        "weight_basis": "estimated"
+      },
+      "to_id": "cmp:shell"
+    },
+    {
+      "edge_type": "ALLOCATED_TO",
       "from_id": "cap:visual-math-models",
       "properties": {
         "weight_basis": "estimated"
@@ -72,6 +88,24 @@
     {
       "edge_type": "AT_EPOCH",
       "from_id": "snap:epoch:preserved-on-write:cap:grade3-warmup",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cap:runs-static-in-browser",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cap:she-names-herself",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cap:the-quest",
       "properties": {},
       "to_id": "epoch:preserved-on-write"
     },
@@ -248,6 +282,17 @@
     },
     {
       "edge_type": "AUTHORED_BY",
+      "from_id": "req:ember-goes-alone",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
       "from_id": "req:grade5-if-she-keeps-going",
       "properties": {
         "approved_at": "2026-09-21",
@@ -260,6 +305,17 @@
     {
       "edge_type": "AUTHORED_BY",
       "from_id": "req:phone-portrait",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "req:she-names-herself",
       "properties": {
         "approved_at": "2026-09-21",
         "roles": [
@@ -445,6 +501,22 @@
       "to_id": "dec:ember-the-drake"
     },
     {
+      "edge_type": "EVOLVES_INTO",
+      "from_id": "dec:idea-quests-and-riddles",
+      "properties": {
+        "evidence": "Shape (e) was promoted to intent on 2026-09-21. The other four shapes were not chosen and stay recorded here as roads considered."
+      },
+      "to_id": "req:ember-goes-alone"
+    },
+    {
+      "edge_type": "EVOLVES_INTO",
+      "from_id": "dec:idea-ronie-and-ember",
+      "properties": {
+        "evidence": "The type-it-in-herself option was promoted to intent on 2026-09-21, which answers the character question and the privacy objection at once. Hard-coding the name was not chosen."
+      },
+      "to_id": "req:she-names-herself"
+    },
+    {
       "edge_type": "GOVERNED_BY",
       "from_id": "cap:game-loop",
       "properties": {
@@ -501,6 +573,24 @@
       "from_id": "cap:grade3-warmup",
       "properties": {},
       "to_id": "snap:epoch:preserved-on-write:cap:grade3-warmup"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cap:runs-static-in-browser",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cap:runs-static-in-browser"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cap:she-names-herself",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cap:she-names-herself"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cap:the-quest",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cap:the-quest"
     },
     {
       "edge_type": "HAS_SNAPSHOT",
@@ -640,6 +730,24 @@
     },
     {
       "edge_type": "REALIZES",
+      "from_id": "art:quest-js",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cap:the-quest"
+    },
+    {
+      "edge_type": "REALIZES",
+      "from_id": "art:quest3-content",
+      "properties": {
+        "completeness": "complete",
+        "conformance": "unchecked"
+      },
+      "to_id": "cap:the-quest"
+    },
+    {
+      "edge_type": "REALIZES",
       "from_id": "art:save-js",
       "properties": {
         "completeness": "complete",
@@ -727,6 +835,18 @@
       "from_id": "cap:runs-static-in-browser",
       "properties": {},
       "to_id": "req:static-no-backend"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:she-names-herself",
+      "properties": {},
+      "to_id": "req:she-names-herself"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:the-quest",
+      "properties": {},
+      "to_id": "req:ember-goes-alone"
     },
     {
       "edge_type": "SATISFIES",
@@ -831,6 +951,22 @@
         "action": "created"
       },
       "to_id": "art:nest-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:quest-js",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:quest-js"
+    },
+    {
+      "edge_type": "YIELDED",
+      "from_id": "frag:art:quest3-content",
+      "properties": {
+        "action": "created"
+      },
+      "to_id": "art:quest3-content"
     },
     {
       "edge_type": "YIELDED",
@@ -966,6 +1102,32 @@
       }
     },
     {
+      "node_id": "art:quest-js",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "code",
+        "checksum": "sha256:4f3a996b36e615aa8c1afffd5f0896e5ec6f6329d80163dfefbe27b8e86175ed",
+        "checksum_basis": "measured",
+        "description": "Plays the quest beats: Ember's line, the lesson he is reaching for, and the nest building itself under his narration while she watches.",
+        "location": "js/quest.js",
+        "name": "js/quest.js",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:quest3-content",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "data",
+        "checksum": "sha256:8d6d49f595e2829a12be35af6b087c1415e8c9ba663d4c65c8a82b0c4d44c4ba",
+        "checksum_basis": "measured",
+        "description": "The Winter Store — 18 beats in which Ember stores 42 fish alone, reaching for all five of her lessons by name, with one wobble on the hardest idea in the grade.",
+        "location": "content/quest3.js",
+        "name": "content/quest3.js",
+        "status": "realized"
+      }
+    },
+    {
       "node_id": "art:save-js",
       "node_type": "Artifact",
       "properties": {
@@ -1008,7 +1170,7 @@
         "description": "The opening gate. Takes her back through 3rd grade math — multiplication and division within 100, fractions as numbers, area and perimeter, time and data, shapes — and Grade 4 does not open until she clears it. How long it is and what \"cleared\" means are still open, and dec:grade3-is-a-gate records the risk that a gate she cannot clear is a game she stops playing.",
         "name": "Grade 3 gate",
         "provenance": "authored",
-        "status": "planned"
+        "status": "realized"
       }
     },
     {
@@ -1068,7 +1230,27 @@
         "description": "The whole game loads and plays from plain HTML/CSS/JS with no server, no build and no login — she opens a link and it works.",
         "name": "Runs from static files in a browser",
         "provenance": "authored",
-        "status": "planned"
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "cap:she-names-herself",
+      "node_type": "Capability",
+      "properties": {
+        "description": "On first run Ember asks who she is and she types it. Stored on her phone only. From then on he uses it, and the game takes its title from it.",
+        "name": "She tells Ember her name",
+        "provenance": "authored",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "cap:the-quest",
+      "node_type": "Capability",
+      "properties": {
+        "description": "A problem at the end of the grade that Ember works through unaided while she watches — laying it out, counting it the fast way, turning it, walling it, breaking the hard number apart — naming the lesson he is reaching for each time. Her part is to have taught him already.",
+        "name": "The quest Ember takes alone",
+        "provenance": "authored",
+        "status": "realized"
       }
     },
     {
@@ -1379,6 +1561,26 @@
       }
     },
     {
+      "node_id": "frag:art:quest-js",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered js/quest.js"
+      }
+    },
+    {
+      "node_id": "frag:art:quest3-content",
+      "node_type": "Fragment",
+      "properties": {
+        "fragment_type": "implementation",
+        "provenance": "authored",
+        "status": "ingested",
+        "title": "Registered content/quest3.js"
+      }
+    },
+    {
       "node_id": "frag:art:save-js",
       "node_type": "Fragment",
       "properties": {
@@ -1463,6 +1665,20 @@
         "provenance": "authored",
         "statement": "The tutorial must cover the Grade 4 mathematics content in the New York State Next Generation Mathematics Learning Standards (the PDF in this folder): NY-4.OA (operations and algebraic thinking), NY-4.NBT (place value to 1,000,000 and multi-digit arithmetic), NY-4.NF (fraction equivalence, operations, decimal notation), NY-4.MD (measurement, data, angles) and NY-4.G (lines, angles, shape classification). SOURCE: stated by user (\"review the requirements from the pdf file in this folder\").",
         "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:ember-goes-alone",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "core",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "Ember goes alone, and what he can do is what she taught him",
+        "priority": "high",
+        "provenance": "authored",
+        "statement": "At the end of a grade, Ember faces a real problem WITHOUT her. She watches. He solves it using the things she taught him, naming each one as he reaches for it, and the quest succeeds exactly to the extent that her teaching took. This is the design's proof: until now nothing in it could tell whether she had understood anything, and a pupil performing unaided is the oldest answer there is. SOURCE: owner's word, 2026-09-21, choosing this over quests-as-dressing, riddles-at-gates and a world map.",
+        "status": "accepted"
       }
     },
     {
@@ -1564,6 +1780,20 @@
       }
     },
     {
+      "node_id": "req:she-names-herself",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "usability",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "She types her own name, and Ember uses it",
+        "priority": "high",
+        "provenance": "authored",
+        "statement": "On first run the player types her name, and from then on Ember addresses her by it and the game calls itself The Adventures of &lt;her name&gt; and Ember. Her name lives only in her phone's own storage — it is never committed to the repository, never sent anywhere, and the published source contains no child's name. SOURCE: owner's word, 2026-09-21, choosing the type-it-in option over hard-coding \"Ronie\" into a public repo. INFERRED, and flagged as Claude's reading rather than the owner's: that the TITLE follows the same rule as the character, so the page ships as \"Ember\" and becomes \"The Adventures of ... and Ember\" only once she has named herself. Say so if that is wrong.",
+        "status": "accepted"
+      }
+    },
+    {
       "node_id": "req:static-no-backend",
       "node_type": "Requirement",
       "properties": {
@@ -1604,6 +1834,36 @@
         "edges": "[{\"direction\":\"out\",\"edge_type\":\"GOVERNED_BY\",\"other_type\":\"Decision\",\"other_id\":\"dec:grade3-is-a-gate\",\"properties\":{\"note\":\"The warm-up's placement — before or alongside Grade 4 — was open when it was written. It is a gate that comes first.\"}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:grade3-review\",\"properties\":{}}]",
         "state": "{\"description\":\"Takes the player back through 3rd grade math — multiplication and division within 100, fractions as numbers, area and perimeter, time and data, shapes — before or alongside the Grade 4 material.\",\"name\":\"Grade 3 warm-up run\",\"provenance\":\"authored\",\"status\":\"planned\"}",
         "target_id": "cap:grade3-warmup",
+        "target_type": "Capability"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cap:runs-static-in-browser",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"out\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Component\",\"other_id\":\"cmp:shell\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:static-no-backend\",\"properties\":{}}]",
+        "state": "{\"description\":\"The whole game loads and plays from plain HTML/CSS/JS with no server, no build and no login — she opens a link and it works.\",\"name\":\"Runs from static files in a browser\",\"provenance\":\"authored\",\"status\":\"planned\"}",
+        "target_id": "cap:runs-static-in-browser",
+        "target_type": "Capability"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cap:she-names-herself",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"out\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Component\",\"other_id\":\"cmp:memory\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:she-names-herself\",\"properties\":{}}]",
+        "state": "{\"description\":\"On first run Ember asks who she is and she types it. Stored on her phone only. From then on he uses it, and the game takes its title from it.\",\"name\":\"She tells Ember her name\",\"provenance\":\"authored\",\"status\":\"planned\"}",
+        "target_id": "cap:she-names-herself",
+        "target_type": "Capability"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cap:the-quest",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:quest-js\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}},{\"direction\":\"in\",\"edge_type\":\"REALIZES\",\"other_type\":\"Artifact\",\"other_id\":\"art:quest3-content\",\"properties\":{\"completeness\":\"complete\",\"conformance\":\"unchecked\"}},{\"direction\":\"out\",\"edge_type\":\"ALLOCATED_TO\",\"other_type\":\"Component\",\"other_id\":\"cmp:shell\",\"properties\":{\"weight_basis\":\"estimated\"}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:ember-goes-alone\",\"properties\":{}}]",
+        "state": "{\"description\":\"A problem at the end of the grade that Ember works through unaided while she watches — laying it out, counting it the fast way, turning it, walling it, breaking the hard number apart — naming the lesson he is reaching for each time. Her part is to have taught him already.\",\"name\":\"The quest Ember takes alone\",\"provenance\":\"authored\",\"status\":\"planned\"}",
+        "target_id": "cap:the-quest",
         "target_type": "Capability"
       }
     },
@@ -1702,7 +1962,7 @@
       }
     }
   ],
-  "prev_content_hash": "sha256:4332b79516128bb15aa47e48ab29b1cb1842ef5b1f103e8d4919d0a86319d8e9",
+  "prev_content_hash": "sha256:dcf9d39e3b821ee56288e4897e20ffbe3b6fe952dbbb2bda09b43b892cf11453",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -2301,7 +2561,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "c4a0f233a07ee5d3d48a053dc6fe235a924321bd",
+    "commit": "6590893bfcdb9ca770ad89b36cd6dfab6de47894",
     "dirty": false
   }
 }
