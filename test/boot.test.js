@@ -53,12 +53,16 @@ const byId = new Map();
 const IDS = [...read("index.html").matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
 IDS.forEach(id => byId.set(id, makeEl(id)));
 
+/* The build number index.html declares, so the boot log can be checked. */
+const BUILD = (read("index.html").match(/<meta name="build" content="(\d+)">/) || [])[1] || "";
+
 const store = {};
 global.window = { addEventListener: () => {}, innerHeight: 740 };
 global.location = { hash: "" };
 global.document = {
   title: "",
   getElementById: id => byId.get(id) || null,
+  querySelector: sel => (sel === 'meta[name="build"]' ? { content: BUILD } : null),
   createElement: () => makeEl()
 };
 global.localStorage = {
@@ -69,8 +73,21 @@ global.localStorage = {
 
 /* ---- boot, in the order index.html loads them ---------------------------- */
 
-const ORDER = [...read("index.html").matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
-ok(ORDER.length >= 7, "index.html loads the scripts (" + ORDER.length + " found)");
+const SRCS = [...read("index.html").matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
+ok(SRCS.length >= 7, "index.html loads the scripts (" + SRCS.length + " found)");
+
+/* Every asset must carry a ?v= stamp. GitHub Pages sets its own cache headers
+   and we cannot change them, so the URL is the only thing that can tell a
+   browser the file moved — and a stale main.js is how this game shipped dead
+   on its first screen once already. */
+const ASSETS = [...read("index.html").matchAll(/(?:src|href)="((?:js|css|content)\/[^"]+)"/g)].map(m => m[1]);
+ok(ASSETS.length > 0 && ASSETS.every(a => /\?v=\d+/.test(a)),
+   "every local asset is cache-busted (" + ASSETS.filter(a => !/\?v=/.test(a)).join(", ") + ")");
+const VERSIONS = new Set(ASSETS.map(a => a.split("?v=")[1]));
+ok(VERSIONS.size === 1, "they all carry the SAME build number (" + [...VERSIONS].join(", ") + ")");
+
+/* Strip the stamp to read them off disk. */
+const ORDER = SRCS.map(f => f.split("?")[0]);
 
 let bootError = null;
 try {

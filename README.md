@@ -87,7 +87,15 @@ The ambience — wind, a cave drone, far-off bells — is synthesized in the
 browser rather than downloaded, so no audio files ship with the page. There is
 a mute button and it is remembered.
 
-Tests: `node test/lessons.test.js`. No dependencies. They check that every
+**Bump the build number in `index.html` whenever you change a file.** Every
+asset is loaded with a `?v=N` stamp, because GitHub Pages sets its own cache
+headers and the URL is the only thing that can tell a browser the file moved.
+A stale `main.js` once left this game dead on its first screen. The tests fail
+if an asset is missing its stamp, or if two of them disagree. The build number
+is logged to the console at boot, which is the fastest way to find out whether
+somebody is looking at an old copy.
+
+Tests: `node test/boot.test.js` and `node test/lessons.test.js`. No dependencies. They check that every
 lesson can actually be finished on the lattice it is given, and that Ember's
 own attempt fails his own lesson.
 

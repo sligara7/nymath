@@ -15,6 +15,13 @@
     revealWrap: $("revealWrap"), reveal: $("reveal")
   };
 
+  /* Which build is actually running, in her console. When somebody says the
+     page is stale, this is the one question worth asking. */
+  try {
+    const b = document.querySelector('meta[name="build"]');
+    console.log("Ember — build " + (b ? b.content : "?"));
+  } catch (e) {}
+
   const G = GRADE3;
   let li = 0, si = 0;         /* which lesson, which stage */
   let stage = null, lesson = null;
