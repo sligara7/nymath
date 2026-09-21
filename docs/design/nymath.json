@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:a58eb42a5a02b579e13665dbe5bf47f43deda8b36ab6a39719c47e20fc3d858a",
+  "content_hash": "sha256:b3151e4cd8ffd32427f2545c05de924909a91f6960580c72954a724f39c6240e",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -1065,6 +1065,36 @@
         "evidence": "Accepting this rewrites the core loop from feeding to training — the hoard stays but stops being the point, so the capability's description and everything downstream of it changes."
       },
       "to_id": "cap:game-loop"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:first-play-with-ronie",
+      "properties": {},
+      "to_id": "cap:game-loop"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:first-play-with-ronie",
+      "properties": {},
+      "to_id": "cap:grade3-warmup"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:first-play-with-ronie",
+      "properties": {},
+      "to_id": "cap:the-quest"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:first-play-with-ronie",
+      "properties": {},
+      "to_id": "req:feels-like-a-game"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:first-play-with-ronie",
+      "properties": {},
+      "to_id": "req:phone-portrait"
     },
     {
       "edge_type": "VERIFIES",
@@ -2203,6 +2233,18 @@
       }
     },
     {
+      "node_id": "ver:first-play-with-ronie",
+      "node_type": "Verification",
+      "properties": {
+        "description": "The only check in this design that can answer the questions the automated ones cannot. Watching her play, unprompted, on her own phone. WHAT IT IS FOR, in order of how much rides on it. (1) DOES THE GRADE 3 GATE HOLD HER? dec:grade3-is-a-gate carries a recorded risk that a wall of review makes her quit before reaching anything new, and Ember was accepted partly as the thing that mitigates it. Five lessons is a guess nobody has tested. Where she slows, sighs or puts it down is the answer. (2) DOES SHE READ EMBER'S LINES OR SKIP THEM? The whole teaching frame assumes she reads what he says; if she taps past his speech to get at the grid, the mistake belongs to him in theory and to nobody in practice. (3) DOES THE RAGGED NEST READ AS A PROBLEM? She should see 4, 2, 5, 1 and want to fix it without being told what equal rows are. If she needs telling, the first lesson teaches the wrong way round. (4) IS THE QUEST WATCHED OR ENDURED? She has no controls there but \"go on\". If she taps through without reading, the proof is not a proof. (5) THE SMALL MECHANICAL ONES: can she hit a cell with her thumb, does the ambience annoy or disappear, does she find the mute, does she come back the next day. THINGS NOT TO DO WHILE WATCHING: do not explain, do not hint, and do not rescue her from a stuck moment for at least a minute — a gate she cannot pass unaided is exactly the finding this is for, and helping her past it destroys the measurement.",
+        "kind": "verification",
+        "level": "acceptance",
+        "method": "observation",
+        "name": "First play session with the real player",
+        "status": "planned"
+      }
+    },
+    {
       "node_id": "ver:grade3-lessons-solvable",
       "node_type": "Verification",
       "properties": {
@@ -2217,7 +2259,7 @@
       }
     }
   ],
-  "prev_content_hash": "sha256:480eb470721066bbc0f915560aa93521fea57844c9ed8601508c332bcb2b1186",
+  "prev_content_hash": "sha256:a58eb42a5a02b579e13665dbe5bf47f43deda8b36ab6a39719c47e20fc3d858a",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -2816,7 +2858,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "9ff0f1bd154cb91719a7e3c04779eba715256172",
+    "commit": "e6eb814c6e9df703ba2d4134b4d529b708272a7b",
     "dirty": false
   }
 }
