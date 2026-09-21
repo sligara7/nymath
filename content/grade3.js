@@ -157,6 +157,9 @@ const GRADE3 = {
              two pieces are visible at the same time. That is the whole idea:
              she can SEE 30 and 12 sitting next to each other. */
           carry: true,
+          /* Her thirty from the stage before. Also laid down for anyone who
+             opens this stage directly, so the task always makes sense. */
+          fill: { rows: 6, cols: 5 },
           check: { rule: "exact", rows: 6, cols: 7 },
           reveal: {
             sentence: "30 + 12 = 42",

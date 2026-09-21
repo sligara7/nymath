@@ -119,7 +119,6 @@ const Nest = (function () {
          marks it, so she can see the two pieces of a broken-apart fact side
          by side (lesson 5). Anything else starts clean. */
       if (!cfg.carry) { stones = new Set(); keptStones = new Set(); }
-      else { keptStones = new Set(stones); }
 
       hisStones = new Set((cfg.his || []).map(p => key(p[0], p[1])));
       /* Ember's attempt IS on the board — she rearranges his stones rather
@@ -131,6 +130,11 @@ const Nest = (function () {
         for (let r = 0; r < cfg.fill.rows; r++)
           for (let c = 0; c < cfg.fill.cols; c++) { stones.add(key(r, c)); if (cfg.locked) lockedStones.add(key(r, c)); }
       }
+
+      /* Marked AFTER the fill, so a carry stage reads the same whether she
+         built the previous one or dropped straight in by deep link: either
+         way the stones already on the board are the part Ember knew. */
+      if (cfg.carry) keptStones = new Set(stones);
 
       rim = new Set();
       doneRows = new Set();
