@@ -1,0 +1,1420 @@
+{
+  "content_hash": "sha256:a6d4ef5b28fba0472ef9a3ccf03a609df6e7caf1965ef857a34628c7a81bcfe2",
+  "edges": [
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cap:game-loop",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cap:game-loop:r2",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:cap:grade3-warmup",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "cap:remembers-her-progress",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:claude-code"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:built-for-understanding",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:ember-the-drake",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:grade3-is-a-gate",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:idea-pet-powers-on-grade-up",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:pet-you-grow",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:she-teaches-ember",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "req:ambient-audio",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "req:content-is-grade-shaped-data",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:claude-code"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "req:grade5-if-she-keeps-going",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "req:phone-portrait",
+      "properties": {
+        "approved_at": "2026-09-21",
+        "roles": [
+          "approver"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "req:static-no-backend",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:claude-code"
+    },
+    {
+      "edge_type": "COMPLIES_WITH",
+      "from_id": "proj:nymath",
+      "properties": {
+        "evidence": "Not yet demonstrated. There is no automated checker for \"does this game cover NY-4.NF.3c\" — coverage will have to be a written trace from each piece of content to its standard code, reviewed by the user.",
+        "verified": false
+      },
+      "to_id": "envrule:nys-next-gen-math-standards"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:ember-the-drake",
+      "properties": {
+        "evidence": "Ember is the concrete answer to the question dec:pet-you-grow explicitly left open — what the creature IS and what the earned currency is. It has no meaning unless the game is a pet you grow.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:pet-you-grow"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-pet-powers-on-grade-up",
+      "properties": {
+        "evidence": "This idea is about what happens to the pet at a grade boundary, so it is only worth anything if the game is a pet you grow. It is also the first concrete thing said about what the pet is, which that decision explicitly left open.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:pet-you-grow"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:she-teaches-ember",
+      "properties": {
+        "evidence": "Training only means anything if there is a creature to train, and the specific mechanic — the tail fin with set angle positions — is a drake's, taken from the film the owner named.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:ember-the-drake"
+    },
+    {
+      "edge_type": "DOCUMENTS",
+      "from_id": "art:agents-md",
+      "properties": {
+        "doc_kind": "agent_instructions"
+      },
+      "to_id": "proj:nymath"
+    },
+    {
+      "edge_type": "DOCUMENTS",
+      "from_id": "art:nys-standards-pdf",
+      "properties": {
+        "doc_kind": "design_doc"
+      },
+      "to_id": "req:cover-nys-grade4-standards"
+    },
+    {
+      "edge_type": "EVOLVES_INTO",
+      "from_id": "dec:idea-pet-powers-on-grade-up",
+      "properties": {
+        "evidence": "The \"maybe a new pet, maybe powers like flying\" idea is this decision in its earlier, unsettled form — Ember is what that thought grew into once a creature was chosen and the powers option won."
+      },
+      "to_id": "dec:ember-the-drake"
+    },
+    {
+      "edge_type": "GOVERNED_BY",
+      "from_id": "cap:game-loop",
+      "properties": {
+        "note": "This capability was the open \"what kind of game\" placeholder, then \"the pet she grows\" with the creature unnamed. It is now Ember specifically, and the earned currency is the hoard."
+      },
+      "to_id": "dec:ember-the-drake"
+    },
+    {
+      "edge_type": "GOVERNED_BY",
+      "from_id": "cap:game-loop",
+      "properties": {
+        "note": "This capability was a placeholder for \"what kind of game\". The owner answered on 2026-09-21: a pet/base she grows. Its description still says the question is open — it needs rewriting to match."
+      },
+      "to_id": "dec:pet-you-grow"
+    },
+    {
+      "edge_type": "GOVERNED_BY",
+      "from_id": "cap:grade3-warmup",
+      "properties": {
+        "note": "The warm-up's placement — before or alongside Grade 4 — was open when it was written. It is a gate that comes first."
+      },
+      "to_id": "dec:grade3-is-a-gate"
+    },
+    {
+      "edge_type": "GOVERNED_BY",
+      "from_id": "cap:grade5-ascent",
+      "properties": {
+        "note": "Reaching Grade 5 is the moment Ember leaves the ground. Volume is the cave chamber, the coordinate plane is the map it flies, decimals are gem weights."
+      },
+      "to_id": "dec:ember-the-drake"
+    },
+    {
+      "edge_type": "GOVERNED_BY",
+      "from_id": "req:content-is-grade-shaped-data",
+      "properties": {
+        "note": "This requirement exists only because of the maintainability target that decision carries — which was Claude's inference from the owner's understanding-first choice, not the owner's own word. If the owner overturns that inference, this requirement loses its reason to exist."
+      },
+      "to_id": "dec:built-for-understanding"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cap:game-loop",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cap:game-loop"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cap:game-loop",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cap:game-loop:r2"
+    },
+    {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "cap:grade3-warmup",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:cap:grade3-warmup"
+    },
+    {
+      "edge_type": "MITIGATES",
+      "from_id": "dec:ember-the-drake",
+      "properties": {
+        "evidence": "That decision records the risk that a wall of Grade 3 review makes her quit before reaching anything new. Ember answers it: the Grade 3 stretch is not review-before-the-game, it is hatching and raising a creature that cannot fly yet, so the gate has its own reward rather than being a toll."
+      },
+      "to_id": "dec:grade3-is-a-gate"
+    },
+    {
+      "edge_type": "MITIGATES",
+      "from_id": "dec:she-teaches-ember",
+      "properties": {
+        "evidence": "That decision demands reasoning over speed and lucky guesses but named no mechanic that could enforce it. Teaching enforces it structurally: a construction she has to build cannot be arrived at by tapping one of four options."
+      },
+      "to_id": "dec:built-for-understanding"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:game-loop",
+      "properties": {},
+      "to_id": "req:feels-like-a-game"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:game-loop",
+      "properties": {
+        "coverage": "partial"
+      },
+      "to_id": "req:interactive"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:grade3-warmup",
+      "properties": {},
+      "to_id": "req:grade3-review"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:grade4-journey",
+      "properties": {},
+      "to_id": "req:cover-nys-grade4-standards"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:grade5-ascent",
+      "properties": {},
+      "to_id": "req:grade5-if-she-keeps-going"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:one-idea-per-screen",
+      "properties": {},
+      "to_id": "req:phone-portrait"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:publish-to-github-pages",
+      "properties": {},
+      "to_id": "req:github-pages-hosting"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:remembers-her-progress",
+      "properties": {},
+      "to_id": "req:audience-one-fourth-grader"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:runs-static-in-browser",
+      "properties": {},
+      "to_id": "req:static-no-backend"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:visual-math-models",
+      "properties": {
+        "coverage": "partial"
+      },
+      "to_id": "req:interactive"
+    },
+    {
+      "edge_type": "SATISFIES",
+      "from_id": "cap:visual-math-models",
+      "properties": {},
+      "to_id": "req:pictures-explain-the-math"
+    },
+    {
+      "edge_type": "TRIGGERS",
+      "from_id": "dec:idea-pet-powers-on-grade-up",
+      "properties": {
+        "evidence": "The idea was raised in the same breath as the Grade 5 requirement and exists to mark crossing into it — asking for Grade 5 progression forces the question of how the crossing is shown to her."
+      },
+      "to_id": "req:grade5-if-she-keeps-going"
+    },
+    {
+      "edge_type": "TRIGGERS",
+      "from_id": "dec:she-teaches-ember",
+      "properties": {
+        "evidence": "Accepting this rewrites the core loop from feeding to training — the hoard stays but stops being the point, so the capability's description and everything downstream of it changes."
+      },
+      "to_id": "cap:game-loop"
+    }
+  ],
+  "graph_id": "dad8f529a065ac9b",
+  "nodes": [
+    {
+      "node_id": "art:agents-md",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "document",
+        "checksum": "sha256:4329e5563666ab6708edfe68c0d0188818571b39ea408c70ef71663bc2f98f36",
+        "description": "The pointer file that tells any agent working this repo to consult reflow2 before changing anything. Written by hand because `reflow2 init .` on this machine points at a dev build path that does not exist.",
+        "location": "AGENTS.md",
+        "name": "AGENTS.md — reflow2 adapter",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "art:nys-standards-pdf",
+      "node_type": "Artifact",
+      "properties": {
+        "artifact_type": "spec",
+        "description": "The source of truth for what the game must teach. The user put it in this folder and said to review it. Grade 3 and Grade 4 sections are the ones that matter here.",
+        "location": "nys-next-generation-mathematics-p-12-standards.pdf",
+        "name": "NYS Next Generation Mathematics P-12 Standards (PDF)",
+        "status": "realized"
+      }
+    },
+    {
+      "node_id": "cap:game-loop",
+      "node_type": "Capability",
+      "properties": {
+        "description": "The drake she raises. Solving math earns the hoard — copper, silver, gold, crowns, trading ten-for-one — and the hoard feeds Ember, builds its nest, then its cave. The reason to come back tomorrow is Ember, not a score. Per dec:built-for-understanding the hoard must be earned by reasoning, never by speed or lucky guesses: what earning looks like concretely is still open, and it is the same question as how we would know she understood something.",
+        "name": "Raising Ember",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:grade3-warmup",
+      "node_type": "Capability",
+      "properties": {
+        "description": "The opening gate. Takes her back through 3rd grade math — multiplication and division within 100, fractions as numbers, area and perimeter, time and data, shapes — and Grade 4 does not open until she clears it. How long it is and what \"cleared\" means are still open, and dec:grade3-is-a-gate records the risk that a gate she cannot clear is a game she stops playing.",
+        "name": "Grade 3 gate",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:grade4-journey",
+      "node_type": "Capability",
+      "properties": {
+        "description": "Carries the player through the five Grade 4 NYS domains — OA, NBT, NF, MD, G — as playable content rather than chapters.",
+        "name": "Grade 4 play-through",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:grade5-ascent",
+      "node_type": "Capability",
+      "properties": {
+        "description": "When she finishes Grade 4, the game keeps going into Grade 5 instead of ending: decimals and the place value system, unlike denominators, multiplying and dividing fractions, volume, the coordinate plane. Open-ended — she reaches it by getting there, and nothing requires her to.",
+        "name": "Climb into Grade 5",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:one-idea-per-screen",
+      "node_type": "Capability",
+      "properties": {
+        "description": "Every screen holds one mathematical idea, sized for a phone held in one hand in portrait, driven by taps and single-finger drags. No hover, no typing, no pinch-zoom to read a diagram.",
+        "name": "One idea per screen, one thumb",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:publish-to-github-pages",
+      "node_type": "Capability",
+      "properties": {
+        "description": "Commit to a public repo under the user's GitHub account and serve it at a github.io URL she can bookmark, the same route musicjug took.",
+        "name": "Publish to GitHub Pages",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:remembers-her-progress",
+      "node_type": "Capability",
+      "properties": {
+        "description": "Her creature, what she has unlocked and what she has struggled with persist between sessions on her own phone, with no account and no server — localStorage. INFERRED, not stated: a pet you grow is meaningless if it resets, so dec:pet-you-grow implies persistence. NOT CONFIRMED: whether the owner wants any way to see how she is doing, and what happens if she clears her browser data or switches phones.",
+        "name": "Remembers where she is",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:runs-static-in-browser",
+      "node_type": "Capability",
+      "properties": {
+        "description": "The whole game loads and plays from plain HTML/CSS/JS with no server, no build and no login — she opens a link and it works.",
+        "name": "Runs from static files in a browser",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "cap:visual-math-models",
+      "node_type": "Capability",
+      "properties": {
+        "description": "Interactive visual models that carry the explanation: arrays and area models for multiplication, fraction bars and number lines for equivalence, a draggable protractor for angles, shapes you can sort by their properties.",
+        "name": "Pictures you can touch",
+        "provenance": "authored",
+        "status": "planned"
+      }
+    },
+    {
+      "node_id": "who:ajs7",
+      "node_type": "Contributor",
+      "properties": {
+        "description": "The owner of this design and the person building it — the player's dad. Also built musicjug/jugbeats, the GitHub Pages game this one is modeled on. Everything here is his word unless marked otherwise.",
+        "handle": "sligara7",
+        "kind": "person",
+        "name": "Anthony (ajs7)"
+      }
+    },
+    {
+      "node_id": "who:claude-code",
+      "node_type": "Contributor",
+      "properties": {
+        "description": "The agent that seeded this design at genesis on 2026-09-21 and does the building. Anything it inferred rather than heard is marked INFERRED in the node text.",
+        "kind": "automated_agent",
+        "name": "Claude Code (Opus 5)"
+      }
+    },
+    {
+      "node_id": "dec:built-for-understanding",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "Of the four things this could optimize for — she keeps coming back, she actually understands it, every NYS standard is covered, easy to extend — the owner chose SHE ACTUALLY UNDERSTANDS IT. The pictures do the teaching; no guess-and-check that rewards trial over reasoning; speed is never the win condition. Completeness against the PDF and raw pull are both subordinate to that.",
+        "kind": "choice",
+        "name": "This game is built so she understands it, not so she scores well",
+        "quality_target": "maintainability",
+        "rationale": "Owner's word, 2026-09-21, asked directly with the trade-off visible. The structural consequence — quality_target = maintainability — is CLAUDE'S INFERENCE, not the owner's: if the goal is that she understands, then the explanation, the picture and the problems for a given standard will be reworked repeatedly as we find out what she does not get, so the things that change together must live together. Overturn it if that reasoning is wrong.",
+        "status": "accepted"
+      }
+    },
+    {
+      "node_id": "dec:ember-the-drake",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "The creature is Ember, a drake, with one arc across three grades — the SAME creature gaining powers, never replaced. Grade 3: a ground-bound hatchling whose nest is built from stones laid in arrays (area, perimeter, multiplication within 100) and who eats in equal shares (unit fractions on a number line). Grade 4: wings come in — they must mirror to work, which makes line symmetry the creature itself, and its glide angle is a real measured angle. Its HOARD begins, and the hoard IS the place value system: 10 copper = 1 silver, 10 silver = 1 gold, 10 gold = 1 crown, up to 1,000,000. Splitting the hoard fairly is equivalent fractions. Grade 5: it flies — the cave chamber that holds the hoard is volume, the map it flies is the coordinate plane, and gem weights are decimals to hundredths. The earned currency is the hoard.",
+        "kind": "choice",
+        "name": "The pet is Ember, a drake, and its hoard is the place value system",
+        "rationale": "Owner chose it over a moth and a build-it-yourself rover, 2026-09-21. Three reasons it won. (1) The hoard is the best model available for NY-4.NBT.1 — \"a digit in one place represents ten times what it represents in the place to its right\" is not a metaphor for a pile of coins that trade ten-for-one, it is literally the same statement, and Grade 4 place value is the largest block of content in the owner's primary grade. (2) A drake is warm without being young; the moth's metamorphosis, though a better natural arc, is a first-grade science topic and risked reading as babyish to a fourth grader. (3) Ground -> wings -> flight maps onto the standards' own progression of flat area, then angle and symmetry, then volume and coordinates, so the creature's growth and the mathematics advance together rather than one decorating the other.",
+        "status": "accepted"
+      }
+    },
+    {
+      "node_id": "dec:grade3-is-a-gate",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "The Grade 3 review comes first and unlocks the Grade 4 content. It is not mixed in per-topic, not an optional side area, and not adaptively routed by a placement check.",
+        "kind": "choice",
+        "name": "Grade 3 is a gate she clears before Grade 4 opens",
+        "rationale": "Owner's word, 2026-09-21, chosen with the downside stated: it is a wall of review before she reaches anything new. OPEN RISK, not yet answered: a gate she cannot clear is a game she stops playing, which directly threatens dec:built-for-understanding. How long the Grade 3 gate is, and what \"cleared\" means, are undecided.",
+        "status": "accepted"
+      }
+    },
+    {
+      "node_id": "dec:idea-pet-powers-on-grade-up",
+      "node_type": "Decision",
+      "properties": {
+        "chose": "Candidate (b) won: the SAME creature gains powers, it is never replaced. Choosing Ember settled it — a drake that hatches, grows wings, then flies is one continuous creature, so the \"new pet at each grade\" option is off the table. The reason (a) lost is the one recorded when the idea was captured: replacing the pet discards the attachment that was the whole point of having one, at exactly the moment she earns the reward. Superseded rather than accepted because dec:ember-the-drake now carries the full answer.",
+        "decision": "IDEA, NOT SETTLED. Crossing a grade boundary is marked on the pet itself. Two candidates the owner floated: (a) she gets a NEW pet at each grade, or (b) her existing pet GAINS POWERS — his example was that it starts to fly. A third that follows from the same thought but nobody has said: some mix, where the pet evolves rather than being replaced.",
+        "kind": "exploratory",
+        "name": "Crossing a grade changes the pet — new creature, or powers like flight",
+        "rationale": "Owner's words, 2026-09-21, prefaced with \"Maybe\" — recorded as a live idea rather than as intent, and deliberately left proposed. It matters more than it looks: it is the first thing said about what the creature actually IS, which dec:pet-you-grow left open, and it implies the pet has a visible arc spanning three grades rather than a single fixed form. The two candidates are NOT equivalent — (b) keeps everything she has built and makes the grade jump feel like her own growth, while (a) starts her over and risks discarding the attachment that was the whole reason for a pet. That argues for (b), but it is the owner's call and he has not made it.",
+        "status": "superseded"
+      }
+    },
+    {
+      "node_id": "dec:pet-you-grow",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "The game shape is a creature or place she grows: solving math earns what she needs to feed, build and expand it. The math is the engine; the creature is the reason to come back tomorrow. Chosen over a quest/world map, arcade rounds, and a story with puzzles.",
+        "kind": "choice",
+        "name": "The game is a pet/base she grows with math",
+        "rationale": "Owner's word, 2026-09-21. It fits the understanding-first target better than arcade rounds (which reward speed) and sustains a whole school year better than a story. It also survives a phone screen, which a world map does not.",
+        "status": "accepted"
+      }
+    },
+    {
+      "node_id": "dec:she-teaches-ember",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "The core loop is not feeding a pet, it is TRAINING one. Ember attempts the mathematics himself and gets it wrong in believable, specific ways; she has to show him the right way by building the picture — laying the array, cutting the fraction bar, setting the tail angle. Progress is Ember learning, not a score going up. Feeding and the hoard remain, but they are no longer the point.",
+        "kind": "choice",
+        "name": "She TEACHES Ember — the How to Train Your Dragon frame",
+        "rationale": "Owner's idea, 2026-09-21, offered as \"maybe\" and naming How to Train Your Dragon — LEFT PROPOSED, awaiting his word. Claude's assessment, which is why it is recorded prominently rather than filed as a tweak: this answers the two questions the design had open and could not answer, and it answers them with one mechanic. (1) HOW SHE EARNS: teaching cannot be guessed. A four-option tap can be got right by luck; showing Ember where the line of symmetry falls cannot. That is exactly what dec:built-for-understanding demands and what a quiz could never enforce. (2) HOW WE KNOW SHE UNDERSTOOD: she understood it if she can teach it. The protege effect is real and well-evidenced — a learner preparing to teach learns more than one preparing to be tested — and this frame gets it for free rather than bolting on an assessment. (3) A THIRD BENEFIT NOBODY ASKED FOR: a wrong answer becomes \"Ember has not got it yet\" instead of \"you failed\". For a nine-year-old being walked back through a grade she has already done, that difference is not cosmetic. (4) IT IS FAITHFUL TO THE FILM, which matters because the film is the owner's reference: Hiccup earns Toothless by UNDERSTANDING him rather than dominating him, and the tail fin he builds has set positions Hiccup must learn to fly — a cheat sheet of angles. That is NY-4.MD.5-7 and NY-4.G.1 handed over intact.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "epoch:genesis",
+      "node_type": "DesignEpoch",
+      "properties": {
+        "epoch_type": "baseline",
+        "name": "Genesis",
+        "sequence": 0,
+        "status": "arrived"
+      }
+    },
+    {
+      "node_id": "epoch:preserved-on-write",
+      "node_type": "DesignEpoch",
+      "properties": {
+        "epoch_type": "revision",
+        "name": "Preserved on write",
+        "sequence": 0,
+        "status": "arrived"
+      }
+    },
+    {
+      "node_id": "envrule:nys-next-gen-math-standards",
+      "node_type": "EnvironmentRule",
+      "properties": {
+        "authority": "New York State Education Department (NYSED)",
+        "jurisdiction": "New York State",
+        "mandatory": true,
+        "name": "NYS Next Generation Mathematics Learning Standards (2017)",
+        "reference": "nys-next-generation-mathematics-p-12-standards.pdf (2017; rev. 2024) — Grade 3 pp.45-54, Grade 4 pp.55-66",
+        "rule_type": "standard",
+        "statement": "The math content of this game must match the New York State Next Generation Mathematics Learning Standards for Grades 3 and 4. Every piece of content traces to a standard code (NY-3.* / NY-4.*), and coverage is judged against the standard's own cluster structure — not against a topic list we invented. Grade 4 whole numbers are limited to 1,000,000; Grade 4 fractions are limited to denominators 2, 3, 4, 5, 6, 8, 10, 12 and 100."
+      }
+    },
+    {
+      "node_id": "proj:nymath",
+      "node_type": "Project",
+      "properties": {
+        "domain": "software",
+        "mode": "flexible",
+        "name": "NYMath — 4th grade math game",
+        "objective": "A browser math game on GitHub Pages that carries one 4th grader through the NYS Grade 4 standards, with a Grade 3 review first, and that she chooses to play.",
+        "status": "active"
+      }
+    },
+    {
+      "node_id": "req:ambient-audio",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "usability",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "Ambient sound or music underneath it",
+        "priority": "medium",
+        "provenance": "authored",
+        "statement": "The game must have ambient sound or background music — a world she is inside rather than a silent worksheet. SOURCE: stated by user, 2026-09-21, offered as \"one small detail\". OPEN, and Claude's note rather than the user's: on a phone over GitHub Pages, audio files are the heaviest thing the site would carry, and the owner already solved this once in musicjug by SYNTHESIZING sound in the browser with the Web Audio API instead of shipping files. That route costs no bytes and never loops audibly. Not yet decided which way. Also undecided: whether she can turn it off, which matters because a child may play in a room with other people.",
+        "status": "accepted"
+      }
+    },
+    {
+      "node_id": "req:audience-one-fourth-grader",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "usability",
+        "kind": "business",
+        "lineage": "original",
+        "name": "Built for one specific 4th grader",
+        "priority": "high",
+        "provenance": "authored",
+        "statement": "The player is the user's daughter, a 4th grader, playing on her own. Everything is tuned for her rather than for a class or a general audience. SOURCE: stated by user (\"my daughter is now a 4th grader\"). Her age (~9), reading level, what she already likes, and whether anyone else will use it are all UNKNOWN — open questions.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:content-is-grade-shaped-data",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "sustainment",
+        "kind": "nonfunctional",
+        "lineage": "derived",
+        "name": "Adding a grade must be adding data, not rewriting the game",
+        "priority": "high",
+        "provenance": "authored",
+        "statement": "The game now spans three grades (3, 4, 5) and the owner has said the top end is open. That makes \"add a grade\" a repeatable operation, so a grade's content — its standards, its explanations, its pictures, its problems — must live as data organized by standard code, separate from the game code that plays it. Adding Grade 5, or later Grade 6, should mean writing content, not restructuring the game. DERIVED AND INFERRED by Claude, not stated by the owner: it follows from the Grade 5 requirement plus the owner's understanding-first target, which implies explanations get reworked repeatedly as we learn what she does not get. It is also the concrete form of the maintainability structural target, which was itself Claude's inference — if that inference is wrong, this requirement goes with it.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:cover-nys-grade4-standards",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "core",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "Cover the NYS Grade 4 math standards",
+        "priority": "critical",
+        "provenance": "authored",
+        "statement": "The tutorial must cover the Grade 4 mathematics content in the New York State Next Generation Mathematics Learning Standards (the PDF in this folder): NY-4.OA (operations and algebraic thinking), NY-4.NBT (place value to 1,000,000 and multi-digit arithmetic), NY-4.NF (fraction equivalence, operations, decimal notation), NY-4.MD (measurement, data, angles) and NY-4.G (lines, angles, shape classification). SOURCE: stated by user (\"review the requirements from the pdf file in this folder\").",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:feels-like-a-game",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "usability",
+        "kind": "quality",
+        "lineage": "original",
+        "name": "It must feel like a game, not a tutorial",
+        "priority": "critical",
+        "provenance": "authored",
+        "statement": "The experience must read as a game rather than an outright tutorial — something she chooses to play, not a worksheet with a skin on it. SOURCE: stated by user (\"Should be more of a game than an outright tutorial\", \"be fun\").",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:github-pages-hosting",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "logistics",
+        "kind": "nonfunctional",
+        "lineage": "original",
+        "name": "Hosted as a simple github.io page",
+        "priority": "critical",
+        "provenance": "authored",
+        "statement": "The tutorial must be hosted as a simple GitHub Pages (github.io) site, the same way the musicjug/jugbeats project is: a public repo under the user's GitHub account, served at https://sligara7.github.io/&lt;repo&gt;/, which she opens with a link. SOURCE: stated by user (\"as we did with /home/ajs7/project/musicjug, I'd like to just make a simple github.io page to host it for her\"). The account and URL shape are INFERRED from musicjug's git remote (github.com/sligara7/jugbeats).",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:grade3-review",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "core",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "Include a Grade 3 review",
+        "priority": "high",
+        "provenance": "authored",
+        "statement": "The tutorial must include a review of 3rd grade math, because the learner likely needs to shore that up before Grade 4 work. The NYS Grade 3 content is NY-3.OA (multiplication/division within 100, patterns), NY-3.NBT (place value, multi-digit arithmetic), NY-3.NF (fractions as numbers), NY-3.MD (time, volume, mass, data, area, perimeter) and NY-3.G (shapes and attributes). SOURCE: stated by user (\"she probably needs to do a review of her 3rd grade math\"). The mapping to those specific NYS Grade 3 domains is INFERRED from the same standards PDF.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:grade5-if-she-keeps-going",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "core",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "Grade 5 is there if she can reach it",
+        "priority": "high",
+        "provenance": "authored",
+        "statement": "If she keeps going past Grade 4, the game must carry her into 5th grade content rather than ending. Grade 5 is OPTIONAL and unbounded-upward — reached by getting there, not required of her — which is the opposite end from the Grade 3 review, which is a gate she must clear. NYS Grade 5 content is NY-5.OA (numerical expressions, patterns and relationships), NY-5.NBT (the place value system including decimals, multi-digit division, decimal operations to hundredths), NY-5.NF (adding and subtracting unlike denominators, multiplying fractions, dividing unit fractions by whole numbers and vice versa), NY-5.MD (unit conversion, data, volume) and NY-5.G (the coordinate plane, classifying 2-D figures in a hierarchy). SOURCE: stated by user, 2026-09-21 (\"make it so that she can progress into 5th grade if she is able to keep going\"). The mapping to those NY-5 domains is INFERRED from the same standards PDF, pp.67-78.",
+        "status": "accepted"
+      }
+    },
+    {
+      "node_id": "req:interactive",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "usability",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "The math must be interactive, not read",
+        "priority": "critical",
+        "provenance": "authored",
+        "statement": "The learner must act on the math — manipulate, drag, build, answer — rather than read explanations of it. SOURCE: stated by user (\"The tutorial should be interactive\").",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:phone-portrait",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "usability",
+        "kind": "nonfunctional",
+        "lineage": "original",
+        "name": "She plays it on a phone",
+        "priority": "critical",
+        "provenance": "authored",
+        "statement": "The target device is a phone. Every screen, every picture and every interaction must work on a small portrait touch screen with a finger — no hover, no keyboard entry, no two-handed drags, no diagram that needs pinch-zoom to read. Content is designed one idea at a time because that is all that fits. SOURCE: stated by user, 2026-09-21, chosen over tablet, laptop and all-of-them.",
+        "status": "accepted"
+      }
+    },
+    {
+      "node_id": "req:pictures-explain-the-math",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "usability",
+        "kind": "functional",
+        "lineage": "original",
+        "name": "Lots of pictures that explain the math",
+        "priority": "critical",
+        "provenance": "authored",
+        "statement": "The math must be explained visually, with lots of pictures — arrays, area models, fraction bars, number lines, angle figures — carrying the explanation rather than decorating text. SOURCE: stated by user (\"have lots of pictures explaining the math\"). Which specific visual models are used is INFERRED from the NYS standards, which name equal-sized groups, arrays, area models, number lines and tape diagrams.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "req:static-no-backend",
+      "node_type": "Requirement",
+      "properties": {
+        "concern": "core",
+        "kind": "nonfunctional",
+        "lineage": "original",
+        "name": "Static files only — no backend, no build, no login",
+        "priority": "high",
+        "provenance": "authored",
+        "statement": "The whole thing must run from static files served by GitHub Pages: no server, no database, no account or login, no build step required to publish. Plain HTML/CSS/JS committed to the repo, as musicjug does. INFERRED from the user's \"simple github.io page\" and from how musicjug is built — NOT stated outright. Needs confirmation.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cap:game-loop",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"out\",\"edge_type\":\"GOVERNED_BY\",\"other_type\":\"Decision\",\"other_id\":\"dec:pet-you-grow\",\"properties\":{\"note\":\"This capability was a placeholder for \\\"what kind of game\\\". The owner answered on 2026-09-21: a pet/base she grows. Its description still says the question is open — it needs rewriting to match.\"}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:feels-like-a-game\",\"properties\":{}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:interactive\",\"properties\":{\"coverage\":\"partial\"}}]",
+        "state": "{\"description\":\"Whatever turns the math into play — the goal, the reward, the reason to come back. NOT YET DECIDED: the user said \\\"more of a game than an outright tutorial\\\" and did not say what kind of game. This capability is a placeholder for that decision.\",\"name\":\"The thing that makes it a game\",\"provenance\":\"authored\",\"status\":\"planned\"}",
+        "target_id": "cap:game-loop",
+        "target_type": "Capability"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cap:game-loop:r2",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"out\",\"edge_type\":\"GOVERNED_BY\",\"other_type\":\"Decision\",\"other_id\":\"dec:pet-you-grow\",\"properties\":{\"note\":\"This capability was a placeholder for \\\"what kind of game\\\". The owner answered on 2026-09-21: a pet/base she grows. Its description still says the question is open — it needs rewriting to match.\"}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:feels-like-a-game\",\"properties\":{}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:interactive\",\"properties\":{\"coverage\":\"partial\"}}]",
+        "state": "{\"description\":\"The pet/base she grows. Solving math earns what the creature needs — food, materials, room to grow — so the reason to come back tomorrow is the creature, not a score. Per dec:built-for-understanding, the earning must reward reasoning rather than speed or lucky guesses. What the creature IS, and what the earned currency is, are still open.\",\"name\":\"The pet she grows with math\",\"provenance\":\"authored\",\"status\":\"planned\"}",
+        "target_id": "cap:game-loop",
+        "target_type": "Capability"
+      }
+    },
+    {
+      "node_id": "snap:epoch:preserved-on-write:cap:grade3-warmup",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[{\"direction\":\"out\",\"edge_type\":\"GOVERNED_BY\",\"other_type\":\"Decision\",\"other_id\":\"dec:grade3-is-a-gate\",\"properties\":{\"note\":\"The warm-up's placement — before or alongside Grade 4 — was open when it was written. It is a gate that comes first.\"}},{\"direction\":\"out\",\"edge_type\":\"SATISFIES\",\"other_type\":\"Requirement\",\"other_id\":\"req:grade3-review\",\"properties\":{}}]",
+        "state": "{\"description\":\"Takes the player back through 3rd grade math — multiplication and division within 100, fractions as numbers, area and perimeter, time and data, shapes — before or alongside the Grade 4 material.\",\"name\":\"Grade 3 warm-up run\",\"provenance\":\"authored\",\"status\":\"planned\"}",
+        "target_id": "cap:grade3-warmup",
+        "target_type": "Capability"
+      }
+    }
+  ],
+  "prev_content_hash": "sha256:7c4002373171c0f85ccd3e65bec617e570c5836d2040a33f1b2b1425227116a2",
+  "stamp": {
+    "edge_type_names": [
+      "ABOUT_ENTITY",
+      "ALLOCATED_TO",
+      "ANNOTATES",
+      "ANSWERS",
+      "ANTICIPATES",
+      "ASKS_ABOUT",
+      "ASSESSED_ON",
+      "AT_EPOCH",
+      "AUTHORED_BY",
+      "BLOCKS",
+      "CALIBRATED_AGAINST",
+      "CAUSES",
+      "CHANGED",
+      "CLAIMS",
+      "COMPLEMENTS",
+      "COMPLIES_WITH",
+      "CONSTRAINS",
+      "CONSUMES",
+      "CONTAINS",
+      "CONTAINS_EPOCH",
+      "CONTRADICTS",
+      "DECOMPOSES",
+      "DEPENDS_ON",
+      "DEPLOYED_TO",
+      "DOCUMENTS",
+      "DUPLICATES",
+      "EVOLVES_INTO",
+      "GATED_ON",
+      "GOVERNED_BY",
+      "HAS_OBSERVATION",
+      "HAS_READINESS",
+      "HAS_SNAPSHOT",
+      "HAS_TEMPORAL_FACT",
+      "IMPLEMENTS",
+      "IMPOSES",
+      "INCLUDES",
+      "INTERACTS_WITH",
+      "INVALIDATES",
+      "MASKS",
+      "MITIGATES",
+      "OBSERVED_IN",
+      "OBSOLETES",
+      "OCCURS_DURING",
+      "OPERATES_IN",
+      "OWNED_BY",
+      "PART_OF_FLOW",
+      "PERFORMED_IN",
+      "PRECEDES",
+      "PRODUCES",
+      "PROVIDES",
+      "REALIZES",
+      "REQUIRES_RESOURCE",
+      "RISKS",
+      "SATISFIES",
+      "SCHEDULED_FOR",
+      "SPECIFIES",
+      "SUPERSEDES",
+      "SUPPLEMENTS",
+      "TRIGGERS",
+      "VALID_FROM",
+      "VALID_TO",
+      "VERIFIES",
+      "VIOLATES",
+      "VIOLATES_RULE",
+      "YIELDED"
+    ],
+    "edge_types": 65,
+    "enum_values": {
+      "Actor.actor_type": [
+        "device",
+        "external_system",
+        "operator",
+        "service",
+        "stakeholder",
+        "user"
+      ],
+      "Artifact.artifact_type": [
+        "asset",
+        "binary",
+        "code",
+        "config",
+        "data",
+        "diagram",
+        "document",
+        "drawing",
+        "model",
+        "spec",
+        "test",
+        "test_result"
+      ],
+      "Artifact.audience": [
+        "consumer",
+        "internal"
+      ],
+      "Artifact.granularity": [
+        "atomic",
+        "opaque",
+        "pending_expansion"
+      ],
+      "Artifact.status": [
+        "in_progress",
+        "planned",
+        "realized",
+        "verified"
+      ],
+      "Artifact.volatility": [
+        "append_only",
+        "living",
+        "stable"
+      ],
+      "Capability.delivery": [
+        "artifact",
+        "model"
+      ],
+      "Capability.provenance": [
+        "authored",
+        "healed",
+        "imported",
+        "inferred",
+        "planned",
+        "reconciled"
+      ],
+      "Capability.status": [
+        "in_progress",
+        "planned",
+        "realized",
+        "verified"
+      ],
+      "Capability.tier": [
+        "operational",
+        "strategic",
+        "tactical"
+      ],
+      "ChangeEvent.change_type": [
+        "baseline_established",
+        "constraint_change",
+        "decision_settled",
+        "defect_fix",
+        "deprecation",
+        "documentation",
+        "environment_change",
+        "new_feature",
+        "performance_optimization",
+        "refactor",
+        "requirement_creep",
+        "resync",
+        "scope_change",
+        "test_failure_fix"
+      ],
+      "ChangeEvent.repair": [
+        "contained_symptom",
+        "corrected_cause"
+      ],
+      "ChangeEvent.subject": [
+        "record",
+        "system"
+      ],
+      "Component.kind": [
+        "assembly",
+        "layer",
+        "module",
+        "part",
+        "section",
+        "service",
+        "subsystem"
+      ],
+      "Component.provenance": [
+        "authored",
+        "healed",
+        "imported",
+        "inferred",
+        "planned",
+        "reconciled"
+      ],
+      "Component.status": [
+        "in_progress",
+        "planned",
+        "realized",
+        "verified"
+      ],
+      "Component.tier": [
+        "operational",
+        "strategic",
+        "tactical"
+      ],
+      "Constraint.category": [
+        "budget",
+        "business",
+        "kpp",
+        "operational",
+        "physical",
+        "regulatory",
+        "schedule",
+        "technical"
+      ],
+      "Constraint.concern": [
+        "core",
+        "cost",
+        "environmental",
+        "logistics",
+        "manufacturability",
+        "other",
+        "safety",
+        "schedule",
+        "security",
+        "sustainment",
+        "usability"
+      ],
+      "Constraint.direction": [
+        "maximum",
+        "minimum"
+      ],
+      "Constraint.limit_basis": [
+        "asserted",
+        "computed",
+        "measured"
+      ],
+      "Constraint.priority": [
+        "critical",
+        "high",
+        "low",
+        "medium"
+      ],
+      "Contributor.kind": [
+        "automated_agent",
+        "organization",
+        "person"
+      ],
+      "Decision.kind": [
+        "choice",
+        "exploratory"
+      ],
+      "Decision.quality_target": [
+        "coupling",
+        "maintainability",
+        "maturity",
+        "observability",
+        "performance",
+        "reliability",
+        "scalability",
+        "security",
+        "testability"
+      ],
+      "Decision.status": [
+        "accepted",
+        "deferred",
+        "proposed",
+        "rejected",
+        "superseded"
+      ],
+      "DesignEpoch.epoch_type": [
+        "baseline",
+        "incident_response",
+        "milestone",
+        "release_cut",
+        "revision"
+      ],
+      "DesignEpoch.status": [
+        "arrived",
+        "planned"
+      ],
+      "DimensionAssessment.dimension": [
+        "coupling",
+        "maintainability",
+        "maturity",
+        "observability",
+        "performance",
+        "reliability",
+        "scalability",
+        "security",
+        "testability"
+      ],
+      "DimensionObservation.dimension": [
+        "coupling",
+        "maintainability",
+        "maturity",
+        "observability",
+        "performance",
+        "reliability",
+        "scalability",
+        "security",
+        "testability"
+      ],
+      "DriftEvent.drift_type": [
+        "checksum_change",
+        "deployment_contradicted",
+        "deployment_missing",
+        "deployment_undeclared",
+        "missing_artifact",
+        "spec_mismatch",
+        "status_mismatch",
+        "undocumented_addition"
+      ],
+      "DriftEvent.severity": [
+        "critical",
+        "high",
+        "low",
+        "medium"
+      ],
+      "Environment.env_type": [
+        "development",
+        "field",
+        "lab",
+        "physical_site",
+        "production",
+        "simulation",
+        "staging"
+      ],
+      "EnvironmentRule.rule_type": [
+        "building_code",
+        "constraint",
+        "environmental",
+        "interface",
+        "physical_law",
+        "regulatory",
+        "safety",
+        "standard",
+        "zoning"
+      ],
+      "Flow.flow_type": [
+        "capture",
+        "control_flow",
+        "data_flow",
+        "decision_flow",
+        "generation",
+        "process",
+        "retrieval"
+      ],
+      "Flow.tier": [
+        "cross_cutting",
+        "operational",
+        "strategic",
+        "tactical"
+      ],
+      "Fragment.fragment_type": [
+        "bug_fix",
+        "config",
+        "design",
+        "documentation",
+        "feedback",
+        "implementation",
+        "note",
+        "pseudocode",
+        "refactor",
+        "review",
+        "spec",
+        "test"
+      ],
+      "Fragment.note_kind": [
+        "author",
+        "director",
+        "reviewer"
+      ],
+      "Fragment.phase": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "PM"
+      ],
+      "Fragment.provenance": [
+        "authored",
+        "healed",
+        "imported",
+        "inferred",
+        "planned",
+        "reconciled"
+      ],
+      "Fragment.status": [
+        "ingested",
+        "integrated",
+        "superseded"
+      ],
+      "Interface.auth": [
+        "api_key",
+        "basic",
+        "jwt",
+        "kerberos",
+        "mtls",
+        "none",
+        "oauth2",
+        "physical",
+        "signature",
+        "unspecified"
+      ],
+      "Interface.designation": [
+        "both",
+        "internal",
+        "published",
+        "required"
+      ],
+      "Interface.medium": [
+        "REST",
+        "cli",
+        "data",
+        "electrical",
+        "event",
+        "gRPC",
+        "graphql",
+        "human",
+        "json_rpc",
+        "library",
+        "mechanical",
+        "procedural",
+        "unspecified"
+      ],
+      "Interface.paradigm": [
+        "asynchronous",
+        "batch",
+        "streaming",
+        "synchronous",
+        "unspecified"
+      ],
+      "Interface.payload_format": [
+        "avro",
+        "binary",
+        "csv",
+        "form",
+        "json",
+        "msgpack",
+        "none",
+        "protobuf",
+        "text",
+        "unspecified",
+        "xml"
+      ],
+      "Interface.provenance": [
+        "authored",
+        "healed",
+        "imported",
+        "inferred",
+        "planned",
+        "reconciled"
+      ],
+      "Interface.transport_security": [
+        "air_gapped",
+        "ipsec",
+        "mtls",
+        "none",
+        "physical",
+        "tls",
+        "unspecified",
+        "vpn"
+      ],
+      "Project.mode": [
+        "flexible",
+        "rigid"
+      ],
+      "Project.status": [
+        "active",
+        "archived",
+        "paused"
+      ],
+      "Question.status": [
+        "answered",
+        "asked",
+        "withdrawn"
+      ],
+      "ReadinessAssessment.kind": [
+        "MRL",
+        "TRL"
+      ],
+      "Release.status": [
+        "built",
+        "deployed",
+        "planned",
+        "retired"
+      ],
+      "Release.unit_type": [
+        "binary",
+        "bundle",
+        "container",
+        "package",
+        "physical_build",
+        "publication"
+      ],
+      "Requirement.concern": [
+        "core",
+        "cost",
+        "environmental",
+        "logistics",
+        "manufacturability",
+        "other",
+        "safety",
+        "schedule",
+        "security",
+        "sustainment",
+        "usability"
+      ],
+      "Requirement.designation": [
+        "internal",
+        "published"
+      ],
+      "Requirement.kind": [
+        "business",
+        "functional",
+        "nonfunctional",
+        "quality"
+      ],
+      "Requirement.lineage": [
+        "decomposed",
+        "derived",
+        "original"
+      ],
+      "Requirement.priority": [
+        "critical",
+        "high",
+        "low",
+        "medium"
+      ],
+      "Requirement.provenance": [
+        "authored",
+        "healed",
+        "imported",
+        "inferred",
+        "planned",
+        "reconciled"
+      ],
+      "Requirement.status": [
+        "accepted",
+        "deferred",
+        "dropped",
+        "met",
+        "proposed"
+      ],
+      "TemporalFact.basis": [
+        "forecast",
+        "measured"
+      ],
+      "Verification.kind": [
+        "validation",
+        "verification"
+      ],
+      "Verification.level": [
+        "acceptance",
+        "integration",
+        "system",
+        "unit"
+      ],
+      "Verification.method": [
+        "analysis",
+        "demonstration",
+        "inspection",
+        "measurement",
+        "observation",
+        "review",
+        "simulation",
+        "test"
+      ],
+      "Verification.status": [
+        "blocked",
+        "failing",
+        "passing",
+        "planned",
+        "skipped",
+        "superseded"
+      ]
+    },
+    "node_type_names": [
+      "Actor",
+      "Anchor",
+      "Artifact",
+      "Capability",
+      "ChangeEvent",
+      "Component",
+      "Constraint",
+      "Contributor",
+      "Decision",
+      "DesignEpoch",
+      "DesignRule",
+      "DimensionAssessment",
+      "DimensionObservation",
+      "DriftEvent",
+      "Environment",
+      "EnvironmentRule",
+      "Flow",
+      "Fragment",
+      "Interface",
+      "Project",
+      "Question",
+      "ReadinessAssessment",
+      "Release",
+      "Requirement",
+      "Resource",
+      "Snapshot",
+      "TemporalFact",
+      "Verification"
+    ],
+    "node_types": 28,
+    "reflow2_version": "0.66.0",
+    "schema_version": 1
+  }
+}
