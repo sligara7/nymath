@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:480eb470721066bbc0f915560aa93521fea57844c9ed8601508c332bcb2b1186",
+  "content_hash": "sha256:a58eb42a5a02b579e13665dbe5bf47f43deda8b36ab6a39719c47e20fc3d858a",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -72,6 +72,14 @@
         "evidence": "A riddle answered by BUILDING rather than answering needs the same lattice the lessons use, so the capability already planned is what would carry riddles too — the rim lesson's second stage is already one of these without being called a riddle."
       },
       "to_id": "cap:visual-math-models"
+    },
+    {
+      "edge_type": "ANTICIPATES",
+      "from_id": "req:content-is-grade-shaped-data",
+      "properties": {
+        "evidence": "That requirement was derived on 2026-09-21 for an unrelated reason — that adding a grade should mean writing content rather than restructuring the game. It happens to have produced exactly the authoring format a teacher would need, which is why option (a) is far cheaper here than it would otherwise be."
+      },
+      "to_id": "dec:idea-who-authors-the-games"
     },
     {
       "edge_type": "AT_EPOCH",
@@ -247,7 +255,29 @@
     },
     {
       "edge_type": "AUTHORED_BY",
+      "from_id": "dec:idea-standards-as-spine",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
       "from_id": "dec:idea-tricksters",
+      "properties": {
+        "authored_at": "2026-09-21",
+        "roles": [
+          "author"
+        ]
+      },
+      "to_id": "who:ajs7"
+    },
+    {
+      "edge_type": "AUTHORED_BY",
+      "from_id": "dec:idea-who-authors-the-games",
       "properties": {
         "authored_at": "2026-09-21",
         "roles": [
@@ -572,6 +602,16 @@
     },
     {
       "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-standards-as-spine",
+      "properties": {
+        "evidence": "The spine would be that rule turned from a citation into structure — the same document, the same authority, read in as nodes and prerequisite edges instead of quoted at.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "envrule:nys-next-gen-math-standards"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
       "from_id": "dec:idea-tricksters",
       "properties": {
         "evidence": "Refuting a false claim by building the counterexample is the teaching mechanic run backwards, and reuses the same lattice. Without teaching-by-construction there is nothing to refute WITH.",
@@ -579,6 +619,16 @@
         "weight_basis": "estimated"
       },
       "to_id": "dec:she-teaches-ember"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_id": "dec:idea-who-authors-the-games",
+      "properties": {
+        "evidence": "There is nothing to author against until the standards exist as a design. The spine is the cheap half and this is the expensive half, and they are worth deciding in that order.",
+        "optional": false,
+        "weight_basis": "estimated"
+      },
+      "to_id": "dec:idea-standards-as-spine"
     },
     {
       "edge_type": "DEPENDS_ON",
@@ -1606,6 +1656,17 @@
       }
     },
     {
+      "node_id": "dec:idea-standards-as-spine",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "RECORDED AS BRAINSTORMING, NOT AS A PROPOSAL. The owner's words: \"would be fun if we had the math requirements loaded into reflow2 and then the kids built their own game concept around it\". The idea underneath it is that the standards stop being a PDF somebody reads and become a design graph somebody BUILDS AGAINST — a spine, loaded once, that any number of games hang off. Options, not yet chosen: just Grades 3-5 for this game's own use; a whole grade band; all of PK-12; and separately whether the spine lives inside proj:nymath or as a project of its own that nymath and others point at. That last one is a real fork — a spine everything shares does not belong inside one game's design, and reflow2 has a way to make the join between two projects explicit.",
+        "kind": "exploratory",
+        "name": "OPEN — are the math standards themselves a reusable reflow2 design that anything can be built against?",
+        "rationale": "Owner's idea, 2026-09-21, after using reflow2 and an agent to design this game in a day. WHY IT IS CHEAPER THAN IT SOUNDS, measured rather than guessed on 2026-09-21: the NYS PDF carries 250 unique standard codes and 340 lines labelled \"Coherence\", each naming a prerequisite chain — NY-PK.CC.1 to NY-K.CC.1, NY-3.OA.1 to NY-4.OA.1 to NY-5.NF.5. The state has already published the dependency graph. An import does not have to INFER what comes before what; it reads the arrows off the page. That is the expensive half of building any spine and it is already done, by the authority, in the source document. WHY THE MATCH IS STRUCTURAL AND NOT A METAPHOR: the standards are a hierarchy of domains, clusters and coded statements with declared prerequisites, and that is the shape reflow2 already holds. The coverage reporting comes with it — a game built against the spine can be ASKED which standards it actually serves, which is not a question any other tool answers. THE HONEST SIZE: loading the spine is small, days not months, and it is the one piece of this whole idea that is reusable forever whatever happens to the rest. Everything else in the owner's paragraph is much larger, and is a separate question.",
+        "status": "proposed"
+      }
+    },
+    {
       "node_id": "dec:idea-tricksters",
       "node_type": "Decision",
       "properties": {
@@ -1614,6 +1675,17 @@
         "name": "OPEN — do tricky creatures assert false arithmetic for her to refute?",
         "no_relation_note": "The only near match offered was dec:idea-ronie-and-ember, which is about what she and the game are CALLED. It has already been answered (she types her name) and has no bearing on whether a creature lies to her — the overlap is that both mention Ronie, which is similarity rather than relatedness. The nodes this one genuinely touches are dec:built-for-understanding, dec:she-teaches-ember, req:ember-goes-alone and envrule:nys-next-gen-math-standards, and those relations are drawn in the review_relations call that follows.",
         "rationale": "Owner's idea, 2026-09-21, from a game he actually plays with his daughter — which is the strongest evidence any mechanic in this design has, because it is already known to work on this specific child. WHY IT IS MORE THAN A JOKE. The eight Mathematical Practices printed on every grade's overview page in the NYS standards include MP.3, \"Construct viable arguments and critique the reasoning of others\", and its text says mathematically proficient students \"can recognize and use counterexamples\" and \"distinguish correct logic or reasoning from that which is flawed, and — if there is a flaw in an argument — explain what it is\". It then says, in as many words, that \"Elementary students can construct arguments using concrete referents such as objects, drawings, diagrams, and actions\". That is a description of refuting a trickster on the nest. The design currently touches none of the eight practices; this would be the first, and it would arrive through the door the standard itself points at. Catching a falsehood is also a genuinely harder act than producing an answer: to notice that something is wrong you need a model to check it against, not a procedure to run. FOUR OBJECTIONS, ALL REAL. (1) TRUE OR FALSE IS A COIN FLIP — a tap that says \"no\" is more guessable than the four-option quiz this design already forbids, so a bare yes/no would be the worst mechanic in the game. It survives only if she must SHOW the flaw by building it, which is the teaching mechanic turned round and which MP.3 asks for anyway. (2) THE TRICKSTER MUST SOMETIMES BE RIGHT, or the game collapses into \"always tap no\" and she stops reading the claim. Agreeing with a true statement has to be a winning move, and that is what makes it judgement rather than reflex. (3) EMBER MUST NOT BE THE TRICKSTER. His wrongness is innocent and she is teaching him; a pet who lies to her breaks the one relationship the game is built on. The trickster is somebody else. (4) A FALSEHOOD MUST NEVER SIT UNCORRECTED ON THE SCREEN. She is nine and still forming these facts; a wrong equation left standing can be the thing she remembers. It has to be visibly destroyed the moment she refutes it, and the creature has to be legible as a liar from the first glance.",
+        "status": "proposed"
+      }
+    },
+    {
+      "node_id": "dec:idea-who-authors-the-games",
+      "node_type": "Decision",
+      "properties": {
+        "decision": "RECORDED AS BRAINSTORMING, NOT AS A PROPOSAL. The owner's words: \"the kids built their own game concept around it. Or maybe teachers could build fun new ways to learn and then have the kids play the games... the kids are basically creating around it and can have fun learning through creation and exploration in their own lens\". THREE PRODUCTS ARE TANGLED HERE AND THEY SHARE ALMOST NOTHING OPERATIONALLY. (a) TEACHERS AUTHOR, KIDS PLAY — an adult with an account, in a school, building something for their class. (b) KIDS AUTHOR FOR THEMSELVES — a child building the game they want to play. (c) KIDS AUTHOR FOR OTHER KIDS — the same, but published to classmates. Each has a different user, a different risk profile and a different order of cost.",
+        "kind": "exploratory",
+        "name": "OPEN — who builds games against the spine: kids, teachers, or kids for other kids?",
+        "rationale": "Owner's idea, 2026-09-21. THE PEDAGOGY IS SOUND AND IS THE SAME BET THIS GAME ALREADY MAKES. \"Learning through creation in their own lens\" is constructionism, and building a thing that teaches X is close kin to the teaching mechanic the owner already chose for Ember — you cannot build the lesson without holding the idea. (c) is that effect at classroom scale and is the most potent of the three. BE HONEST ABOUT THE EVIDENCE THOUGH: studies of children building games show real gains, but often more in design and systems thinking than in the target content, and the gains depend heavily on scaffolding. It is a promising claim to TEST, not a settled result to build on. THE COSTS ARE NOT COMPARABLE, and the owner asked to be told which is larger. (a) is by a wide margin the cheapest and the most likely to be wanted, and there is a specific reason found on 2026-09-21: content/grade3.js is ALREADY the authoring format. It is data with no logic in it — the standard codes, what Ember gets wrong, the task, the rule that judges her, what he says when he gets it. A teacher authoring a lesson is writing one of those objects, and with an agent doing the formalising they would write it in English. The authoring tool for (a) may be a file and a conversation rather than a product. (b) and (c) are an order larger and the jump is not gradual: the moment a child rather than an adult is the author, this becomes a service handling under-13 users, which in the United States means COPPA, and in schools FERPA, and in New York specifically Education Law 2-d, which is among the strictest student-data laws in the country and would apply to a product built on New York's own standards. User-generated content from children also means moderation and hosting other people's code. FOUR MORE THINGS WORTH SAYING. (1) A CHILD WILL NOT WRITE REQUIREMENTS, and if any of reflow2's vocabulary reaches her the idea is dead. What made today work is that the owner held the intent and the agent did all of the formalising; that asymmetry is not a detail of the workflow, it IS the product. (2) The architecture already chosen here generalises unusually well to the legal problem: no accounts, no server, no data leaving the device, a name typed in rather than stored anywhere. That posture was adopted for a nine-year-old's privacy and happens to be the shape a compliant school product wants. (3) A teacher-built game that can PROVE it covers NY-4.NF.1 through 3 is something no other authoring tool offers, and the coverage report is the reason. (4) This whole idea is a platform, and nymath is a game for one child; recording a platform inside a game's design will confuse a later reader, so if any of this is kept it probably wants a project of its own with nymath named as its first reference implementation.",
         "status": "proposed"
       }
     },
@@ -2145,7 +2217,7 @@
       }
     }
   ],
-  "prev_content_hash": "sha256:94baae7965ed049707a9c82a740deda35de986152f54d8f1f97987bcceb0a2c9",
+  "prev_content_hash": "sha256:480eb470721066bbc0f915560aa93521fea57844c9ed8601508c332bcb2b1186",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -2744,7 +2816,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "95744ea751a3dd923be3df9476b58671df1e6162",
+    "commit": "9ff0f1bd154cb91719a7e3c04779eba715256172",
     "dirty": false
   }
 }
