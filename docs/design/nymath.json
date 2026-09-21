@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:28e0a33bb1ff47a397a5d9547532cef28d3d2596299d643cca14caab40dac916",
+  "content_hash": "sha256:3e2b8bcd9bf64cc46d9bdde67972a190c5a8e0d2299ec624ea0b0cb06aea6d81",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -401,6 +401,24 @@
         "action": "modified"
       },
       "to_id": "art:style-css"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:cache-bust-and-build-stamp",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:index-html"
+    },
+    {
+      "edge_type": "CHANGED",
+      "from_id": "chg:cache-bust-and-build-stamp",
+      "properties": {
+        "accepted_baseline": true,
+        "action": "modified"
+      },
+      "to_id": "art:main-js"
     },
     {
       "edge_type": "CHANGED",
@@ -1291,7 +1309,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:c347c43885d93ae959e0b1678cc2a273fcdae072a2fb28192eb21b582b946b3a",
+        "checksum": "sha256:e41826a4b2ef27a998ebff015172591bdd8ae65ed8d120478966c0cdee8ecf64",
         "checksum_basis": "measured",
         "description": "The single page. Holds the door, the scene and the reveal, and loads the scripts in dependency order.",
         "location": "index.html",
@@ -1317,7 +1335,7 @@
       "node_type": "Artifact",
       "properties": {
         "artifact_type": "code",
-        "checksum": "sha256:eb02b75da12eb1bc86f4c07a47bed969da01aebf884d4d2be13b43057480efbd",
+        "checksum": "sha256:214aa72c1d1b11a96ee4a59ff06205eac63cdacd8cb23525f3b0a2c3d4882e4a",
         "checksum_basis": "measured",
         "description": "Boot and stage flow: the door, the deep link, loading a stage, and the reveal.",
         "location": "js/main.js",
@@ -1519,6 +1537,18 @@
         "detected_at": "2026-09-21",
         "name": "Styling only for the name field and the recall chip — no design meaning beyond the two features already recorded.",
         "subject": "system"
+      }
+    },
+    {
+      "node_id": "chg:cache-bust-and-build-stamp",
+      "node_type": "ChangeEvent",
+      "properties": {
+        "change_type": "defect_fix",
+        "detected_at": "2026-09-21",
+        "name": "Every asset cache-busted, and the build number made visible",
+        "rationale": "A fix that was correct on disk, correctly deployed and correctly reported was still not what the owner's browser served: it held the previous main.js. GitHub Pages sets its own cache headers and this project cannot change them, so the URL is the only thing able to tell a browser that a file moved. This matters past the incident — she will open a bookmark every time, and a stale copy is the one failure a nine-year-old could not describe.",
+        "subject": "system",
+        "summary": "Assets are loaded with a ?v=N stamp sharing one build number, a favicon was inlined as a data URI to remove the page's only failing request, and the build number is logged at boot so a stale copy can be identified rather than guessed at."
       }
     },
     {
@@ -2334,7 +2364,7 @@
       }
     }
   ],
-  "prev_content_hash": "sha256:b3151e4cd8ffd32427f2545c05de924909a91f6960580c72954a724f39c6240e",
+  "prev_content_hash": "sha256:28e0a33bb1ff47a397a5d9547532cef28d3d2596299d643cca14caab40dac916",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -2933,7 +2963,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "865814e84aafb47fd4dd5d8eb2498e31a3b4620b",
+    "commit": "1e807636378b4fadf4820646ea2076b3c145d1a9",
     "dirty": false
   }
 }
