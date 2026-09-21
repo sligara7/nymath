@@ -53,6 +53,52 @@
     loadStage();
   }
 
+  /* ---- she tells him her name --------------------------------------------
+
+     Her name goes into the page title and into Ember's mouth. It is never in
+     this repository, which is why it is typed rather than written in. */
+
+  function applyName() {
+    const n = Save.get().name;
+    Lessons.setName(n);
+    if (n) document.title = "The Adventures of " + n + " and Ember";
+  }
+
+  function askName() {
+    el.door.hidden = true;
+    el.naming.hidden = false;
+    Ember.draw(el.namingArt, "curious");
+    /* Focus after the screen is up, or a phone keyboard opens over a door
+       that is still on its way out. */
+    setTimeout(() => { try { el.nameInput.focus(); } catch (e) {} }, 60);
+  }
+
+  function takeName() {
+    const n = Save.setName(el.nameInput.value);
+    if (!n) { try { el.nameInput.focus(); } catch (e) {} return; }
+    applyName();
+    el.naming.hidden = true;
+    goFromSave();
+  }
+
+  /* Where her save says she should be: mid-lesson, at the quest, or past it. */
+  function goFromSave() {
+    const s = Save.get();
+    if (s.questDone) { enter({ l: G.lessons.length, st: 0 }); return; }
+    if (s.lesson >= G.lessons.length) {
+      el.door.hidden = true; el.bar.hidden = false; el.scene.hidden = false;
+      startQuest();
+      return;
+    }
+    const l = Math.min(s.lesson, G.lessons.length - 1);
+    enter({ l: l, st: Math.min(s.stage, G.lessons[l].stages.length - 1) });
+  }
+
+  applyName();
+
+  el.nameBtn.addEventListener("click", takeName);
+  el.nameInput.addEventListener("keydown", ev => { if (ev.key === "Enter") takeName(); });
+
   el.startBtn.addEventListener("click", () => {
     /* Her first tap is the only moment a browser will let sound begin, so it
        does both jobs at once and she never sees the second one. */
