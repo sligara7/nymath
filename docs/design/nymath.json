@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:b3151e4cd8ffd32427f2545c05de924909a91f6960580c72954a724f39c6240e",
+  "content_hash": "sha256:28e0a33bb1ff47a397a5d9547532cef28d3d2596299d643cca14caab40dac916",
   "edges": [
     {
       "edge_type": "ALLOCATED_TO",
@@ -162,6 +162,12 @@
     {
       "edge_type": "AT_EPOCH",
       "from_id": "snap:epoch:preserved-on-write:dec:idea-ronie-and-ember",
+      "properties": {},
+      "to_id": "epoch:preserved-on-write"
+    },
+    {
+      "edge_type": "AT_EPOCH",
+      "from_id": "snap:epoch:preserved-on-write:rule:verify-the-path-she-takes-on-the-url-she-opens",
       "properties": {},
       "to_id": "epoch:preserved-on-write"
     },
@@ -805,6 +811,12 @@
       "to_id": "snap:epoch:preserved-on-write:dec:idea-ronie-and-ember"
     },
     {
+      "edge_type": "HAS_SNAPSHOT",
+      "from_id": "rule:verify-the-path-she-takes-on-the-url-she-opens",
+      "properties": {},
+      "to_id": "snap:epoch:preserved-on-write:rule:verify-the-path-she-takes-on-the-url-she-opens"
+    },
+    {
       "edge_type": "MITIGATES",
       "from_id": "dec:ember-the-drake",
       "properties": {
@@ -1113,6 +1125,24 @@
       "from_id": "ver:grade3-lessons-solvable",
       "properties": {},
       "to_id": "cmp:teaching-surface"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:she-can-get-in-the-front-door",
+      "properties": {},
+      "to_id": "cap:runs-static-in-browser"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:she-can-get-in-the-front-door",
+      "properties": {},
+      "to_id": "cap:she-names-herself"
+    },
+    {
+      "edge_type": "VERIFIES",
+      "from_id": "ver:she-can-get-in-the-front-door",
+      "properties": {},
+      "to_id": "cmp:shell"
     },
     {
       "edge_type": "YIELDED",
@@ -1763,6 +1793,15 @@
       }
     },
     {
+      "node_id": "rule:verify-the-path-she-takes-on-the-url-she-opens",
+      "node_type": "DesignRule",
+      "properties": {
+        "category": "methodology",
+        "name": "Verify the path she takes, on the URL she opens, before saying it works",
+        "statement": "Before reporting anything on this project fixed or working: exercise the path the player actually takes, starting from the published URL she would open, not from a shortcut and not from the working copy. Two specific traps, both of which caught this project in one day. FIRST, DO NOT VERIFY THROUGH THE SIDE DOORS. The #l3 and #quest deep links exist for convenience and they skip the front of the game. Every screenshot taken on 2026-09-21 used one, so the quest, the carry-forward stage, the rim and the naming screen's styling were all checked and the start button was never pressed once; the game was published dead on its first screen and the owner found it. SECOND, \"WORKS ON DISK\" IS NOT \"WORKS FOR HER\". The fix for that first failure was correct, deployed, and reported as done while the owner still could not get past the button, because his browser was serving the previous main.js from cache. A check that reads the working copy cannot see that; the files have to be fetched from the live origin and run. HOW, on this machine: a cross-origin iframe CANNOT be scripted and tells you nothing — that was tried and wasted a round. Chrome with --remote-debugging-port, driven over the DevTools protocol from node (which has a built-in WebSocket), can click a real button on the real URL and report exceptions, failed requests and resulting DOM state. Fetching the deployed files into a directory and running the boot test against them is the cheaper half and catches most of it. PARTLY MECHANISED SINCE: test/boot.test.js walks the front door, and fails if any asset is missing its cache-busting stamp or if two disagree."
+      }
+    },
+    {
       "node_id": "envrule:nys-next-gen-math-standards",
       "node_type": "EnvironmentRule",
       "properties": {
@@ -2233,6 +2272,28 @@
       }
     },
     {
+      "node_id": "snap:epoch:preserved-on-write:rule:verify-the-path-she-takes-on-the-url-she-opens",
+      "node_type": "Snapshot",
+      "properties": {
+        "edges": "[]",
+        "state": "{\"category\":\"methodology\",\"name\":\"Verify the path she takes, on the URL she opens, before saying it works\",\"statement\":\"Before reporting anything on this project fixed or working: exercise the path the player actually takes, starting from the published URL she would open, not from a shortcut and not from the working copy. Two specific traps, both of which caught this project in one day. FIRST, DO NOT VERIFY THROUGH THE SIDE DOORS. The #l3 and #quest deep links exist for convenience and they skip the front of the game. Every screenshot taken on 2026-09-21 used one, so the quest, the carry-forward stage, the rim and the naming screen's styling were all checked and the start button was never pressed once; the game was published dead on its first screen and the owner found it. SECOND, \\\"WORKS ON DISK\\\" IS NOT \\\"WORKS FOR HER\\\". The fix for that first failure was correct, deployed and reported as done while the owner still could not get past the button, because his browser was serving the previous main.js from cache. A check that reads the working copy cannot see that; the files have to be fetched from the live origin and run. HOW, on this machine: a cross-origin iframe CANNOT be scripted and tells you nothing — that was tried and wasted a round. Chrome with --remote-debugging-port, driven over the DevTools protocol from node (which has a built-in WebSocket), can click a real button on the real URL and report exceptions, failed requests and resulting DOM state. Fetching the deployed files into a directory and running the boot test against them is the cheaper half and catches most of it.\"}",
+        "target_id": "rule:verify-the-path-she-takes-on-the-url-she-opens",
+        "target_type": "DesignRule"
+      }
+    },
+    {
+      "node_id": "fact:manual-work-23b678c464d50cf4",
+      "node_type": "TemporalFact",
+      "properties": {
+        "basis": "measured",
+        "fact_type": "manual_work",
+        "statement": "Hand-rolled a check that what is DEPLOYED and reachable at the public URL matches what the design and the working copy say — twice, two different ways. First by fetching every published file into a scratch directory and running the project's own boot test against those copies instead of the working tree. Then by launching a headless browser with a remote debugging port and driving it over the DevTools protocol from a small node script, to click a real button on the real URL and report exceptions, failed requests and the resulting page state. Written because a fix that was correct on disk, correctly deployed and correctly reported was still not what the user's browser was serving, and nothing in the loop asks that question.",
+        "subject_id": "proj:nymath",
+        "valid_from": "2026-09-21",
+        "value": "{\"diagnosis\":\"tool_not_found\",\"reflow2_tool\":\"reconcile_deployment\"}"
+      }
+    },
+    {
       "node_id": "ver:first-play-with-ronie",
       "node_type": "Verification",
       "properties": {
@@ -2249,7 +2310,7 @@
       "node_type": "Verification",
       "properties": {
         "description": "69 checks, run with `node test/lessons.test.js`, no dependencies and no build. For every stage it asserts that the intended solution FITS the lattice the lesson gives her, that the rule accepts it, that an empty nest does not, and that no {placeholder} is left unfilled in the reveal. It also asserts Ember's ragged nest fails its own lesson (otherwise she has nothing to fix), that the free-choice lesson really accepts 3x4, 4x3 and 2x6 while rejecting a single row of 12, and that the perimeter stage accepts 2x5 and 1x6 while rejecting the 3x4 it started from. It drives the REAL nest through a DOM shim rather than a second copy of the logic, and cross-checks the shim's report against the real one first — a reimplementation would agree with itself and miss the bug worth catching, which is a lesson whose target cannot be built on the lattice it was given.",
-        "findings": "69/69 passing as of 2026-09-21. It has already earned its keep once: it caught a task line of 70 characters that would have wrapped badly on a phone, which is the kind of thing nobody notices by reading. NOT COVERED, and worth saying plainly: this checks that the lessons are solvable and internally consistent. It cannot tell anyone whether a nine-year-old understands fractions, and nothing in this design can yet.",
+        "findings": "69/69 passing as of 2026-09-21. It has already earned its keep once: it caught a task line of 70 characters that would have wrapped badly on a phone, which is the kind of thing nobody notices by reading. NOT COVERED, and worth saying plainly. (1) It checks that the lessons are solvable and internally consistent. It cannot tell anyone whether a nine-year-old understands fractions — that is what the first play session with the real player is for. (2) IT WAS BLIND TO THE FRONT DOOR, and that blindness shipped a broken game the same day. It never loads main.js at all, so four functions called and never defined behind the start button passed it without a murmur; the front-door walk is a separate check, added afterwards for exactly that reason.",
         "kind": "verification",
         "level": "acceptance",
         "location": "test/lessons.test.js",
@@ -2257,9 +2318,23 @@
         "name": "Every Grade 3 stage is solvable, and Ember's own attempt is not",
         "status": "passing"
       }
+    },
+    {
+      "node_id": "ver:she-can-get-in-the-front-door",
+      "node_type": "Verification",
+      "properties": {
+        "description": "25 checks, `node test/boot.test.js`, no dependencies. It boots the real scripts in the real order index.html declares them, against a shimmed DOM, and walks the path every player takes: the start button has a handler at all, tapping it does not throw, the door closes, Ember asks who she is, an empty name is refused, a name gets her through, the scene appears, lesson one loads with his ragged nest and the readout naming his rows. It also checks the title takes her name, that her name appears nowhere in the source, and that every local asset carries the same cache-busting build stamp. WHY IT EXISTS, which is the part worth keeping: it was written after the game shipped dead on its first screen. Four functions behind the start button were called and never defined, `node --check` passed because an undefined function is only an error at call time, and the lesson suite never loaded main.js at all.",
+        "findings": "25/25 passing, 2026-09-21. Run twice that day against two different trees: the working copy, and again against the files fetched from the live GitHub Pages site, which is how the deployment itself was checked rather than assumed. It has already caught one thing on its own — when asset URLs gained a ?v= stamp it failed immediately, because the paths it reads out of index.html no longer matched files on disk.",
+        "kind": "verification",
+        "level": "acceptance",
+        "location": "test/boot.test.js",
+        "method": "test",
+        "name": "The front door works: tap in, be named, land in lesson one",
+        "status": "passing"
+      }
     }
   ],
-  "prev_content_hash": "sha256:a58eb42a5a02b579e13665dbe5bf47f43deda8b36ab6a39719c47e20fc3d858a",
+  "prev_content_hash": "sha256:b3151e4cd8ffd32427f2545c05de924909a91f6960580c72954a724f39c6240e",
   "stamp": {
     "edge_type_names": [
       "ABOUT_ENTITY",
@@ -2858,7 +2933,7 @@
   },
   "taken_at": {
     "branch": "main",
-    "commit": "e6eb814c6e9df703ba2d4134b4d529b708272a7b",
+    "commit": "865814e84aafb47fd4dd5d8eb2498e31a3b4620b",
     "dirty": false
   }
 }
