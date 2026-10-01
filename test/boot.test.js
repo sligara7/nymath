@@ -123,7 +123,7 @@ $("nameInput").value = "";
 $("nameBtn").fire("click");
 ok($("naming").hidden === false, "an empty name does not let her through");
 
-$("nameInput").value = "Ronie";
+$("nameInput").value = "Wren";
 let nameError = null;
 try { $("nameBtn").fire("click"); } catch (e) { nameError = e; }
 ok(!nameError, "telling Ember her name does not throw" + (nameError ? " — " + nameError : ""));
@@ -131,7 +131,7 @@ ok(!nameError, "telling Ember her name does not throw" + (nameError ? " — " + 
 ok($("naming").hidden === true, "the naming screen closes");
 ok($("scene").hidden === false, "she lands in the scene");
 ok($("bar").hidden === false, "the top bar appears");
-ok(document.title.includes("Ronie"), "the game takes its title from her name: " + JSON.stringify(document.title));
+ok(document.title.includes("Wren"), "the game takes its title from her name: " + JSON.stringify(document.title));
 
 /* ---- and she is in the first lesson -------------------------------------- */
 
@@ -165,8 +165,8 @@ ok($("lessonName").textContent === "The first nest", "the same lesson she left")
 
 /* ---- the name survives a reload ------------------------------------------ */
 
-ok(JSON.parse(store["nymath.ember.v1"]).name === "Ronie", "her name is remembered");
-ok(!read("content/grade3.js").includes("Ronie") && !read("index.html").includes("Ronie"),
+ok(JSON.parse(store["nymath.ember.v1"]).name === "Wren", "her name is remembered");
+ok(!read("content/grade3.js").includes("Wren") && !read("index.html").includes("Wren"),
    "and her name is nowhere in the source");
 
 console.log((fails ? "FAILED" : "ok") + " — " + (checks - fails) + "/" + checks + " checks");
