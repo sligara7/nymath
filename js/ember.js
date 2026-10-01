@@ -62,15 +62,26 @@ const Ember = (function () {
     sleepy:    '<ellipse cx="60" cy="63" rx="3.5" ry="2.6" fill="#241a12"/>'
   };
 
+  /* What she is wearing: drawn in her own coordinates, so a hat bought in the
+     den sits on her head in every lesson too. Neck first, then face, then
+     head, so a hat brim covers a scarf and never the other way round. */
+  let worn = { neck: "", face: "", head: "" };
+
+  /* Every drawing of her gets its own gradient ids. She is on the page several
+     times at once (door, lesson, den), and a url(#hide) that resolves to a
+     copy inside a hidden screen is how a dragon turns invisible. */
+  let drawn = 0;
+
   function svg(mood) {
     const m = EYES[mood] ? mood : "curious";
+    const u = "e" + (++drawn);
     return (
 '<svg viewBox="0 0 124 128" width="100%" aria-hidden="true">' +
   '<defs>' +
-    '<linearGradient id="hide" x1="0" y1="0" x2="0" y2="1">' +
+    '<linearGradient id="' + u + 'hide" x1="0" y1="0" x2="0" y2="1">' +
       '<stop offset="0" stop-color="#ff9a4d"/><stop offset="1" stop-color="#e05f28"/>' +
     '</linearGradient>' +
-    '<linearGradient id="wing" x1="0" y1="0" x2="0" y2="1">' +
+    '<linearGradient id="' + u + 'wing" x1="0" y1="0" x2="0" y2="1">' +
       '<stop offset="0" stop-color="#ffb877"/><stop offset="1" stop-color="#d4551f"/>' +
     '</linearGradient>' +
   '</defs>' +
@@ -83,11 +94,11 @@ const Ember = (function () {
   /* Stub wings. Scalloped along the bottom, because that edge is most of what
      makes a shape read as a wing — and they are far too small to lift her,
      which is the whole of Grade 3. */
-  '<path d="M27 78 q-19 -17 -18 2 q9 -3 5 6 q7 -3 6 5 q6 -4 10 1 z" fill="url(#wing)"/>' +
-  '<path d="M97 78 q19 -17 18 2 q-9 -3 -5 6 q-7 -3 -6 5 q-6 -4 -10 1 z" fill="url(#wing)"/>' +
+  '<path d="M27 78 q-19 -17 -18 2 q9 -3 5 6 q7 -3 6 5 q6 -4 10 1 z" fill="url(#' + u + 'wing)"/>' +
+  '<path d="M97 78 q19 -17 18 2 q-9 -3 -5 6 q-7 -3 -6 5 q-6 -4 -10 1 z" fill="url(#' + u + 'wing)"/>' +
 
   /* Body */
-  '<ellipse cx="62" cy="88" rx="32" ry="26" fill="url(#hide)"/>' +
+  '<ellipse cx="62" cy="88" rx="32" ry="26" fill="url(#' + u + 'hide)"/>' +
   '<ellipse cx="62" cy="94" rx="19" ry="16" fill="#ffd9a8"/>' +
   '<path d="M47 96 h30 M49 104 h26" stroke="#f0bd84" stroke-width="2.2" stroke-linecap="round"/>' +
 
@@ -106,7 +117,7 @@ const Ember = (function () {
   '<path d="M62 19 l5 8 h-10 z" fill="#c8501f"/>' +
 
   /* Head */
-  '<circle cx="62" cy="52" r="27" fill="url(#hide)"/>' +
+  '<circle cx="62" cy="52" r="27" fill="url(#' + u + 'hide)"/>' +
   '<ellipse cx="62" cy="64" rx="15" ry="11" fill="#ffd9a8"/>' +
   '<circle cx="57" cy="60" r="1.9" fill="#b8481a"/>' +
   '<circle cx="67" cy="60" r="1.9" fill="#b8481a"/>' +
@@ -114,6 +125,8 @@ const Ember = (function () {
   /* The face is drawn against the old head centre; one translate keeps all
      six moods in register instead of editing thirty coordinates. */
   '<g transform="translate(2,4)">' + EYES[m] + MOUTH[m] + '</g>' +
+
+  worn.neck + worn.face + worn.head +
 '</svg>');
   }
 
@@ -128,6 +141,8 @@ const Ember = (function () {
   return {
     draw(el, mood) { el.innerHTML = svg(mood); },
     drawSleeping(el) { el.innerHTML = sleeping(); },
+    /* { head, face, neck }: SVG drawn in her coordinates, or empty. */
+    dress(o) { worn = { neck: (o && o.neck) || "", face: (o && o.face) || "", head: (o && o.head) || "" }; },
     moods: Object.keys(EYES)
   };
 })();

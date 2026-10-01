@@ -146,6 +146,23 @@ ok(nestBox && nestBox.children.filter(c => c.className.includes("his")).length =
    "twelve of them are Ember's own ragged stones");
 ok($("readout").innerHTML.includes("not the same yet"), "the readout names her ragged rows");
 
+/* ---- the way home to Ember's den ------------------------------------------ */
+
+ok($("denBtn").hidden === false, "the way home to Ember's den is on the lesson screen");
+let denError = null;
+try { $("denBtn").fire("click"); } catch (e) { denError = e; }
+ok(!denError, "opening the den does not throw" + (denError ? " — " + denError : ""));
+ok($("den").hidden === false && $("scene").hidden === true, "the den opens in place of the lesson");
+ok($("roomItems").children.length >= 2, "Ember and her cushion are in the room (" + $("roomItems").children.length + ")");
+ok($("drawer").children.length > 0, "the drawer has things in it");
+ok($("purseMini").innerHTML.includes("<b>12</b>"), "she starts with a few coins to spend");
+
+let backError = null;
+try { $("denBack").fire("click"); } catch (e) { backError = e; }
+ok(!backError, "leaving the den does not throw" + (backError ? " — " + backError : ""));
+ok($("den").hidden === true && $("scene").hidden === false, "and the way back puts her in her lesson again");
+ok($("lessonName").textContent === "The first nest", "the same lesson she left");
+
 /* ---- the name survives a reload ------------------------------------------ */
 
 ok(JSON.parse(store["nymath.ember.v1"]).name === "Ronie", "her name is remembered");

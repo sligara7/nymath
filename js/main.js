@@ -6,7 +6,7 @@
 
   const el = {
     bar: $("bar"), lessonName: $("lessonName"), lessonStd: $("lessonStd"),
-    soundBtn: $("soundBtn"), soundIcon: $("soundIcon"),
+    soundBtn: $("soundBtn"), soundIcon: $("soundIcon"), denBtn: $("denBtn"),
     door: $("door"), doorArt: $("doorArt"), startBtn: $("startBtn"), doorFoot: $("doorFoot"),
     scene: $("scene"), emberHolder: $("emberHolder"), bubble: $("bubble"), emberSays: $("emberSays"),
     task: $("task"), surface: $("surface"), readout: $("readout"), recalls: $("recalls"),
@@ -135,6 +135,25 @@
     paintSound();
   });
 
+  /* ---- Ember's den --------------------------------------------------------
+
+     Out of the cave and into daylight. Coming back puts her where her save
+     says she was, the same as coming through the front door. */
+
+  function openDen() {
+    el.revealWrap.hidden = true;
+    el.scene.hidden = true;
+    el.bar.hidden = true;
+    Den.open(() => {
+      el.bar.hidden = false;
+      el.scene.hidden = false;
+      el.bubble.hidden = false;
+      goFromSave();
+    });
+  }
+
+  el.denBtn.addEventListener("click", openDen);
+
   /* ---- a stage ----------------------------------------------------------- */
 
   function loadStage() {
@@ -154,6 +173,7 @@
     el.nextBtn.hidden = true;
     el.clearBtn.hidden = stage.mode === "rim";
     el.recalls.innerHTML = "";
+    el.denBtn.hidden = false;
     onQuest = false;
 
     Nest.mount(el.surface, {
@@ -187,13 +207,18 @@
 
   function showReveal(rep) {
     const r = stage.reveal || {};
+    /* Teaching is the only thing that fills Ember's hoard. Paid here, the
+       moment she has shown Ember, and nowhere else. */
+    const got = Den.payForStage(lesson.id + ":" + si);
     el.reveal.innerHTML =
       '<div style="width:96px;margin:0 auto 6px">' + el.emberHolder.innerHTML + "</div>" +
       '<p class="sentence">' + Lessons.fill(r.sentence, rep) + "</p>" +
       '<p class="said">' + Lessons.fill(r.said, rep) + "</p>" +
       (r.learned ? '<p class="learned">' + r.learned + "</p>" : "") +
+      '<p class="earned">Ember found ' + Den.coinsHtml(got) + " for you!</p>" +
       '<button class="big" id="revealNext">' + nextLabel() + "</button>";
     el.revealWrap.hidden = false;
+    setTimeout(() => Ambience.coin(), 450);
     $("revealNext").addEventListener("click", advance);
   }
 
@@ -228,6 +253,7 @@
     el.task.textContent = "";
     el.clearBtn.hidden = true;
     el.nextBtn.hidden = true;
+    el.denBtn.hidden = true;          /* she is watching; home can wait */
 
     Quest.start(QUEST3, {
       ember: el.emberHolder, says: el.emberSays, recalls: el.recalls,
@@ -251,6 +277,7 @@
     el.nextBtn.hidden = true;
     el.bubble.hidden = true;
     el.recalls.innerHTML = "";
+    el.denBtn.hidden = false;
     onQuest = false;
 
     Ember.drawSleeping(el.emberHolder);
@@ -264,9 +291,12 @@
         "<p>" + Lessons.fill(E.line) + "</p>" +
         '<div class="taught">' + taught + "</div>" +
         "<p>" + E.next + "</p>" +
+        '<button class="big" id="denFromEnd">Take Ember home to her den</button>' +
         '<button class="ghost" id="questAgainBtn">Watch her do it again</button>' +
         '<button class="ghost" id="againBtn">Teach her all of it again</button>' +
       "</div>";
+
+    $("denFromEnd").addEventListener("click", openDen);
 
     $("questAgainBtn").addEventListener("click", () => {
       el.bubble.hidden = false;
@@ -275,10 +305,7 @@
     });
 
     $("againBtn").addEventListener("click", () => {
-      const name = Save.get().name;
-      Save.reset();
-      Save.setName(name);           /* Ember does not forget who she is */
-      applyName();
+      Save.reset();                 /* the lessons start over; her name and her den do not */
       li = 0; si = 0;
       el.bubble.hidden = false;
       el.surface.innerHTML = "";

@@ -37,6 +37,20 @@ catches herself.
 That is the only assessment in this game, and it is the honest one: what
 Ember can do out there is exactly what the player managed to teach her.
 
+## Ember's den
+
+Out of the cave and into daylight. Ember has a den the player furnishes the way
+she does rooms in the games she already loves: dress Ember up (a crown, heart
+glasses, a scarf), drag furniture around with one finger, feed her a fish or a
+fire pepper. Whatever Ember wears, she keeps wearing in the lessons.
+
+All of it is bought, and the only thing that earns coins is **teaching Ember**:
+each lesson stage pays the first time, and a little when it is taught again.
+Watching, speed and luck pay nothing. Coins are copper, silver and gold, ten
+for one — which is place value — and Pip the mole, who keeps the shop, takes
+exact money and has no change. Paying 1 silver and 8 copper out of two silvers
+means breaking one into ten copper first.
+
 ## Why it's built this way
 
 Everything here answers to one choice: **she should understand it**, not score
@@ -96,9 +110,11 @@ if an asset is missing its stamp, or if two of them disagree. The build number
 is logged to the console at boot, which is the fastest way to find out whether
 somebody is looking at an old copy.
 
-Tests: `node test/boot.test.js` and `node test/lessons.test.js`. No dependencies. They check that every
-lesson can actually be finished on the lattice it is given, and that Ember's
-own attempt fails her own lesson.
+Tests: `node test/boot.test.js`, `node test/lessons.test.js` and `node test/den.test.js`. No
+dependencies. They check that the front door and the den open, that every
+lesson can actually be finished on the lattice it is given, that Ember's own
+attempt fails her own lesson, and that the hoard's arithmetic is place value
+with nothing lost in a trade.
 
 Side doors, for checking one part without replaying the rest: `#l3` opens the
 third lesson, `#l4.2` its second stage, `#quest` the quest, `#quest.11` one

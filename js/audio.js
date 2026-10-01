@@ -149,6 +149,14 @@ const Ambience = (function () {
       bell(PENT[2], t, 0.07);
     },
 
+    /* A coin: two quick bright notes, the sound of treasure. */
+    coin() {
+      if (!ctx || muted) return;
+      const t = ctx.currentTime;
+      bell(1318.5, t, 0.06);
+      bell(1760, t + 0.07, 0.05);
+    },
+
     /* Ember understanding something. Big reward, rare — a rising fifth, which
        is the most unambiguously "yes" interval there is. */
     learned() {

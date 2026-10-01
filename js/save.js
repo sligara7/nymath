@@ -11,7 +11,22 @@
 const Save = (function () {
   const KEY = "nymath.ember.v1";
 
-  const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false, name: "", questDone: false });
+  const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false, name: "", questDone: false, den: null });
+
+  /* Ember's den: her coins, what she owns, what she wears, where things are.
+     `null` until the den first opens, so a save from before the den existed
+     can be told apart from one that has simply bought nothing. */
+  const denOf = d => (d && typeof d === "object") ? {
+    coins: { gold: (d.coins || {}).gold | 0, silver: (d.coins || {}).silver | 0, copper: (d.coins || {}).copper | 0 },
+    owned: Array.isArray(d.owned) ? d.owned.filter(x => typeof x === "string") : [],
+    placed: (d.placed && typeof d.placed === "object") ? d.placed : {},
+    outfit: (d.outfit && typeof d.outfit === "object") ? d.outfit : {},
+    pantry: (d.pantry && typeof d.pantry === "object") ? d.pantry : {},
+    paid: Array.isArray(d.paid) ? d.paid.filter(x => typeof x === "string") : [],
+    wall: typeof d.wall === "string" ? d.wall : "",
+    emberAt: Array.isArray(d.emberAt) ? d.emberAt : null,
+    visited: !!d.visited
+  } : null;
 
   function read() {
     try {
@@ -24,7 +39,8 @@ const Save = (function () {
         learned: Array.isArray(s.learned) ? s.learned : [],
         muted: !!s.muted,
         name: typeof s.name === "string" ? s.name : "",
-        questDone: !!s.questDone
+        questDone: !!s.questDone,
+        den: denOf(s.den)
       };
     } catch (e) {
       return blank();
@@ -55,6 +71,21 @@ const Save = (function () {
     questDone() { state.questDone = true; flush(); },
     /* Offered on the door once there is something to come back to. */
     started: () => state.lesson > 0 || state.stage > 0 || state.learned.length > 0,
-    reset() { state = blank(); flush(); }
+
+    /* Teach it all again: the LESSONS start over, and nothing else does. Her
+       name, her sound setting, and everything she bought for Ember stay — a
+       reset that emptied the den would punish her for practising. */
+    reset() {
+      state.lesson = 0; state.stage = 0; state.learned = []; state.questDone = false;
+      flush();
+    },
+
+    /* The den's own corner of the save. Changes go through `den(fn)` so the
+       write always happens; reading it returns null until the den has been
+       set up once. */
+    den(fn) {
+      if (fn) { state.den = denOf(fn(state.den) || state.den); flush(); }
+      return state.den;
+    }
   };
 })();
