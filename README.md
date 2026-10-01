@@ -85,10 +85,11 @@ stop at 1,000,000, and Grade 4 fractions use only denominators 2, 3, 4, 5, 6,
 
 ## The design
 
-`docs/design/nymath.json` is the full design — every requirement, every
-decision and the reasoning behind it, exported from
-[reflow2](https://github.com/sligara7/reflow2). It records which parts came
-from a person and which were inferred, so the two stay tellable apart.
+The full design — every requirement, every decision and the reasoning behind
+it — is kept in [reflow2](https://github.com/sligara7/reflow2), hosted on
+flo2.io; `.reflow2.toml` names which design it is. It is no longer exported
+into this repository. It records which parts came from a person and which
+were inferred, so the two stay tellable apart.
 
 Read it if you want to know *why* something is the way it is. `AGENTS.md` says
 how to work on this repo without silently undoing a decision.

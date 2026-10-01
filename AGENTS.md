@@ -30,6 +30,12 @@ carry a one-line summary of each, so you can usually tell which one you need wit
 
 ## The record your teammates read
 
+> **This project, since 2026-10-01: the design lives on flo2.io, not in this repo.** The `nymath`
+> MCP server (`.mcp.json`) is the design, and `.reflow2.toml` names it. There is **no committed
+> export**: `docs/design/` was retired on purpose, so do not recreate it, and do not run
+> `export_graph` into the repository. The paragraphs below describe the default reflow2 setup and
+> no longer apply here.
+
 `.reflow2/` is **this machine's** store and is deliberately git-ignored — it is a database, not a
 document. **The design others see is an EXPORT of it, committed at `docs/design/<project>.json`.**
 
