@@ -1,13 +1,13 @@
 /* EMBER — a hatchling drake, drawn rather than downloaded.
 
-   He is inline SVG for two reasons. He scales to any phone without a second
-   asset, and his FACE is data: the moods below are just different eyes and
-   mouths swapped into the same body, so giving him a new expression costs
+   She is inline SVG for two reasons. She scales to any phone without a second
+   asset, and her FACE is data: the moods below are just different eyes and
+   mouths swapped into the same body, so giving her a new expression costs
    four lines, not a new drawing.
 
-   The moods matter more than they look. He is the one who is confused, so
-   she is never the one who is confused — and a nine-year-old reads a face
-   long before she reads a sentence. */
+   The moods matter more than they look. Ember is the one who is confused, so
+   the player is never the one who is confused — and a nine-year-old reads a
+   face long before she reads a sentence. */
 
 const Ember = (function () {
 
@@ -81,7 +81,7 @@ const Ember = (function () {
   '<path d="M97 76 l10 -5 l-1 11 z" fill="#d4551f"/>' +
 
   /* Stub wings. Scalloped along the bottom, because that edge is most of what
-     makes a shape read as a wing — and they are far too small to lift him,
+     makes a shape read as a wing — and they are far too small to lift her,
      which is the whole of Grade 3. */
   '<path d="M27 78 q-19 -17 -18 2 q9 -3 5 6 q7 -3 6 5 q6 -4 10 1 z" fill="url(#wing)"/>' +
   '<path d="M97 78 q19 -17 18 2 q-9 -3 -5 6 q-7 -3 -6 5 q-6 -4 -10 1 z" fill="url(#wing)"/>' +
@@ -117,8 +117,8 @@ const Ember = (function () {
 '</svg>');
   }
 
-  /* One extra flourish for the very end of the grade, when he curls up in the
-     nest she built him. */
+  /* One extra flourish for the very end of the grade, when Ember curls up in the
+     nest the player built her. */
   function sleeping() {
     return svg("sleepy").replace('</svg>',
       '<text x="92" y="30" font-size="13" fill="#a8b6c2" opacity="0.8">z</text>' +

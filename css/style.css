@@ -1,7 +1,7 @@
 /* Ember — a cave at dusk.
 
    One colour rule runs through all of this: the STONE she places is the
-   brightest thing on screen after Ember himself. Not the buttons, not the
+   brightest thing on screen after Ember herself. Not the buttons, not the
    text. What she is building has to be what her eye goes to.
 
    Built for a phone held upright in one hand. Everything is sized off the
@@ -13,7 +13,7 @@
   --bg-lift:   #1e2b38;
   --ink:       #f3e9d8;   /* parchment */
   --ink-soft:  #a8b6c2;
-  --ember:     #ff8a3d;   /* him */
+  --ember:     #ff8a3d;   /* her */
   --ember-hot: #ffc14d;
   --stone:     #b9c7d2;   /* what she lays */
   --stone-dim: #3a4b5c;   /* where a stone could go */
@@ -139,8 +139,8 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 }
 .bubble p { margin: 0; font-size: clamp(14px, 4vw, 16px); }
 
-/* Ember's voice is his own — warm, and never the same colour as an
-   instruction, so she can tell in a glance who is talking to her. */
+/* Ember's voice is her own — warm, and never the same colour as an
+   instruction, so the player can tell in a glance who is talking to her. */
 .bubble p em { color: var(--ember-hot); font-style: normal; font-weight: 700; }
 
 .task {
@@ -216,8 +216,8 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .cell.on { background: var(--stone); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.18); }
 
 /* Ember's own stones, before she has touched them: duller and a little green,
-   so the board reads as HIS mess at first glance and becomes hers as she
-   works. The instant she moves one, it stops being his. */
+   so the board reads as EMBER'S mess at first glance and becomes the
+   player's as she works. The instant she moves one, it stops being Ember's. */
 .cell.on.his { background: #6f8472; box-shadow: none; }
 
 /* Stones carried over from the previous stage stay warm, so when a hard fact
@@ -288,7 +288,7 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
-/* --- she tells him her name ------------------------------------------------ */
+/* --- she tells Ember her name ---------------------------------------------- */
 
 .namefield {
   width: min(70vw, 260px);
@@ -308,8 +308,8 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 
 /* --- the quest ------------------------------------------------------------- */
 
-/* The line that makes the quest a proof rather than a scene: the lesson he is
-   reaching for, named, in her colour rather than his. */
+/* The line that makes the quest a proof rather than a scene: the lesson Ember is
+   reaching for, named, in the player's colour rather than Ember's. */
 .recalls { margin: -4px 0 0; min-height: 1.3em; text-align: center; }
 .recall {
   display: inline-block;

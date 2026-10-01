@@ -4,37 +4,38 @@ A math game for one fourth grader, built around a drake you have to teach.
 
 **[Play it →](https://sligara7.github.io/nymath/)**
 
-Grade 3 is playable: five lessons, and a quest Ember takes on his own at the
+Grade 3 is playable: five lessons, and a quest Ember takes on her own at the
 end of it. Grades 4 and 5 are designed but not written.
 
 ## What it is
 
-Ember is a drake. He hatches unable to fly, and he is not very good at
-mathematics. Neither of those is your problem to solve by feeding him — you
-have to *teach* him, and you can only teach him something you understand
+Ember is a drake. She hatches unable to fly, and she is not very good at
+mathematics. Neither of those is your problem to solve by feeding her — you
+have to *teach* her, and you can only teach her something you understand
 yourself.
 
-He grows across three grades, and his growth is the mathematics:
+She grows across three grades, and her growth is the mathematics:
 
 | | Ember | The math |
 |---|---|---|
-| **Grade 3** | a hatchling, ground-bound | his nest is an array of stones — area, perimeter, multiplication within 100; he eats in equal shares — unit fractions on a number line |
-| **Grade 4** | wings come in; he can turn, not yet fly | the wings must mirror or they don't work — line of symmetry; his glide angle is a real measured angle; and his **hoard** begins — 10 copper = 1 silver = 1 gold = 1 crown, which *is* place value to 1,000,000 |
-| **Grade 5** | he flies | the cave that holds the hoard is volume; the map he flies is the coordinate plane; gem weights are decimals to hundredths |
+| **Grade 3** | a hatchling, ground-bound | her nest is an array of stones — area, perimeter, multiplication within 100; she eats in equal shares — unit fractions on a number line |
+| **Grade 4** | wings come in; she can turn, not yet fly | the wings must mirror or they don't work — line of symmetry; her glide angle is a real measured angle; and her **hoard** begins — 10 copper = 1 silver = 1 gold = 1 crown, which *is* place value to 1,000,000 |
+| **Grade 5** | she flies | the cave that holds the hoard is volume; the map she flies is the coordinate plane; gem weights are decimals to hundredths |
 
-Grade 3 is a gate — he can't get his wings until it's cleared. Grade 5 is a
-door, open to her if she keeps going.
+Grade 3 is a gate — she can't get her wings until it's cleared. Grade 5 is a
+door, open to the player if she keeps going.
 
-## He goes alone
+## She goes alone
 
-When she has taught him all five, Ember goes off to store food for winter
-without her, and she watches. He lays it out in rows, breaks six sevens into
-a thirty he knows and a twelve he can count, turns the shelf when it does not
-fit, and walls it — naming her lesson each time he reaches for one. Halfway
-through he nearly confuses the wall with the floor, and catches himself.
+When the player has taught her all five, Ember goes off alone to store food
+for winter, and the player watches. Ember lays it out in rows, breaks six
+sevens into a thirty she knows and a twelve she can count, turns the shelf
+when it does not fit, and walls it — naming the lesson each time she reaches
+for one. Halfway through she nearly confuses the wall with the floor, and
+catches herself.
 
-That is the only assessment in this game, and it is the honest one: what he
-can do out there is exactly what she managed to teach him.
+That is the only assessment in this game, and it is the honest one: what
+Ember can do out there is exactly what the player managed to teach her.
 
 ## Why it's built this way
 
@@ -49,8 +50,8 @@ worked. You understand a thing if you can teach it.
 
 ## Her name
 
-On first run Ember asks who she is and she types it in. From then on he uses
-her name and the game titles itself after her.
+On first run Ember asks the player who she is, and she types it in. From
+then on Ember uses her name and the game titles itself after her.
 
 Her name is kept in her phone's own storage and nowhere else. **It is not in
 this repository**, which is public — that is why it is typed rather than
@@ -97,7 +98,7 @@ somebody is looking at an old copy.
 
 Tests: `node test/boot.test.js` and `node test/lessons.test.js`. No dependencies. They check that every
 lesson can actually be finished on the lattice it is given, and that Ember's
-own attempt fails his own lesson.
+own attempt fails her own lesson.
 
 Side doors, for checking one part without replaying the rest: `#l3` opens the
 third lesson, `#l4.2` its second stage, `#quest` the quest, `#quest.11` one

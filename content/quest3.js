@@ -1,16 +1,16 @@
 /* THE WINTER STORE — the quest Ember takes alone.
 
-   She does not play this one. She watches. Everything he does here is
-   something she taught him, and he names the lesson each time he reaches for
-   it — which is what makes this the proof rather than a cutscene: the only
-   things he can do are the things that got through.
+   The player does not play this one. She watches. Everything Ember does
+   here is something the player taught her, and Ember names the lesson each
+   time she reaches for it — which is what makes this the proof rather than a
+   cutscene: the only things Ember can do are the things that got through.
 
    There is one wobble, deliberately placed on the hardest idea in the grade
-   (the rim is not the floor). He catches himself. A pupil who never falters
+   (the rim is not the floor). Ember catches herself. A pupil who never falters
    proves nothing; a pupil who falters and recovers proves the teaching went
    deep enough to be reached for under pressure.
 
-   {name} is filled with whatever she typed at the door. */
+   {name} is filled with whatever the player typed at the door. */
 
 const QUEST3 = {
   id: "q3-winter-store",
@@ -22,7 +22,7 @@ const QUEST3 = {
 
     { mood: "worried",
       says: "You're not coming, {name}?",
-      go: "Let him go" },
+      go: "Let her go" },
 
     { mood: "thinking",
       says: "...All right. I'll do it myself.",
@@ -81,7 +81,7 @@ const QUEST3 = {
       readout: "7 + 7 + 6 + 6 = 26",
       go: "Go on" },
 
-    /* The wobble. He reaches for the wrong idea and then finds the right one. */
+    /* The wobble. Ember reaches for the wrong idea and then finds the right one. */
     { mood: "muddled",
       says: "Twenty-six pieces of lip. Twenty-six is smaller than forty-two — so the lip is too <em>small</em> for the shelf—",
       go: "Go on" },
@@ -111,7 +111,7 @@ const QUEST3 = {
   ],
 
   end: {
-    title: "He did it without you.",
+    title: "She did it without you.",
     line: "Everything Ember reached for out there, you put there. That is the whole of it.",
     next: "Wings next. They only work if both sides match — which turns out to be something you can measure."
   }

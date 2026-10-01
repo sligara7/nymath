@@ -1,4 +1,4 @@
-/* What she has taught him.
+/* What she has taught Ember.
 
    Everything stays on her phone. No account, no server, nothing sent
    anywhere. The whole store is one small object under one key.

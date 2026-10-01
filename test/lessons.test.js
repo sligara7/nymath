@@ -147,10 +147,10 @@ GRADE3.lessons.forEach(lesson => {
 (function embersAttempt() {
   const st = GRADE3.lessons[0].stages[0];
   const rep = reportFor(st.his, st.grid.rows, st.grid.cols);
-  ok(rep.total === 12, "Ember laid 12 stones (he thinks 11, or 13)");
+  ok(rep.total === 12, "Ember laid 12 stones (she thinks 11, or 13)");
   ok(!Lessons.passes(st.check, rep), "Ember's ragged nest does NOT pass — she has something to fix");
   ok(rep.rowCounts.length > 1 && new Set(rep.rowCounts).size > 1,
-     "his rows are genuinely unequal: " + rep.rowCounts.join(", "));
+     "her rows are genuinely unequal: " + rep.rowCounts.join(", "));
 })();
 
 /* ---- the free-choice lesson really is free ----------------------------- */
@@ -162,7 +162,7 @@ GRADE3.lessons.forEach(lesson => {
   });
   /* A single line of 12 is a rectangle but not an array worth the name. */
   ok(!Lessons.passes(st.check, reportFor(rect(1, 12))), "a single row of 12 is not accepted as equal rows");
-  ok(!Lessons.passes(st.check, reportFor(rect(3, 3))), "9 stones is not accepted — he had 12");
+  ok(!Lessons.passes(st.check, reportFor(rect(3, 3))), "9 stones is not accepted — she had 12");
 })();
 
 /* ---- the perimeter lesson is the standard's own question ---------------- */

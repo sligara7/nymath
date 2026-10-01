@@ -17,13 +17,13 @@ const Nest = (function () {
 
   let host = null, box = null, cfg = null;
   let stones = new Set();     /* "r,c" she has laid */
-  let hisStones = new Set();  /* Ember's own attempt, so his look different */
+  let hisStones = new Set();  /* Ember's own attempt, so hers look different */
   let keptStones = new Set(); /* carried over from a previous stage */
   let lockedStones = new Set();
   let rim = new Set();        /* twig slot ids */
   let cellEls = new Map(), twigEls = new Map();
   /* Where the rim runs. Usually the whole lattice, but during the quest Ember
-     walls whatever he actually built, which may sit anywhere on it. */
+     walls whatever she actually built, which may sit anywhere on it. */
   let rimRect = null;
   let listener = null;
   let doneRows = new Set();   /* rows already celebrated, so it fires once */
@@ -45,7 +45,7 @@ const Nest = (function () {
     const gap = Math.round(s * GAP_RATIO);
     const step = s + gap;
     /* Room for the rim is reserved from the start even when the rim comes
-       later, so the shelf does not jump sideways the moment he walls it. */
+       later, so the shelf does not jump sideways the moment Ember walls it. */
     const pad = (cfg.mode === "rim" || cfg.willRim) ? Math.round(s * 0.7) : 0;
 
     box.style.width = (cfg.cols * step - gap + pad * 2) + "px";
@@ -83,9 +83,10 @@ const Nest = (function () {
   function paint() {
     cellEls.forEach((el, k) => {
       const on = stones.has(k);
-      /* A stone Ember laid and she has not touched yet looks like HIS — so the
-         board reads as his mess before she starts, and becomes hers as she
-         moves it. One tap on a cell clears its `his` mark for good. */
+      /* A stone Ember laid and the player has not touched yet looks like
+         EMBER'S — so the board reads as Ember's mess before the player starts,
+         and becomes the player's as she moves it. One tap on a cell clears its
+         `his` mark for good (the name is older than Ember being a girl). */
       el.className = "cell" +
         (on ? " on" : "") +
         (hisStones.has(k) ? " his" : "") +
@@ -122,7 +123,7 @@ const Nest = (function () {
   }
 
   /* Build the twig slots round a rectangle. Interactive in the rim lesson;
-     inert during the quest, where Ember lays them himself. */
+     inert during the quest, where Ember lays them herself. */
   function makeRim(rect, interactive) {
     rimRect = rect;
     twigEls.forEach(el => el.remove ? el.remove() : 0);
@@ -158,8 +159,8 @@ const Nest = (function () {
       if (!cfg.carry) { stones = new Set(); keptStones = new Set(); }
 
       hisStones = new Set((cfg.his || []).map(p => key(p[0], p[1])));
-      /* Ember's attempt IS on the board — she rearranges his stones rather
-         than starting from nothing, which is what "fix it" has to mean. */
+      /* Ember's attempt IS on the board — the player rearranges Ember's stones
+         rather than starting from nothing, which is what "fix it" has to mean. */
       hisStones.forEach(k => stones.add(k));
 
       lockedStones = new Set();
@@ -249,8 +250,8 @@ const Nest = (function () {
       announce();
     },
 
-    /* ---- what Ember does when he goes alone -----------------------------
-       She is watching, not tapping, so these lay stones one at a time on a
+    /* ---- what Ember does when she goes alone ----------------------------
+       The player is watching, not tapping, so these lay stones one at a time on a
        timer. Each returns a promise, which is what lets a quest beat say
        "build this, then speak". */
 
@@ -263,8 +264,8 @@ const Nest = (function () {
       announce();
     },
 
-    /* Turning the shelf: every stone at (r,c) moves to (c,r). The point she
-       taught him is that nothing is lost doing it, so nothing is. */
+    /* Turning the shelf: every stone at (r,c) moves to (c,r). The point the player
+       taught Ember is that nothing is lost doing it, so nothing is. */
     async turnIt(ms) {
       const before = [...stones];
       stones = new Set();

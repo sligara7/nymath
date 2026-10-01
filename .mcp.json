@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "nymath": {
+      "type": "http",
+      "url": "https://api.flo2.io/g/dad8f529a065ac9b/mcp"
+    }
+  }
+}

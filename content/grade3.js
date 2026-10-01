@@ -7,8 +7,9 @@
 
    Three things every stage must have:
 
-     emberSays  — what he gets WRONG, in his own voice. The mistake is always
-                  his. She is never the one who failed at something.
+     emberSays  — what Ember gets WRONG, in her own voice. The mistake is
+                  always Ember's. The player is never the one who failed
+                  at something.
      task       — one line. If it needs two lines it is two stages.
      check      — a named rule plus its numbers. The rule lives in the engine.
 
@@ -25,7 +26,7 @@
 const GRADE3 = {
   grade: 3,
   title: "The Hatchling",
-  subtitle: "He cannot fly yet. He cannot count either.",
+  subtitle: "She cannot fly yet. She cannot count either.",
 
   lessons: [
 
@@ -37,9 +38,9 @@ const GRADE3 = {
       stages: [{
         mood: "muddled",
         emberSays: "I built my nest! It took me <em>ages</em>. I counted every single stone, one at a time, and I got eleven. Then I counted again and got thirteen.",
-        task: "Move his stones so every row has the same number.",
+        task: "Move her stones so every row has the same number.",
         grid: { rows: 5, cols: 6 },
-        /* His attempt: twelve stones in ragged rows. A real mistake — this is
+        /* Ember's attempt: twelve stones in ragged rows. A real mistake — this is
            what a pile looks like before anybody thinks of rows. */
         his: [[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[2,0],[2,1],[2,2],[2,3],[2,4],[3,0]],
         check: { rule: "equalRows", total: 12, minRows: 2 },
@@ -59,7 +60,7 @@ const GRADE3 = {
       stages: [{
         mood: "curious",
         emberSays: "I'm going to be much bigger by spring. I need four rows, with five stones in each. That's... I'll start counting. One, two, three—",
-        task: "Lay 4 rows of 5 stones for him.",
+        task: "Lay 4 rows of 5 stones for her.",
         grid: { rows: 5, cols: 6 },
         check: { rule: "exact", rows: 4, cols: 5 },
         reveal: {
@@ -138,7 +139,7 @@ const GRADE3 = {
         {
           mood: "worried",
           emberSays: "Six rows of seven. I know my <em>fives</em>. I don't know sevens. I'm never going to know sevens.",
-          task: "Start with what he does know: 6 rows of 5.",
+          task: "Start with what she does know: 6 rows of 5.",
           grid: { rows: 6, cols: 7 },
           check: { rule: "exact", rows: 6, cols: 5 },
           reveal: {
@@ -172,9 +173,9 @@ const GRADE3 = {
 
   ],
 
-  /* What he can do once she is finished, and what is waiting after it. */
+  /* What Ember can do once the player is finished, and what is waiting after it. */
   finale: {
-    title: "He has a nest.",
+    title: "She has a nest.",
     line: "Ember can lay out a nest, count it the fast way, turn it round without losing anything, tell the rim from the floor, and break a hard number into two easy ones.",
     next: "Wings come next. They only work if both sides match — which turns out to be a thing you can measure."
   }

@@ -34,7 +34,7 @@
 
   if (Save.started()) {
     el.startBtn.textContent = "Back to Ember";
-    el.doorFoot.textContent = "He remembers what you taught him.";
+    el.doorFoot.textContent = "She remembers what you taught her.";
   }
 
   /* A deep link straight to one lesson: #l3 opens the third one, #l4.2 its
@@ -60,7 +60,7 @@
     loadStage();
   }
 
-  /* ---- she tells him her name --------------------------------------------
+  /* ---- she tells Ember her name ------------------------------------------
 
      Her name goes into the page title and into Ember's mouth. It is never in
      this repository, which is why it is typed rather than written in. */
@@ -200,7 +200,7 @@
   function nextLabel() {
     const last = si === lesson.stages.length - 1;
     if (!last) return "Go on";
-    if (li === G.lessons.length - 1) return "See what he can do";
+    if (li === G.lessons.length - 1) return "See what she can do";
     return "Next lesson";
   }
 
@@ -216,7 +216,7 @@
     loadStage();
   }
 
-  /* ---- the quest he takes alone ------------------------------------------- */
+  /* ---- the quest Ember takes alone ---------------------------------------- */
 
   function startQuest(fromBeat) {
     onQuest = true;
@@ -264,8 +264,8 @@
         "<p>" + Lessons.fill(E.line) + "</p>" +
         '<div class="taught">' + taught + "</div>" +
         "<p>" + E.next + "</p>" +
-        '<button class="ghost" id="questAgainBtn">Watch him do it again</button>' +
-        '<button class="ghost" id="againBtn">Teach him all of it again</button>' +
+        '<button class="ghost" id="questAgainBtn">Watch her do it again</button>' +
+        '<button class="ghost" id="againBtn">Teach her all of it again</button>' +
       "</div>";
 
     $("questAgainBtn").addEventListener("click", () => {
@@ -277,7 +277,7 @@
     $("againBtn").addEventListener("click", () => {
       const name = Save.get().name;
       Save.reset();
-      Save.setName(name);           /* he does not forget who she is */
+      Save.setName(name);           /* Ember does not forget who she is */
       applyName();
       li = 0; si = 0;
       el.bubble.hidden = false;

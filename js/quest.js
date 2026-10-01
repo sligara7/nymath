@@ -1,12 +1,13 @@
-/* THE QUEST — Ember, working alone, while she watches.
+/* THE QUEST — Ember, working alone, while the player watches.
 
-   She has no controls here beyond "go on", and that is the point. Everything
-   he does is something she taught him; the nest builds itself under his
-   narration and he names the lesson each time he reaches for one.
+   The player has no controls here beyond "go on", and that is the point.
+   Everything Ember does is something the player taught her; the nest builds
+   itself under Ember's narration and she names the lesson each time she
+   reaches for one.
 
    It is also the only place in the game where the arithmetic sentence comes
-   BEFORE the picture rather than after — because here he is not learning it,
-   he is USING it, and that is what using something looks like. */
+   BEFORE the picture rather than after — because here Ember is not learning
+   it, she is USING it, and that is what using something looks like. */
 
 const Quest = (function () {
 
@@ -19,10 +20,10 @@ const Quest = (function () {
     Ember.draw(els.ember, b.mood || "curious");
     els.says.innerHTML = Lessons.fill(b.says, { shape: { rows: 0, cols: 0, total: 0 } });
 
-    /* The lesson he is reaching for, named in his own words. This is the line
+    /* The lesson Ember is reaching for, named in her own words. This is the line
        that makes the quest a proof rather than a cutscene. */
     els.recalls.innerHTML = b.recalls
-      ? '<span class="recall">he remembers: <b>' + b.recalls + "</b></span>" : "";
+      ? '<span class="recall">she remembers: <b>' + b.recalls + "</b></span>" : "";
 
     els.go.hidden = true;
     els.readout.innerHTML = b.readout ? "<span>" + b.readout + "</span>" : els.readout.innerHTML;
@@ -46,7 +47,7 @@ const Quest = (function () {
       });
       els.readout.innerHTML = "";
 
-      /* Opening the quest partway in (#quest.8) replays what he has already
+      /* Opening the quest partway in (#quest.8) replays what Ember has already
          built, instantly, so the shelf is in the state that beat expects. */
       i = Math.max(0, Math.min(quest.beats.length - 1, fromBeat || 0));
       for (let k = 0; k < i; k++) {

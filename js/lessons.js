@@ -16,7 +16,7 @@ const Lessons = (function () {
 
   /* ---- the rules ---------------------------------------------------------
      Each takes what the nest reports plus the numbers from the content, and
-     answers one question: has she shown him yet? */
+     answers one question: has she shown Ember yet? */
 
   const RULES = {
 

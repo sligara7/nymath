@@ -1,7 +1,7 @@
 /* Can she actually get in the front door?
 
    THIS TEST EXISTS BECAUSE OF A BUG THAT SHIPPED. Three functions behind the
-   "Go and meet him" button were called and never defined; `node --check`
+   start button ("Go and meet her") were called and never defined; `node --check`
    passed, because an undefined function is only an error when something calls
    it. Every screenshot taken that day used a deep link (#l1, #quest) which
    skips the door — so every path was checked except the one every player
@@ -109,10 +109,10 @@ ok($("doorArt").innerHTML.includes("<svg"), "Ember is drawn on the door");
 /* THE BUG: this threw ReferenceError and the button did nothing. */
 let clickError = null;
 try { $("startBtn").fire("click"); } catch (e) { clickError = e; }
-ok(!clickError, "tapping 'Go and meet him' does not throw" + (clickError ? " — " + clickError : ""));
+ok(!clickError, "tapping 'Go and meet her' does not throw" + (clickError ? " — " + clickError : ""));
 
 ok($("door").hidden === true, "the door closes behind her");
-ok($("naming").hidden === false, "he asks who she is");
+ok($("naming").hidden === false, "Ember asks who she is");
 ok($("namingArt").innerHTML.includes("<svg"), "Ember is drawn on the naming screen");
 
 /* ---- she gives her name -------------------------------------------------- */
@@ -126,7 +126,7 @@ ok($("naming").hidden === false, "an empty name does not let her through");
 $("nameInput").value = "Ronie";
 let nameError = null;
 try { $("nameBtn").fire("click"); } catch (e) { nameError = e; }
-ok(!nameError, "telling him her name does not throw" + (nameError ? " — " + nameError : ""));
+ok(!nameError, "telling Ember her name does not throw" + (nameError ? " — " + nameError : ""));
 
 ok($("naming").hidden === true, "the naming screen closes");
 ok($("scene").hidden === false, "she lands in the scene");
@@ -137,14 +137,14 @@ ok(document.title.includes("Ronie"), "the game takes its title from her name: " 
 
 ok($("lessonName").textContent === "The first nest", "lesson one is loaded: " + JSON.stringify($("lessonName").textContent));
 ok($("task").textContent.length > 10, "she has been given something to do");
-ok($("emberSays").innerHTML.includes("nest"), "Ember has said his piece");
+ok($("emberSays").innerHTML.includes("nest"), "Ember has said her piece");
 /* The cells live inside the nest box, which is the surface's only child. */
 const nestBox = $("surface").children[0];
 ok(!!nestBox && nestBox.children.length === 30,
    "the 5x6 lattice is on screen (" + (nestBox ? nestBox.children.length : 0) + " cells)");
 ok(nestBox && nestBox.children.filter(c => c.className.includes("his")).length === 12,
    "twelve of them are Ember's own ragged stones");
-ok($("readout").innerHTML.includes("not the same yet"), "the readout names his ragged rows");
+ok($("readout").innerHTML.includes("not the same yet"), "the readout names her ragged rows");
 
 /* ---- the name survives a reload ------------------------------------------ */
 
