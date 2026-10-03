@@ -300,6 +300,41 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 }
 .twig:active { transform: scale(0.8); }
 
+/* --- "Want a clue?" ------------------------------------------------------- */
+
+.clue-btn {
+  padding: 9px 18px;
+  border: 2px solid var(--ember-hot);
+  border-radius: 999px;
+  color: var(--ember-hot);
+  font-size: 15px;
+  font-weight: 800;
+}
+.clue-btn:active { transform: translateY(1px); }
+
+.clue {
+  margin: 0;
+  padding: 8px 14px;
+  border-left: 3px solid var(--ember-hot);
+  border-radius: 8px;
+  background: var(--bg-lift);
+  color: var(--ink);
+  font-size: clamp(14px, 4.2vw, 17px);
+  text-align: left;
+  animation: pop 0.22s ease-out;
+}
+
+/* Where a clue points: a hollow (or twig slot) with a soft gold ring. It
+   only shows WHERE — she still lays every stone. */
+.cell.glow {
+  box-shadow: inset 0 0 0 2.5px rgba(255, 193, 77, 0.85), 0 0 10px rgba(255, 193, 77, 0.35);
+  animation: glow 1.6s ease-in-out infinite;
+}
+.twig.glow { border: 2px solid rgba(255, 193, 77, 0.9); box-shadow: 0 0 8px rgba(255, 193, 77, 0.45); }
+@keyframes glow { 50% { box-shadow: inset 0 0 0 2.5px rgba(255, 193, 77, 0.45), 0 0 4px rgba(255, 193, 77, 0.15); } }
+
+.stop-art { width: 110px; margin: 0 auto 8px; }
+
 /* --- the reveal ----------------------------------------------------------- */
 
 .reveal-wrap {

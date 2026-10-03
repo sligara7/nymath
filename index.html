@@ -17,7 +17,7 @@
 
 <!-- Bumped on every deploy. If somebody reports a stale page, this number in
      their console says which build they are actually running. -->
-<meta name="build" content="7">
+<meta name="build" content="8">
 
 <!-- On her iPhone, Add to Home Screen makes Ember an app of her own, which
      iPhone Safari's week-long clear-out cannot touch. Deliberately NO web app
@@ -26,9 +26,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Ember">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=7">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=8">
 
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -86,6 +86,9 @@
   <!-- What the player is being asked to show Ember. One line, never two. -->
   <p class="task" id="task"></p>
 
+  <!-- A clue, once she has asked for one. Never before. -->
+  <p class="clue" id="clueText" hidden></p>
+
   <!-- On the quest only: the lesson Ember is reaching for, named. -->
   <p class="recalls" id="recalls"></p>
 
@@ -97,6 +100,8 @@
   <div class="readout" id="readout"></div>
 
   <div class="actions">
+    <!-- Help in three steps, only when she asks. js/main.js. -->
+    <button class="clue-btn" id="clueBtn" hidden>Want a clue?</button>
     <button class="ghost" id="clearBtn" hidden>Start her nest again</button>
     <button class="big" id="nextBtn" hidden>Next</button>
   </div>
@@ -173,21 +178,38 @@
      building. It arrives AFTER she has built it, never before — that order is
      the entire pedagogy of this thing. -->
 <div class="reveal-wrap" id="revealWrap" hidden>
-  <div class="reveal" id="reveal"></div>
+  <div class="reveal" id="reveal">
+    <div id="revealBody"></div>
+    <button class="big" id="revealNext">Go on</button>
+    <!-- Only at the end of a lesson: the den is the celebration AFTER
+         teaching, never a way out of the middle of it. -->
+    <button class="ghost" id="revealDen" hidden>Visit Ember's den</button>
+  </div>
 </div>
 
-<script src="content/grade3.js?v=7"></script>
-<script src="content/quest3.js?v=7"></script>
-<script src="content/den.js?v=7"></script>
-<script src="js/save.js?v=7"></script>
-<script src="js/keep.js?v=7"></script>
-<script src="js/audio.js?v=7"></script>
-<script src="js/ember.js?v=7"></script>
-<script src="js/nest.js?v=7"></script>
-<script src="js/lessons.js?v=7"></script>
-<script src="js/quest.js?v=7"></script>
-<script src="js/hoard.js?v=7"></script>
-<script src="js/den.js?v=7"></script>
-<script src="js/main.js?v=7"></script>
+<!-- When three clues were not enough and she asked to stop: Ember is kind
+     about it, and the hard one waits until another day. -->
+<div class="reveal-wrap" id="stopWrap" hidden>
+  <div class="reveal">
+    <div class="stop-art" id="stopArt"></div>
+    <p class="said" id="stopSays"></p>
+    <button class="big" id="stopReview">Teach Ember one she knows</button>
+    <button class="ghost" id="stopDen">Go to Ember's den</button>
+  </div>
+</div>
+
+<script src="content/grade3.js?v=8"></script>
+<script src="content/quest3.js?v=8"></script>
+<script src="content/den.js?v=8"></script>
+<script src="js/save.js?v=8"></script>
+<script src="js/keep.js?v=8"></script>
+<script src="js/audio.js?v=8"></script>
+<script src="js/ember.js?v=8"></script>
+<script src="js/nest.js?v=8"></script>
+<script src="js/lessons.js?v=8"></script>
+<script src="js/quest.js?v=8"></script>
+<script src="js/hoard.js?v=8"></script>
+<script src="js/den.js?v=8"></script>
+<script src="js/main.js?v=8"></script>
 </body>
 </html>

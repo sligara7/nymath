@@ -39,8 +39,9 @@ Ember can do out there is exactly what the player managed to teach her.
 
 ## Ember's den
 
-Out of the cave and into daylight — and where every visit starts; the lessons
-are one tap away. Ember has a den the player furnishes the way
+Out of the cave and into daylight — the celebration after a lesson, never the
+first stop and never a way out of the middle of one (short sessions; decorating
+at the end). Ember has a den the player furnishes the way
 she does rooms in the games she already loves: dress Ember up (a crown, heart
 glasses, a scarf), drag furniture around with one finger, feed her a fish or a
 fire pepper. Whatever Ember wears, she keeps wearing in the lessons.
@@ -53,6 +54,20 @@ she has — takes her straight into the next lesson that pays. Coins are copper,
 for one — which is place value — and Pip the mole, who keeps the shop, takes
 exact money and has no change. Paying 1 silver and 8 copper out of two silvers
 means breaking one into ten copper first.
+
+## When she is stuck
+
+"Want a clue?" gives help in three steps, only when she asks: a nudge in words,
+then a picture (hollows in the nest glow to show where), then a worked example
+(the glow is a whole correct shape — she still builds it). Clues never cost
+coins.
+
+How many clues she needed, and how often she started again, is written down
+quietly on her phone and never shown to her: one clue is a minor struggle, two
+moderate, three severe. If three clues are not enough, the button asks "Still
+stuck?" — and Ember stops kindly: it is tricky for her too, they will come back
+to it tomorrow, and meanwhile she can teach Ember one she already knows or go
+home to the den.
 
 ## Why it's built this way
 

@@ -15,6 +15,11 @@
                   ("Rescue her nest!", not "Build it the other way round"),
                   and it still has to say exactly what to build.
      check      — a named rule plus its numbers. The rule lives in the engine.
+     clues      — three, given one per tap of "Want a clue?": a nudge in
+                  words, then a clearer picture (`show` makes some hollows
+                  or twig slots glow), then a worked example whose glow is a
+                  whole correct shape. She still builds it herself. Clues
+                  never cost coins.
 
    And one thing that must come LAST:
 
@@ -47,6 +52,11 @@ const GRADE3 = {
            what a pile looks like before anybody thinks of rows. */
         his: [[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[2,0],[2,1],[2,2],[2,3],[2,4],[3,0]],
         check: { rule: "equalRows", total: 12, minRows: 2 },
+        clues: [
+          { say: "Count all her stones first. How many has she got altogether?" },
+          { say: "Her top row has 4 already. Make the next row match it.", show: { r0: 1, rows: 1, cols: 4 } },
+          { say: "Like this: 3 rows of 4. Move her stones into the glowing hollows.", show: { rows: 3, cols: 4 } }
+        ],
         reveal: {
           sentence: "{rows} × {cols} = {total}",
           said: "Oh! Every row is the same now. So I only have to count <em>one</em> row — then skip along. I never have to count them all again.",
@@ -66,6 +76,11 @@ const GRADE3 = {
         task: "Save her from counting to twenty — lay 4 rows of 5.",
         grid: { rows: 5, cols: 6 },
         check: { rule: "exact", rows: 4, cols: 5 },
+        clues: [
+          { say: "Start in a corner, and lay one row of 5 first." },
+          { say: "Here's one row of 5. Now three more just like it underneath.", show: { rows: 1, cols: 5 } },
+          { say: "4 rows, 5 in each. Fill every glowing hollow.", show: { rows: 4, cols: 5 } }
+        ],
         reveal: {
           sentence: "4 × 5 = 20",
           said: "Five, ten, fifteen, twenty. I didn't count a single stone twice.",
@@ -85,6 +100,11 @@ const GRADE3 = {
         task: "Rescue her nest! Turn it into 8 rows of 3 — no stones lost.",
         grid: { rows: 8, cols: 5 },
         check: { rule: "exact", rows: 8, cols: 3 },
+        clues: [
+          { say: "Tall and thin now: only 3 across, and 8 rows down." },
+          { say: "Every row is just 3 stones wide, like this one.", show: { rows: 1, cols: 3 } },
+          { say: "8 rows of 3. Fill the glowing hollows from top to bottom.", show: { rows: 8, cols: 3 } }
+        ],
         reveal: {
           sentence: "8 × 3 = 3 × 8 = 24",
           said: "Twenty-four both ways. I turned my whole nest round and I didn't lose <em>one stone</em>.",
@@ -111,6 +131,11 @@ const GRADE3 = {
           locked: true,
           mode: "rim",
           check: { rule: "rim" },
+          clues: [
+          { say: "Twigs go round the OUTSIDE edge, not in between the stones." },
+          { say: "Start along the top: one twig above every stone.", show: { twigs: "top" } },
+          { say: "Every glowing edge needs a twig: top, bottom and both sides.", show: { twigs: "all" } }
+        ],
           reveal: {
             sentence: "4 + 4 + 3 + 3 = 14",
             said: "Fourteen twigs round the edge. But only twelve stones on the floor. Those aren't the same number at all!",
@@ -124,6 +149,11 @@ const GRADE3 = {
           grid: { rows: 5, cols: 7 },
           hint: "Long and thin.",
           check: { rule: "samePerimeterLessArea", perimeter: 14, lessThan: 12 },
+          clues: [
+          { say: "Long and thin means only a few rows. What if it's just 2 rows tall?" },
+          { say: "2 rows tall, like these. Now how long can it be?", show: { rows: 2, cols: 1 } },
+          { say: "2 rows of 5: 5 + 5 + 2 + 2 = 14 twigs, but only 10 stones inside.", show: { rows: 2, cols: 5 } }
+        ],
           reveal: {
             sentence: "{perimeter} round · only {area} inside",
             said: "The same twigs. The same rim, exactly. And it's a <em>worse nest</em>. I was completely wrong.",
@@ -145,6 +175,11 @@ const GRADE3 = {
           task: "Start with the bit she knows — 6 rows of 5. Easy-peasy.",
           grid: { rows: 6, cols: 7 },
           check: { rule: "exact", rows: 6, cols: 5 },
+          clues: [
+          { say: "She knows her fives! Make every row 5 stones long." },
+          { say: "One row of 5, like this. She needs 6 rows of them.", show: { rows: 1, cols: 5 } },
+          { say: "6 rows of 5. Fill every glowing hollow.", show: { rows: 6, cols: 5 } }
+        ],
           reveal: {
             sentence: "6 × 5 = 30",
             said: "Well, yes. I can do that bit.",
@@ -165,6 +200,11 @@ const GRADE3 = {
              opens this stage directly, so the task always makes sense. */
           fill: { rows: 6, cols: 5 },
           check: { rule: "exact", rows: 6, cols: 7 },
+          clues: [
+          { say: "Keep her 30 just where they are. Each row needs 2 more on the end." },
+          { say: "Two more on the end of the top row, like this.", show: { r0: 0, c0: 5, rows: 1, cols: 2 } },
+          { say: "Two on the end of every row: 6 rows of 2 is 12 more.", show: { r0: 0, c0: 5, rows: 6, cols: 2 } }
+        ],
           reveal: {
             sentence: "30 + 12 = 42",
             said: "Six sevens is forty-two. I <em>did</em> know it. I just had to break it into a bit I knew and a bit I could count.",

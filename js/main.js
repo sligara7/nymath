@@ -11,8 +11,9 @@
     scene: $("scene"), emberHolder: $("emberHolder"), bubble: $("bubble"), emberSays: $("emberSays"),
     task: $("task"), surface: $("surface"), readout: $("readout"), recalls: $("recalls"),
     naming: $("naming"), namingArt: $("namingArt"), nameInput: $("nameInput"), nameBtn: $("nameBtn"),
-    clearBtn: $("clearBtn"), nextBtn: $("nextBtn"),
-    revealWrap: $("revealWrap"), reveal: $("reveal")
+    clearBtn: $("clearBtn"), nextBtn: $("nextBtn"), clueBtn: $("clueBtn"), clueText: $("clueText"),
+    revealWrap: $("revealWrap"), revealBody: $("revealBody"), revealNext: $("revealNext"), revealDen: $("revealDen"),
+    stopWrap: $("stopWrap"), stopArt: $("stopArt"), stopSays: $("stopSays"), stopReview: $("stopReview"), stopDen: $("stopDen")
   };
 
   /* Which build is actually running, in her console. When somebody says the
@@ -85,7 +86,7 @@
     if (!n) { try { el.nameInput.focus(); } catch (e) {} return; }
     applyName();
     el.naming.hidden = true;
-    openDen();
+    goFromSave();
   }
 
   /* Where her save says she should be: mid-lesson, at the quest, or past it. */
@@ -117,8 +118,9 @@
     paintSound();
     Save.persist();
     if (!s.name) { askName(); return; }
-    /* Every start is in Ember's den. The lessons are one tap from there. */
-    openDen();
+    /* Every session starts with teaching. The den is the celebration after
+       a lesson, never the first stop (short sessions, decorating at the end). */
+    goFromSave();
   });
 
   /* ---- sound ------------------------------------------------------------- */
@@ -139,12 +141,14 @@
 
   /* ---- Ember's den --------------------------------------------------------
 
-     Out of the cave and into daylight, and where every visit begins. Leaving
-     by "‹ Lessons" puts her where her save says she was. */
+     Out of the cave and into daylight — reached at the END of a lesson, as the
+     celebration, and from the end of the grade. Never from the middle of a
+     lesson. Leaving by "‹ Lessons" puts her where her save says she was. */
 
   function openDen() {
     el.door.hidden = true;
     el.revealWrap.hidden = true;
+    el.stopWrap.hidden = true;
     el.scene.hidden = true;
     el.bar.hidden = true;
     const back = () => {
@@ -166,12 +170,18 @@
 
   /* ---- a stage ----------------------------------------------------------- */
 
+  const stageKey = () => lesson.id + ":" + si;
+
   function loadStage() {
     lesson = G.lessons[li];
     stage = lesson.stages[si];
     passed = false;
 
+    /* The one she asked to stop on rests until another day. */
+    if (Save.isParked(stageKey())) { showStop(); return; }
+
     Save.at(li, si);
+    Save.attempt(stageKey());
 
     el.lessonName.textContent = lesson.name;
     el.lessonStd.textContent = lesson.standards.join(" · ");
@@ -183,8 +193,9 @@
     el.nextBtn.hidden = true;
     el.clearBtn.hidden = stage.mode === "rim";
     el.recalls.innerHTML = "";
-    el.denBtn.hidden = false;
+    el.denBtn.hidden = true;          /* the den comes after the lesson */
     onQuest = false;
+    resetClues();
 
     Nest.mount(el.surface, {
       rows: stage.grid.rows,
@@ -203,6 +214,7 @@
     if (passed) return;
     if (Lessons.passes(stage.check, rep)) {
       passed = true;
+      el.clueBtn.hidden = true;
       Ambience.learned();
       Ember.draw(el.emberHolder, "delighted");
       /* A beat before the reveal, so she gets to look at the thing she just
@@ -211,7 +223,80 @@
     }
   });
 
-  el.clearBtn.addEventListener("click", () => { passed = false; Nest.clear(); });
+  el.clearBtn.addEventListener("click", () => {
+    if (stage) Save.note(stageKey(), "restart");
+    passed = false;
+    Nest.clear();
+  });
+
+  /* ---- "Want a clue?" ------------------------------------------------------
+
+     Help in three steps, and only when she asks: a nudge in words, then a
+     clearer picture (hollows glow to show where), then a worked example (the
+     glow is a whole correct shape, which she still builds herself). Clues
+     never cost coins. How many she needed is written down quietly and never
+     shown to her. After the third, the button asks whether she is still
+     stuck — and if she is, Ember stops kindly for today. */
+
+  let clueStep = 0;
+
+  function resetClues() {
+    clueStep = 0;
+    el.clueText.hidden = true;
+    el.clueText.innerHTML = "";
+    el.clueBtn.textContent = "Want a clue?";
+    el.clueBtn.hidden = !(stage && stage.clues && stage.clues.length);
+  }
+
+  function hideClues() {
+    el.clueBtn.hidden = true;
+    el.clueText.hidden = true;
+  }
+
+  el.clueBtn.addEventListener("click", () => {
+    if (!stage || passed || !stage.clues) return;
+    if (clueStep < stage.clues.length) {
+      const c = stage.clues[clueStep++];
+      Save.note(stageKey(), "clue");
+      el.clueText.innerHTML = Lessons.fill(c.say);
+      el.clueText.hidden = false;
+      Nest.glow(c.show || null);
+      el.clueBtn.textContent = clueStep < stage.clues.length ? "Another clue?" : "Still stuck?";
+      Ambience.lift();
+      return;
+    }
+    Save.note(stageKey(), "stopped");
+    Save.park(stageKey());
+    showStop();
+  });
+
+  /* ---- Ember stops kindly --------------------------------------------------
+
+     It is Ember who is tired, never the player who failed. The hard one waits
+     until tomorrow; today she can teach Ember something already taught
+     (which still pays) or go home to the den. */
+
+  function previousStage() {
+    if (si > 0) return { l: li, st: si - 1 };
+    if (li > 0) return { l: li - 1, st: G.lessons[li - 1].stages.length - 1 };
+    return null;
+  }
+
+  function showStop() {
+    hideClues();
+    Ember.draw(el.stopArt, "sleepy");
+    el.stopSays.innerHTML = Lessons.fill(
+      "Phew. This one's really tricky for me too, {name}. Let's come back to it tomorrow — my brain needs a sleep first.");
+    el.stopReview.hidden = !previousStage();
+    el.stopWrap.hidden = false;
+  }
+
+  el.stopReview.addEventListener("click", () => {
+    const back = previousStage();
+    el.stopWrap.hidden = true;
+    if (back) enter(back);
+  });
+  el.stopDen.addEventListener("click", () => { el.stopWrap.hidden = true; openDen(); });
 
   /* ---- the reveal -------------------------------------------------------- */
 
@@ -219,18 +304,23 @@
     const r = stage.reveal || {};
     /* Teaching is the only thing that fills Ember's hoard. Paid here, the
        moment she has shown Ember, and nowhere else. */
-    const got = Den.payForStage(lesson.id + ":" + si);
-    el.reveal.innerHTML =
+    const got = Den.payForStage(stageKey());
+    Save.note(stageKey(), "solved");
+    el.revealBody.innerHTML =
       '<div style="width:96px;margin:0 auto 6px">' + el.emberHolder.innerHTML + "</div>" +
       '<p class="sentence">' + Lessons.fill(r.sentence, rep) + "</p>" +
       '<p class="said">' + Lessons.fill(r.said, rep) + "</p>" +
       (r.learned ? '<p class="learned">' + r.learned + "</p>" : "") +
-      '<p class="earned">Ember found ' + Den.coinsHtml(got) + " for you!</p>" +
-      '<button class="big" id="revealNext">' + nextLabel() + "</button>";
+      '<p class="earned">Ember found ' + Den.coinsHtml(got) + " for you!</p>";
+    el.revealNext.textContent = nextLabel();
+    /* The den is offered only once a whole lesson is done. */
+    el.revealDen.hidden = si !== lesson.stages.length - 1;
     el.revealWrap.hidden = false;
     setTimeout(() => Ambience.coin(), 450);
-    $("revealNext").addEventListener("click", advance);
   }
+
+  el.revealNext.addEventListener("click", () => advance(false));
+  el.revealDen.addEventListener("click", () => advance(true));
 
   function nextLabel() {
     const last = si === lesson.stages.length - 1;
@@ -239,7 +329,9 @@
     return "Next lesson";
   }
 
-  function advance() {
+  /* On to what comes next — or, at the end of a lesson, home to the den
+     first, with her place already moved on so "‹ Lessons" picks up there. */
+  function advance(toDen) {
     el.revealWrap.hidden = true;
     if (si === lesson.stages.length - 1) {
       Save.taught(lesson.id);
@@ -247,7 +339,12 @@
     } else {
       si++;
     }
-    if (li >= G.lessons.length) { Save.at(G.lessons.length, 0); startQuest(); return; }
+    if (li >= G.lessons.length) {
+      Save.at(G.lessons.length, 0);
+      if (toDen) openDen(); else startQuest();
+      return;
+    }
+    if (toDen) { Save.at(li, si); openDen(); return; }
     loadStage();
   }
 
@@ -264,6 +361,7 @@
     el.clearBtn.hidden = true;
     el.nextBtn.hidden = true;
     el.denBtn.hidden = true;          /* she is watching; home can wait */
+    hideClues();
 
     Quest.start(QUEST3, {
       ember: el.emberHolder, says: el.emberSays, recalls: el.recalls,
@@ -287,8 +385,9 @@
     el.nextBtn.hidden = true;
     el.bubble.hidden = true;
     el.recalls.innerHTML = "";
-    el.denBtn.hidden = false;
+    el.denBtn.hidden = false;         /* the grade is done: home is earned */
     onQuest = false;
+    hideClues();
 
     Ember.drawSleeping(el.emberHolder);
 

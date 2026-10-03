@@ -1,4 +1,4 @@
-/* Can she actually get in the front door — and into her den behind it?
+/* Can she actually get in the front door — and through her first lesson?
 
    THIS TEST EXISTS BECAUSE OF A BUG THAT SHIPPED. Three functions behind the
    start button ("Go and meet her") were called and never defined; `node --check`
@@ -8,8 +8,9 @@
    takes, and the game was published dead on its first screen.
 
    So this one boots the real scripts, in the real order index.html loads them,
-   against a shimmed DOM, and then walks: tap in, give a name, land in
-   Ember's den, go through to the first lesson. No dependencies.
+   against a shimmed DOM, and then walks: tap in, give a name, land in the
+   first lesson, ask for clues, solve it, and go home to the den. No
+   dependencies.
 
    Run: node test/boot.test.js */
 
@@ -104,6 +105,10 @@ if (bootError) { console.log("ok 0/" + checks + " — boot failed"); process.exi
 const $ = id => byId.get(id);
 const { Save, Den, GRADE3 } = globalThis.__page;
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+(async () => {
+
 /* ---- the door ------------------------------------------------------------ */
 
 ok($("startBtn").listens("click") > 0, "the start button has a click handler at all");
@@ -134,17 +139,16 @@ ok(!nameError, "telling Ember her name does not throw" + (nameError ? " — " + 
 ok($("naming").hidden === true, "the naming screen closes");
 ok(document.title.includes("Wren"), "the game takes its title from her name: " + JSON.stringify(document.title));
 
-/* ---- every start is in Ember's den ---------------------------------------- */
+/* ---- every session starts with teaching ---------------------------------
 
-ok($("den").hidden === false, "she lands in Ember's den, not a lesson");
-ok($("scene").hidden === true && $("bar").hidden === true, "the lesson screen stays out of the way");
+   The den is the celebration AFTER a lesson (short sessions; decorating at
+   the end), so the door leads straight into her next lesson, and the house
+   button is not there in the middle of one. */
+
+ok(Save.den() === null, "she does not land in the den (it has not even been opened yet)");
+ok($("scene").hidden === false && $("bar").hidden === false, "she lands in her lesson");
 ok($("door").hidden === true, "the door is gone");
-ok($("keepTip").hidden === true, "no iPhone tip off an iPhone");
-
-/* ...and the lessons are one tap from there. */
-$("denBack").fire("click");
-ok($("den").hidden === true && $("scene").hidden === false, "'‹ Lessons' takes her into the lesson screen");
-ok($("bar").hidden === false, "the top bar appears");
+ok($("denBtn").hidden === true, "no way to the den from the middle of a lesson");
 
 /* ---- and she is in the first lesson -------------------------------------- */
 
@@ -159,22 +163,70 @@ ok(nestBox && nestBox.children.filter(c => c.className.includes("his")).length =
    "twelve of them are Ember's own ragged stones");
 ok($("readout").innerHTML.includes("not the same yet"), "the readout names her ragged rows");
 
-/* ---- the way home to Ember's den ------------------------------------------ */
+/* ---- "Want a clue?" ------------------------------------------------------ */
 
-ok($("denBtn").hidden === false, "the way home to Ember's den is on the lesson screen");
+const KEY1 = "g3-ragged-nest:0";
+ok($("clueBtn").hidden === false && $("clueText").hidden === true, "a clue is offered, and none is shown until she asks");
+$("clueBtn").fire("click");
+ok($("clueText").hidden === false && $("clueText").innerHTML.length > 10, "the first clue is words: " + $("clueText").innerHTML);
+ok(nestBox.children.filter(c => c.className.includes("glow")).length === 0, "and lights nothing up");
+$("clueBtn").fire("click");
+ok(nestBox.children.filter(c => c.className.includes("glow")).length === 2,
+   "the second is a picture: the two empty hollows of the row to match glow");
+ok($("clueBtn").textContent === "Another clue?", "the button offers one more");
+$("clearBtn").fire("click");
+ok(Save.struggleOf(KEY1)[0].clues === 2 && Save.struggleOf(KEY1)[0].restarts === 1,
+   "two clues and one restart are written down quietly");
+
+/* She solves it: two stray stones out, two into the gap — 3 rows of 4. */
+[[2, 4], [3, 0], [1, 2], [1, 3]].forEach(([r, c]) => nestBox.children[r * 6 + c].fire("pointerdown"));
+ok($("readout").innerHTML.includes("3</b> rows of <b>4"), "her nest reads 3 rows of 4");
+ok($("clueBtn").hidden === true, "the clue button goes once it is solved");
+await sleep(700);
+ok($("revealWrap").hidden === false, "the reveal arrives");
+ok(Save.struggleOf(KEY1)[0].solved && Save.struggleOf(KEY1)[0].level === "moderate",
+   "solved after two clues is a moderate struggle: " + JSON.stringify(Save.struggleOf(KEY1)[0]));
+
+/* ---- the den, as the celebration after a lesson -------------------------- */
+
+ok($("revealNext").textContent === "Next lesson", "the reveal offers the next lesson");
+ok($("revealDen").hidden === false, "and, at the end of a lesson, a visit to the den");
 let denError = null;
-try { $("denBtn").fire("click"); } catch (e) { denError = e; }
+try { $("revealDen").fire("click"); } catch (e) { denError = e; }
 ok(!denError, "opening the den does not throw" + (denError ? " — " + denError : ""));
 ok($("den").hidden === false && $("scene").hidden === true, "the den opens in place of the lesson");
+ok($("keepTip").hidden === true, "no iPhone tip off an iPhone");
 ok($("roomItems").children.length >= 2, "Ember and her cushion are in the room (" + $("roomItems").children.length + ")");
 ok($("drawer").children.length > 0, "the drawer has things in it");
-ok($("purseMini").innerHTML.includes("<b>12</b>"), "she starts with a few coins to spend");
+ok($("purseMini").innerHTML.includes("<b>15</b>"), "her coins: 12 to start, plus 2 silver 3 copper for teaching");
 
 let backError = null;
 try { $("denBack").fire("click"); } catch (e) { backError = e; }
 ok(!backError, "leaving the den does not throw" + (backError ? " — " + backError : ""));
-ok($("den").hidden === true && $("scene").hidden === false, "and the way back puts her in her lesson again");
-ok($("lessonName").textContent === "The first nest", "the same lesson she left");
+ok($("den").hidden === true && $("scene").hidden === false, "and the way back puts her in her lessons again");
+ok($("lessonName").textContent === "The fast count", "at the NEXT lesson — her place moved on before the den");
+
+/* ---- when three clues are not enough -------------------------------------- */
+
+const KEY2 = "g3-fast-count:0";
+$("clueBtn").fire("click"); $("clueBtn").fire("click"); $("clueBtn").fire("click");
+const box2 = $("surface").children[0];
+ok(box2.children.filter(c => c.className.includes("glow")).length === 20, "the third clue is the worked example: the whole 4 x 5 glows");
+ok($("clueBtn").textContent === "Still stuck?", "after three, the button asks if she is still stuck");
+$("clueBtn").fire("click");
+ok($("stopWrap").hidden === false, "Ember stops, kindly");
+ok(/tomorrow/.test($("stopSays").innerHTML) && $("stopSays").innerHTML.includes("Wren"), "and says they'll come back to it tomorrow");
+ok(Save.struggleOf(KEY2)[0].level === "severe" && Save.isParked(KEY2), "it is a severe struggle, set aside until another day");
+ok($("stopReview").hidden === false, "she is offered one she already knows");
+$("stopReview").fire("click");
+ok($("stopWrap").hidden === true && $("lessonName").textContent === "The first nest", "and it takes her there");
+/* Anything that leads back to the hard one today meets the same kind stop. */
+$("denBtn").fire("click");    /* the same path the reveal's den button takes */
+$("denEarn").fire("click");
+ok($("stopWrap").hidden === false, "today, the way back to the hard one is the kind stop again");
+$("stopDen").fire("click");
+ok($("den").hidden === false && $("stopWrap").hidden === true, "or she can go home to the den");
+Save.get().parked = null;   /* tomorrow, for the checks below */
 
 /* ---- "how do I get more coins?" ------------------------------------------
 
@@ -182,26 +234,31 @@ ok($("lessonName").textContent === "The first nest", "the same lesson she left")
    own, and Pip's when she cannot afford a thing — and both must land her in
    a lesson that PAYS, wherever she was when she asked. */
 
+/* The house button is only shown at the end of the grade now, but its path
+   (openDen) is the same one the reveal uses, so the checks below open the
+   den through it. */
+const openDen = () => $("denBtn").fire("click");
+
 const tapShop = act => $("shop").fire("click", {
   target: { closest: () => ({ disabled: false, getAttribute: a => (a === "data-act" ? act : null) }) }
 });
 
-$("denBtn").fire("click");
+openDen();
 ok($("denEarn").listens("click") > 0, "the den has a 'Get more coins' button");
 let earnError = null;
 try { $("denEarn").fire("click"); } catch (e) { earnError = e; }
 ok(!earnError, "tapping 'Get more coins' does not throw" + (earnError ? " — " + earnError : ""));
 ok($("den").hidden === true && $("scene").hidden === false, "it takes her out of the den into a lesson");
-ok($("lessonName").textContent === "The first nest", "the first stage she has never been paid for");
+ok($("lessonName").textContent === "The fast count", "the first stage she has never been paid for (lesson one is paid)");
 
-/* Something she cannot afford: 12 copper against a 45-copper crown. */
-$("denBtn").fire("click");
+/* Something she cannot afford: 35 copper's worth against a 45-copper crown. */
+openDen();
 const tiles = $("drawer").children;
 const crown = tiles.find(t => t.innerHTML.includes("Golden crown"));
 ok(!!crown, "the golden crown is in the wardrobe");
 crown.fire("click");
 ok($("shopWrap").hidden === false, "tapping it opens Pip's shop");
-ok($("shop").innerHTML.includes("3 silver and 3 copper"), "Pip says exactly how much more she needs (45 - 12 = 33)");
+ok($("shop").innerHTML.includes("needs 1 silver more"), "Pip says exactly how much more she needs (45 - 35 = 10)");
 ok($("shop").innerHTML.includes("Teach Ember to earn more"), "and offers the way to earn it");
 let teachError = null;
 try { tapShop("teach"); } catch (e) { teachError = e; }
@@ -214,7 +271,7 @@ ok($("shopWrap").hidden === true && $("den").hidden === true && $("scene").hidde
 Save.den(d => { GRADE3.lessons.slice(0, 2).forEach(l => l.stages.forEach((s, k) => d.paid.push(l.id + ":" + k))); return d; });
 const at = Den.nextToTeach();
 ok(at.l === 2 && at.st === 0, "with lessons one and two paid, the next that pays is lesson three, stage one");
-$("denBtn").fire("click");
+openDen();
 $("denEarn").fire("click");
 ok($("lessonName").textContent === GRADE3.lessons[2].name, "and that is where the button takes her");
 
@@ -224,7 +281,7 @@ Save.den(d => { GRADE3.lessons.forEach(l => l.stages.forEach((s, k) => d.paid.pu
 Save.questDone();
 const again = Den.nextToTeach();
 ok(again.l === 0 && again.st === 0, "with everything paid, it is the first stage again, which still pays");
-$("denBtn").fire("click");
+openDen();
 $("denEarn").fire("click");
 ok($("lessonName").textContent === "The first nest", "after the quest it still lands her in a lesson, not the end screen");
 ok(Save.get().questDone === true, "and teaching again does not take the quest away from her");
@@ -273,3 +330,5 @@ ok(!read("content/grade3.js").includes("Wren") && !read("index.html").includes("
 
 console.log((fails ? "FAILED" : "ok") + " — " + (checks - fails) + "/" + checks + " checks");
 process.exit(fails ? 1 : 0);
+
+})();

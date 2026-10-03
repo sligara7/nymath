@@ -27,6 +27,9 @@ const Nest = (function () {
   let rimRect = null;
   let listener = null;
   let doneRows = new Set();   /* rows already celebrated, so it fires once */
+  /* Where a clue is pointing: hollows and twig slots that glow. A glow only
+     ever shows WHERE; she still lays every stone herself. */
+  let glowCells = new Set(), glowTwigs = new Set();
 
   const key = (r, c) => r + "," + c;
 
@@ -90,9 +93,12 @@ const Nest = (function () {
       el.className = "cell" +
         (on ? " on" : "") +
         (hisStones.has(k) ? " his" : "") +
-        (on && keptStones.has(k) ? " kept" : "");
+        (on && keptStones.has(k) ? " kept" : "") +
+        (!on && glowCells.has(k) ? " glow" : "");
     });
-    twigEls.forEach((el, id) => { el.className = "twig" + (rim.has(id) ? " on" : ""); });
+    twigEls.forEach((el, id) => {
+      el.className = "twig" + (rim.has(id) ? " on" : "") + (!rim.has(id) && glowTwigs.has(id) ? " glow" : "");
+    });
   }
 
   function announce() {
@@ -176,6 +182,7 @@ const Nest = (function () {
 
       rim = new Set();
       doneRows = new Set();
+      glowCells = new Set(); glowTwigs = new Set();
 
       host.innerHTML = "";
       box = document.createElement("div");
@@ -290,6 +297,19 @@ const Nest = (function () {
         rim.add(id); Ambience.stone(); announce(); await sleep(pace(ms, 45));
       }
       announce();
+    },
+
+    /* Light up where a clue points: { r0, c0, rows, cols } for hollows, or
+       { twigs: "top" | "all" } for the rim. null puts the glow out. */
+    glow(spec) {
+      glowCells = new Set(); glowTwigs = new Set();
+      if (spec && spec.twigs) {
+        twigEls.forEach((el, id) => { if (spec.twigs === "all" || id[0] === spec.twigs[0]) glowTwigs.add(id); });
+      } else if (spec) {
+        const r0 = spec.r0 || 0, c0 = spec.c0 || 0;
+        for (let r = r0; r < r0 + spec.rows; r++) for (let c = c0; c < c0 + spec.cols; c++) glowCells.add(key(r, c));
+      }
+      paint();
     },
 
     onChange(fn) { listener = fn; },

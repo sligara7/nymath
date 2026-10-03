@@ -11,7 +11,8 @@
 const Save = (function () {
   const KEY = "nymath.ember.v1";
 
-  const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false, name: "", questDone: false, keepTipSeen: false, den: null });
+  const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false, name: "", questDone: false, keepTipSeen: false,
+    struggle: {}, parked: null, den: null });
 
   /* Ember's den: her coins, what she owns, what she wears, where things are.
      `null` until the den first opens, so a save from before the den existed
@@ -28,6 +29,35 @@ const Save = (function () {
     visited: !!d.visited
   } : null;
 
+  /* How hard each challenge was, kept quietly for a grown-up and never shown
+     to her. Per challenge ("lessonId:stage"), the last few attempts: how many
+     clues she asked for, how many times she started again, and whether she
+     solved it or asked to stop. Nothing here ever touches her coins. */
+  const n0 = v => Math.max(0, v | 0);
+  const struggleOf = s => {
+    const out = {};
+    if (!s || typeof s !== "object") return out;
+    Object.keys(s).forEach(k => {
+      if (!Array.isArray(s[k])) return;
+      out[k] = s[k].slice(-5).map(a => ({
+        clues: Math.min(3, n0(a && a.clues)), restarts: n0(a && a.restarts),
+        solved: !!(a && a.solved), stopped: !!(a && a.stopped)
+      }));
+    });
+    return out;
+  };
+
+  /* One clue minor, two moderate, three (or asking to stop) severe. */
+  const LEVELS = ["none", "minor", "moderate", "severe"];
+  const levelOf = a => a.stopped ? "severe" : LEVELS[Math.min(3, a.clues)];
+
+  /* Today, as the phone's own calendar has it. Used only to set a hard
+     challenge aside until another day — never to time her. */
+  function today() {
+    const d = new Date(), p = n => (n < 10 ? "0" : "") + n;
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+  }
+
   /* Whatever arrives — from this phone's storage or from a save code — is
      read through the same door, so nothing malformed gets past either way. */
   const normalize = s => ({
@@ -38,6 +68,9 @@ const Save = (function () {
     name: typeof s.name === "string" ? s.name.replace(/[^\p{L}\p{M}' -]/gu, "").slice(0, 14) : "",
     questDone: !!s.questDone,
     keepTipSeen: !!s.keepTipSeen,
+    struggle: struggleOf(s.struggle),
+    parked: (s.parked && typeof s.parked.key === "string" && typeof s.parked.day === "string")
+      ? { key: s.parked.key, day: s.parked.day } : null,
     den: denOf(s.den)
   });
 
@@ -87,7 +120,7 @@ const Save = (function () {
     watchers.forEach(fn => { try { fn(); } catch (e) {} });
   }
 
-  return {
+  const api = {
     get: () => state,
     at(lesson, stage) { state.lesson = lesson; state.stage = stage; flush(); },
     taught(id) { if (!state.learned.includes(id)) state.learned.push(id); flush(); },
@@ -133,6 +166,35 @@ const Save = (function () {
 
     keepTipSeen() { state.keepTipSeen = true; flush(); },
 
+    /* ---- struggle, quietly ----------------------------------------------- */
+
+    /* Open an attempt at a challenge, unless one is already under way. */
+    attempt(key) {
+      const list = state.struggle[key] = state.struggle[key] || [];
+      const last = list[list.length - 1];
+      if (!last || last.solved || last.stopped) {
+        list.push({ clues: 0, restarts: 0, solved: false, stopped: false });
+        if (list.length > 5) list.shift();
+        flush();
+      }
+    },
+    /* "clue", "restart", "solved" or "stopped", on the attempt under way. */
+    note(key, what) {
+      api.attempt(key);
+      const a = state.struggle[key][state.struggle[key].length - 1];
+      if (what === "clue") a.clues = Math.min(3, a.clues + 1);
+      else if (what === "restart") a.restarts++;
+      else if (what === "solved") a.solved = true;
+      else if (what === "stopped") a.stopped = true;
+      if (what === "solved" && state.parked && state.parked.key === key) state.parked = null;
+      flush();
+    },
+    struggleOf: key => (state.struggle[key] || []).map(a => Object.assign({ level: levelOf(a) }, a)),
+
+    /* A challenge she asked to stop on rests until another day. */
+    park(key) { state.parked = { key, day: today() }; flush(); },
+    isParked: key => !!(state.parked && state.parked.key === key && state.parked.day === today()),
+
     /* Ask the browser to treat her save as hers to keep, not as a cache it
        may clear when space runs low. It may say no; she plays on either way. */
     persist() {
@@ -149,4 +211,5 @@ const Save = (function () {
       return state.den;
     }
   };
+  return api;
 })();

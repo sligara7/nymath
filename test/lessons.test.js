@@ -218,5 +218,34 @@ ok(sameWords, "the same nest gets the same words whatever she was asked to build
 const wob = Lessons.describe({ rule: "equalRows", total: 12 }, reportFor(ragged[0], 5, 6));
 ok(/not the same yet/.test(wob) && sayOf(wob).length > 0, "ragged rows get a voice and still say 'not the same yet': " + strip(wob).trim());
 
+/* ---- the clues ---------------------------------------------------------------
+
+   Three per stage: words, then a picture, then a worked example. The worked
+   example is checked rather than trusted — its glowing shape, with whatever
+   is already on the board, must actually pass the stage. A clue that showed
+   a wrong answer would be the worst thing in this game. */
+
+const HURRY = /quick|fast|hurry|time|seconds|race/i;
+GRADE3.lessons.forEach(l => l.stages.forEach((st, i) => {
+  const id = l.id + ":" + i, c = st.clues || [];
+  ok(c.length === 3, id + " has three clues");
+  ok(c.every(x => x.say && x.say.length <= 80), id + " every clue fits on a phone");
+  ok(c.every(x => !HURRY.test(x.say)), id + " no clue mentions speed");
+  ok(c[0] && !c[0].show, id + " the first clue is words only");
+  ok(c[1] && c[1].show && c[2] && c[2].show, id + " the second and third clues show a picture");
+  const last = c[2] && c[2].show;
+  if (!last) return;
+  if (st.mode === "rim") {
+    ok(last.twigs === "all", id + " the worked example lights every twig slot");
+    return;
+  }
+  const filled = st.fill ? rect(st.fill.rows, st.fill.cols) : [];
+  const cells = filled.concat(rect(last.rows, last.cols, last.r0, last.c0));
+  ok(Lessons.passes(st.check, reportFor(cells, st.grid.rows, st.grid.cols)),
+     id + " the worked example really is a right answer (" + last.rows + " x " + last.cols + ")");
+  ok((last.r0 || 0) + last.rows <= st.grid.rows && (last.c0 || 0) + last.cols <= st.grid.cols,
+     id + " and it fits on the lattice");
+}));
+
 console.log((fails ? "FAILED" : "ok") + " — " + (checks - fails) + "/" + checks + " checks");
 process.exit(fails ? 1 : 0);
