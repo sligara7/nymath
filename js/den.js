@@ -21,7 +21,7 @@ const Den = (function () {
 
   let el = null;
   let tab = "wear";
-  let onLeave = null;
+  let onLeave = null, onTeach = null;
   let shop = null;              /* { it, purse, counter } while Pip's sheet is open */
   let emberEl = null;
   let sayTimer = null, moodTimer = null;
@@ -29,7 +29,7 @@ const Den = (function () {
   function els() {
     if (el) return el;
     el = {
-      den: $("den"), back: $("denBack"), purse: $("purseMini"), room: $("room"),
+      den: $("den"), back: $("denBack"), earn: $("denEarn"), purse: $("purseMini"), room: $("room"),
       items: $("roomItems"), says: $("denSays"), drawer: $("drawer"),
       tabWear: $("tabWear"), tabRoom: $("tabRoom"), tabFood: $("tabFood"),
       shopWrap: $("shopWrap"), shop: $("shop")
@@ -78,6 +78,20 @@ const Den = (function () {
       return d;
     });
     return got;
+  }
+
+  /* Where "get more coins" leads — from the den's button and from Pip alike,
+     so the two can never send her to different places. The first stage Ember
+     has never paid her for; once every one has paid, the first stage again,
+     taught again, which still pays. */
+  function nextToTeach() {
+    const d = ensure();
+    for (let l = 0; l < GRADE3.lessons.length; l++) {
+      for (let k = 0; k < GRADE3.lessons[l].stages.length; k++) {
+        if (!d.paid.includes(GRADE3.lessons[l].id + ":" + k)) return { l, st: k };
+      }
+    }
+    return { l: 0, st: 0 };
   }
 
   /* Put her clothes on her, wherever she is about to be drawn. */
@@ -340,11 +354,15 @@ const Den = (function () {
         '<span class="words">' + Hoard.words(Hoard.coins(it.price)) + "</span></div>" +
       "</div>";
 
+    /* Too poor: say exactly how much more, in coins and in words, and give
+       her the way to earn it right here, at the moment she wants it. */
     if (!afford) {
+      const more = Hoard.coins(it.price - total);
       el.shop.innerHTML = head +
-        '<p class="pip-says">' + pipSays + "</p>" +
+        '<p class="pip-says">' + pipSays.replace("{more}", Hoard.words(more)) + "</p>" +
+        '<div class="shop-need"><span class="label">You need</span>' + coinsHtml(more) + "<span>more</span></div>" +
         '<div class="shop-mine">You have ' + coinsHtml(shop.purse) + "</div>" +
-        '<button class="big" data-act="lessons">Go and teach Ember</button>';
+        '<button class="big" data-act="teach">Teach Ember to earn more</button>';
       return;
     }
 
@@ -392,7 +410,7 @@ const Den = (function () {
     }
     else if (act === "pay") { pay(); return; }
     else if (act === "close") { closeShop(); return; }
-    else if (act === "lessons") { closeShop(); leave(); return; }
+    else if (act === "teach") { teach(); return; }
     paintShop();
   }
 
@@ -415,10 +433,13 @@ const Den = (function () {
 
   /* ---- coming and going --------------------------------------------------- */
 
-  function open(leaveFn) {
+  /* leaveFn: back to where her save says she was. teachFn: straight into the
+     lesson nextToTeach() names. */
+  function open(leaveFn, teachFn) {
     els();
     ensure();
     onLeave = leaveFn;
+    onTeach = teachFn;
     el.den.hidden = false;
     paintPurse();
     paintRoom();
@@ -440,10 +461,21 @@ const Den = (function () {
     if (onLeave) onLeave();
   }
 
+  /* "Get more coins": out of the den and into the lesson that pays. */
+  function teach() {
+    closeShop();
+    el.den.hidden = true;
+    if (el.says) el.says.hidden = true;
+    Ambience.lift();
+    if (onTeach) onTeach(nextToTeach());
+    else if (onLeave) onLeave();
+  }
+
   /* Wired once, at load. Nothing is drawn until she opens the door. */
   (function init() {
     els();
     if (el.back) el.back.addEventListener("click", leave);
+    if (el.earn) el.earn.addEventListener("click", teach);
     [["wear", el.tabWear], ["room", el.tabRoom], ["food", el.tabFood]].forEach(([k, b]) => {
       if (b) b.addEventListener("click", () => { tab = k; paintDrawer(); Ambience.lift(); });
     });
@@ -452,5 +484,5 @@ const Den = (function () {
     dressEmber();
   })();
 
-  return { open, leave, payForStage, coinsHtml, dressEmber, ensure };
+  return { open, leave, teach, nextToTeach, payForStage, coinsHtml, dressEmber, ensure };
 })();

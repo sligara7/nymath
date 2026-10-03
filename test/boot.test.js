@@ -92,7 +92,9 @@ const ORDER = SRCS.map(f => f.split("?")[0]);
 let bootError = null;
 try {
   /* One scope, like a browser: each file's `const` must be visible to the next. */
-  (0, eval)(ORDER.map(read).join("\n;\n"));
+  (0, eval)(ORDER.map(read).join("\n;\n") +
+    /* ...and hand back what the coin checks below need to reach. */
+    "\n;globalThis.__page = { Save, Den, GRADE3 };");
 } catch (e) {
   bootError = e;
 }
@@ -100,6 +102,7 @@ ok(!bootError, "the page boots without throwing" + (bootError ? " — " + bootEr
 if (bootError) { console.log("ok 0/" + checks + " — boot failed"); process.exit(1); }
 
 const $ = id => byId.get(id);
+const { Save, Den, GRADE3 } = globalThis.__page;
 
 /* ---- the door ------------------------------------------------------------ */
 
@@ -162,6 +165,59 @@ try { $("denBack").fire("click"); } catch (e) { backError = e; }
 ok(!backError, "leaving the den does not throw" + (backError ? " — " + backError : ""));
 ok($("den").hidden === true && $("scene").hidden === false, "and the way back puts her in her lesson again");
 ok($("lessonName").textContent === "The first nest", "the same lesson she left");
+
+/* ---- "how do I get more coins?" ------------------------------------------
+
+   The first thing she asked in the den. Two buttons answer it — the den's
+   own, and Pip's when she cannot afford a thing — and both must land her in
+   a lesson that PAYS, wherever she was when she asked. */
+
+const tapShop = act => $("shop").fire("click", {
+  target: { closest: () => ({ disabled: false, getAttribute: a => (a === "data-act" ? act : null) }) }
+});
+
+$("denBtn").fire("click");
+ok($("denEarn").listens("click") > 0, "the den has a 'Get more coins' button");
+let earnError = null;
+try { $("denEarn").fire("click"); } catch (e) { earnError = e; }
+ok(!earnError, "tapping 'Get more coins' does not throw" + (earnError ? " — " + earnError : ""));
+ok($("den").hidden === true && $("scene").hidden === false, "it takes her out of the den into a lesson");
+ok($("lessonName").textContent === "The first nest", "the first stage she has never been paid for");
+
+/* Something she cannot afford: 12 copper against a 45-copper crown. */
+$("denBtn").fire("click");
+const tiles = $("drawer").children;
+const crown = tiles.find(t => t.innerHTML.includes("Golden crown"));
+ok(!!crown, "the golden crown is in the wardrobe");
+crown.fire("click");
+ok($("shopWrap").hidden === false, "tapping it opens Pip's shop");
+ok($("shop").innerHTML.includes("3 silver and 3 copper"), "Pip says exactly how much more she needs (45 - 12 = 33)");
+ok($("shop").innerHTML.includes("Teach Ember to earn more"), "and offers the way to earn it");
+let teachError = null;
+try { tapShop("teach"); } catch (e) { teachError = e; }
+ok(!teachError, "tapping it does not throw" + (teachError ? " — " + teachError : ""));
+ok($("shopWrap").hidden === true && $("den").hidden === true && $("scene").hidden === false,
+   "the shop and the den close, and she is in a lesson");
+
+/* Both buttons ask the same question, so they cannot disagree. Pay for the
+   first two lessons and the answer moves on to the third. */
+Save.den(d => { GRADE3.lessons.slice(0, 2).forEach(l => l.stages.forEach((s, k) => d.paid.push(l.id + ":" + k))); return d; });
+const at = Den.nextToTeach();
+ok(at.l === 2 && at.st === 0, "with lessons one and two paid, the next that pays is lesson three, stage one");
+$("denBtn").fire("click");
+$("denEarn").fire("click");
+ok($("lessonName").textContent === GRADE3.lessons[2].name, "and that is where the button takes her");
+
+/* Everything paid, quest watched: the end of the grade is not a lesson, so
+   the button must not send her there. It sends her to teach it again. */
+Save.den(d => { GRADE3.lessons.forEach(l => l.stages.forEach((s, k) => d.paid.push(l.id + ":" + k))); return d; });
+Save.questDone();
+const again = Den.nextToTeach();
+ok(again.l === 0 && again.st === 0, "with everything paid, it is the first stage again, which still pays");
+$("denBtn").fire("click");
+$("denEarn").fire("click");
+ok($("lessonName").textContent === "The first nest", "after the quest it still lands her in a lesson, not the end screen");
+ok(Save.get().questDone === true, "and teaching again does not take the quest away from her");
 
 /* ---- the name survives a reload ------------------------------------------ */
 

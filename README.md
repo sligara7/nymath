@@ -46,7 +46,9 @@ fire pepper. Whatever Ember wears, she keeps wearing in the lessons.
 
 All of it is bought, and the only thing that earns coins is **teaching Ember**:
 each lesson stage pays the first time, and a little when it is taught again.
-Watching, speed and luck pay nothing. Coins are copper, silver and gold, ten
+Watching, speed and luck pay nothing. When she wants more, **Get more coins** in
+the den — or Pip's **Teach Ember to earn more**, when something costs more than
+she has — takes her straight into the next lesson that pays. Coins are copper, silver and gold, ten
 for one — which is place value — and Pip the mole, who keeps the shop, takes
 exact money and has no change. Paying 1 silver and 8 copper out of two silvers
 means breaking one into ten copper first.

@@ -328,7 +328,7 @@ const DEN = (function () {
       short: "Not quite enough yet.",
       over: "Oh dear — that's too much, and I haven't got any change!",
       empty: "Put coins on the counter until they make the price.",
-      broke: "That one needs more coins than you've got. Teach Ember something and she'll find some!"
+      broke: "That one needs {more} more than you've got. Teach Ember something and she'll find some!"
     }
   };
 })();

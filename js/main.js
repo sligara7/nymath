@@ -144,11 +144,17 @@
     el.revealWrap.hidden = true;
     el.scene.hidden = true;
     el.bar.hidden = true;
-    Den.open(() => {
+    const back = () => {
       el.bar.hidden = false;
       el.scene.hidden = false;
       el.bubble.hidden = false;
-      goFromSave();
+    };
+    /* Two ways out: back to where she was, or — "get more coins" — straight
+       into the lesson that pays, even from the end of the grade. */
+    Den.open(() => { back(); goFromSave(); }, at => {
+      back();
+      el.surface.innerHTML = "";
+      enter(at);
     });
   }
 

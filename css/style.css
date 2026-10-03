@@ -380,6 +380,8 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .den-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
 .den-back {
+  flex: none;
+  white-space: nowrap;
   padding: 9px 16px;
   border: 2.5px solid var(--line);
   border-radius: 999px;
@@ -389,6 +391,20 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   box-shadow: 0 3px 0 var(--line);
 }
 .den-back:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); }
+
+.den-coins { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px; }
+
+.den-earn {
+  padding: 8px 14px;
+  border: 2.5px solid var(--line);
+  border-radius: 999px;
+  background: #7fd1a0;
+  color: var(--line);
+  font-weight: 800;
+  box-shadow: 0 3px 0 var(--line);
+  white-space: nowrap;
+}
+.den-earn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); }
 
 .purse-mini {
   display: flex;
@@ -675,3 +691,15 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .shop .big:disabled { opacity: 0.4; }
 .shop .pay:not(:disabled) { background: #7fd1a0; }
 .shop-mine { margin: 8px 0 14px; font-size: 15px; }
+.shop-need {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  padding: 8px 12px;
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  background: #fff4d6;
+  font-size: 16px;
+}
+.shop-need .label { margin-right: 2px; }
