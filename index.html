@@ -17,9 +17,18 @@
 
 <!-- Bumped on every deploy. If somebody reports a stale page, this number in
      their console says which build they are actually running. -->
-<meta name="build" content="6">
+<meta name="build" content="7">
 
-<link rel="stylesheet" href="css/style.css?v=6">
+<!-- On her iPhone, Add to Home Screen makes Ember an app of her own, which
+     iPhone Safari's week-long clear-out cannot touch. Deliberately NO web app
+     manifest: without a start_url, iOS keeps the address she was on, and on an
+     iPhone that address carries her save (see js/keep.js). -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ember">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=7">
+
+<link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -109,6 +118,14 @@
     </div>
   </div>
 
+  <!-- iPhone only, until "Got it": how to keep Ember safe. js/keep.js. -->
+  <div class="keep-tip" id="keepTip" hidden>
+    <p><b>Keep Ember safe on this phone!</b> Ask a grown-up to tap
+      <svg class="share" viewBox="0 0 24 24" aria-label="Share"><path d="M12 3 V15 M7.5 7.5 L12 3 L16.5 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11 H6 V21 H18 V11 H16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+      Share, then <b>Add to Home Screen</b>.</p>
+    <button class="keep-ok" id="keepTipOk">Got it</button>
+  </div>
+
   <section class="room wall-pink" id="room">
     <svg class="window" viewBox="0 0 120 96" aria-hidden="true">
       <rect x="4" y="4" width="112" height="84" rx="10" fill="#bfe6ff" stroke="#5b3a2e" stroke-width="4"/>
@@ -159,17 +176,18 @@
   <div class="reveal" id="reveal"></div>
 </div>
 
-<script src="content/grade3.js?v=6"></script>
-<script src="content/quest3.js?v=6"></script>
-<script src="content/den.js?v=6"></script>
-<script src="js/save.js?v=6"></script>
-<script src="js/audio.js?v=6"></script>
-<script src="js/ember.js?v=6"></script>
-<script src="js/nest.js?v=6"></script>
-<script src="js/lessons.js?v=6"></script>
-<script src="js/quest.js?v=6"></script>
-<script src="js/hoard.js?v=6"></script>
-<script src="js/den.js?v=6"></script>
-<script src="js/main.js?v=6"></script>
+<script src="content/grade3.js?v=7"></script>
+<script src="content/quest3.js?v=7"></script>
+<script src="content/den.js?v=7"></script>
+<script src="js/save.js?v=7"></script>
+<script src="js/keep.js?v=7"></script>
+<script src="js/audio.js?v=7"></script>
+<script src="js/ember.js?v=7"></script>
+<script src="js/nest.js?v=7"></script>
+<script src="js/lessons.js?v=7"></script>
+<script src="js/quest.js?v=7"></script>
+<script src="js/hoard.js?v=7"></script>
+<script src="js/den.js?v=7"></script>
+<script src="js/main.js?v=7"></script>
 </body>
 </html>

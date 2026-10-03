@@ -6,8 +6,9 @@
    Two things this file is careful about.
 
    It never says she is wrong. When what she has built does not satisfy the
-   rule yet, the readout describes WHAT IS THERE — "rows of 4, 2, 5, 1, not the
-   same yet" — and lets her see the difference herself. Nothing goes red.
+   rule yet, the readout describes WHAT IS THERE — "Wobbly! rows of 4, 2, 5, 1,
+   not the same yet" — and lets her see the difference herself. Nothing goes
+   red, and nothing says "warmer".
 
    And it never shows the arithmetic sentence before she has built the thing.
    The whole design rests on that order. */
@@ -52,7 +53,30 @@ const Lessons = (function () {
     return fn ? !!fn(rep, check) : false;
   }
 
-  /* ---- what the readout says while she works ---------------------------- */
+  /* ---- what the readout says while she works ----------------------------
+
+     The readout has a voice: a few words in front of the numbers, so it
+     sounds like the nest rather than a spreadsheet. Two rules keep the voice
+     honest. EVERY NUMBER STAYS — the words go around the count, never in
+     place of it. And a reaction only ever DESCRIBES what is on the screen; it
+     never says how close she is ("warmer!"), because then poking until it
+     cheers would win, and that is guessing. Which wobbly-word she gets is
+     picked by the stone count, so it changes as she works without meaning
+     anything. */
+
+  const SAY = {
+    wobbly: ["Wobbly!", "Lumpy-bumpy!", "Higgledy-piggledy!", "What a jumble!", "Wonky!"],
+    oneRow: "all in one long line",
+    rectangle: ["Neat rows!", "Tidy as a pin!", "Look at that!", "Ooh, smart!"],
+    square: "A perfect square!",
+    noodle: "A long skinny noodle!",
+    empty: "All empty! Tap a hollow to lay a stone.",
+    noTwigs: "No fence yet! Tap an edge to lay a twig.",
+    someTwigs: "Twig, twig, twig…",
+    lumpy: "Lumpy!"
+  };
+  const pickBy = (list, n) => list[n % list.length];
+  const voice = w => '<span class="say">' + w + "</span>";
 
   function chips(rows, cols) {
     let out = "";
@@ -66,15 +90,19 @@ const Lessons = (function () {
     const s = rep.shape;
 
     if (check.rule === "rim") {
-      if (!rep.rim) return "Tap the edges to lay the twigs.";
-      return "<b>" + rep.rim + "</b> of <b>" + rep.rimNeeded + "</b> twigs round the outside";
+      if (!rep.rim) return voice(SAY.noTwigs);
+      return voice(SAY.someTwigs) +
+        "<span><b>" + rep.rim + "</b> of <b>" + rep.rimNeeded + "</b> twigs round the outside</span>";
     }
 
-    if (!rep.total) return "";
+    if (!rep.total) return voice(SAY.empty);
 
     if (check.rule === "samePerimeterLessArea") {
-      if (!s.ok) return "<b>" + rep.total + "</b> stones — make it a full rectangle";
-      return "round the outside <b>" + (2 * (s.rows + s.cols)) + "</b> · inside <b>" + (s.rows * s.cols) + "</b>";
+      if (!s.ok) return voice(SAY.lumpy) + "<span><b>" + rep.total + "</b> stones — make it a full rectangle</span>";
+      const shape = (s.rows === 1 || s.cols === 1) ? SAY.noodle :
+        s.rows === s.cols ? SAY.square : pickBy(SAY.rectangle, s.total);
+      return voice(shape) +
+        "<span>round the outside <b>" + (2 * (s.rows + s.cols)) + "</b> · inside <b>" + (s.rows * s.cols) + "</b></span>";
     }
 
     /* Not a rectangle yet: show her the rows as they stand. This is the most
@@ -84,12 +112,15 @@ const Lessons = (function () {
       const rc = rep.rowCounts;
       /* One span, because the readout is a flex row and loose text nodes
          between the numbers get the flex gap put in front of every comma. */
-      if (rc.length > 1) return "<span>rows of <b>" + rc.join("</b>, <b>") + "</b> — not the same yet</span>";
-      return "<b>" + rep.total + "</b> stones";
+      if (rc.length > 1) return voice(pickBy(SAY.wobbly, rep.total)) +
+        "<span>rows of <b>" + rc.join("</b>, <b>") + "</b> — not the same yet</span>";
+      return "<span><b>" + rep.total + "</b> stones " + SAY.oneRow + "</span>";
     }
 
+    const praise = s.rows === s.cols && s.rows > 1 ? SAY.square : pickBy(SAY.rectangle, s.total);
     return chips(s.rows, s.cols) +
       '<span style="width:100%"></span>' +
+      voice(praise) +
       "<span><b>" + s.rows + "</b> rows of <b>" + s.cols + "</b> · <b>" + s.total + "</b> stones</span>";
   }
 
@@ -117,5 +148,5 @@ const Lessons = (function () {
       .replace(/\{perimeter\}/g, 2 * (s.rows + s.cols));
   }
 
-  return { RULES, passes, describe, fill, chips, setName(n) { playerName = n || ""; } };
+  return { RULES, SAY, passes, describe, fill, chips, setName(n) { playerName = n || ""; } };
 })();

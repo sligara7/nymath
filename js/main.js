@@ -85,7 +85,7 @@
     if (!n) { try { el.nameInput.focus(); } catch (e) {} return; }
     applyName();
     el.naming.hidden = true;
-    goFromSave();
+    openDen();
   }
 
   /* Where her save says she should be: mid-lesson, at the quest, or past it. */
@@ -115,8 +115,10 @@
     Ambience.wake();
     Ambience.setMuted(s.muted);
     paintSound();
+    Save.persist();
     if (!s.name) { askName(); return; }
-    goFromSave();
+    /* Every start is in Ember's den. The lessons are one tap from there. */
+    openDen();
   });
 
   /* ---- sound ------------------------------------------------------------- */
@@ -137,10 +139,11 @@
 
   /* ---- Ember's den --------------------------------------------------------
 
-     Out of the cave and into daylight. Coming back puts her where her save
-     says she was, the same as coming through the front door. */
+     Out of the cave and into daylight, and where every visit begins. Leaving
+     by "‹ Lessons" puts her where her save says she was. */
 
   function openDen() {
+    el.door.hidden = true;
     el.revealWrap.hidden = true;
     el.scene.hidden = true;
     el.bar.hidden = true;
@@ -156,6 +159,7 @@
       el.surface.innerHTML = "";
       enter(at);
     });
+    Keep.offer();
   }
 
   el.denBtn.addEventListener("click", openDen);

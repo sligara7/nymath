@@ -1,4 +1,4 @@
-/* Can she actually get in the front door?
+/* Can she actually get in the front door — and into her den behind it?
 
    THIS TEST EXISTS BECAUSE OF A BUG THAT SHIPPED. Three functions behind the
    start button ("Go and meet her") were called and never defined; `node --check`
@@ -8,8 +8,8 @@
    takes, and the game was published dead on its first screen.
 
    So this one boots the real scripts, in the real order index.html loads them,
-   against a shimmed DOM, and then walks: tap in, give a name, land in the
-   first lesson. No dependencies.
+   against a shimmed DOM, and then walks: tap in, give a name, land in
+   Ember's den, go through to the first lesson. No dependencies.
 
    Run: node test/boot.test.js */
 
@@ -132,9 +132,19 @@ try { $("nameBtn").fire("click"); } catch (e) { nameError = e; }
 ok(!nameError, "telling Ember her name does not throw" + (nameError ? " — " + nameError : ""));
 
 ok($("naming").hidden === true, "the naming screen closes");
-ok($("scene").hidden === false, "she lands in the scene");
-ok($("bar").hidden === false, "the top bar appears");
 ok(document.title.includes("Wren"), "the game takes its title from her name: " + JSON.stringify(document.title));
+
+/* ---- every start is in Ember's den ---------------------------------------- */
+
+ok($("den").hidden === false, "she lands in Ember's den, not a lesson");
+ok($("scene").hidden === true && $("bar").hidden === true, "the lesson screen stays out of the way");
+ok($("door").hidden === true, "the door is gone");
+ok($("keepTip").hidden === true, "no iPhone tip off an iPhone");
+
+/* ...and the lessons are one tap from there. */
+$("denBack").fire("click");
+ok($("den").hidden === true && $("scene").hidden === false, "'‹ Lessons' takes her into the lesson screen");
+ok($("bar").hidden === false, "the top bar appears");
 
 /* ---- and she is in the first lesson -------------------------------------- */
 
@@ -218,6 +228,42 @@ $("denBtn").fire("click");
 $("denEarn").fire("click");
 ok($("lessonName").textContent === "The first nest", "after the quest it still lands her in a lesson, not the end screen");
 ok(Save.get().questDone === true, "and teaching again does not take the quest away from her");
+
+/* ---- a save code carries her whole save, and never overwrites one ----------
+
+   How her progress crosses into an iPhone home-screen app, whose storage
+   starts empty. A code must come back exactly, must be refused by a phone
+   that already has progress, and must not let anything malformed in. */
+
+const code = Save.code();
+ok(/^1\.[A-Za-z0-9_-]+$/.test(code), "a save code is versioned and URL-safe: " + code.slice(0, 16) + "...");
+ok(Save.adopt(code) === false, "a phone with progress on it refuses a code");
+ok(Save.isBlank() === false, "and this one does have progress");
+
+const evalSave = () => (0, eval)(read("js/save.js") + ";Save");
+const keep = store["nymath.ember.v1"];
+delete store["nymath.ember.v1"];
+const fresh = evalSave();
+ok(fresh.isBlank(), "a fresh phone starts blank");
+ok(fresh.adopt("not a code") === false && fresh.adopt("9." + code.slice(2)) === false,
+   "garbage and unknown versions are refused");
+ok(fresh.adopt(code) === true, "a blank phone takes the code in");
+ok(fresh.get().name === "Wren" && JSON.stringify(fresh.get()) === JSON.stringify(Save.get()),
+   "and gets back exactly the save that made it");
+ok(JSON.parse(store["nymath.ember.v1"]).name === "Wren", "and keeps it");
+
+const named = (n) => {
+  const t = JSON.parse(JSON.stringify(Save.get())); t.name = n;
+  const b = Buffer.from(JSON.stringify(t)).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return "1." + b;
+};
+delete store["nymath.ember.v1"];
+const fresh2 = evalSave();
+ok(fresh2.adopt(named("<img src=x onerror=alert(1)>")) === true &&
+   !/[<>=()]/.test(fresh2.get().name), "a name arriving in a code is cleaned like a typed one: " + JSON.stringify(fresh2.get().name));
+const fresh3 = (delete store["nymath.ember.v1"], evalSave());
+ok(fresh3.adopt(named("Zoë")) === true && fresh3.get().name === "Zoë", "and a name with an accent survives the trip");
+store["nymath.ember.v1"] = keep;
 
 /* ---- the name survives a reload ------------------------------------------ */
 

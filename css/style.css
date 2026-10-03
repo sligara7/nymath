@@ -167,6 +167,7 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   color: var(--ink-soft);
 }
 .readout b { color: var(--stone); font-variant-numeric: tabular-nums; }
+.readout .say { color: var(--ink); font-weight: 800; }
 
 /* Skip-counting chips: 4, 8, 12 — they appear one at a time as each row of
    the nest is finished, so the pattern arrives by itself. */
@@ -203,36 +204,100 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .ghost { padding: 10px 18px; border-radius: 999px; color: var(--ink-soft); font-size: 14px; }
 .ghost:active { color: var(--ink); }
 
-/* --- the nest ------------------------------------------------------------- */
+/* --- the nest -------------------------------------------------------------
+
+   Drawn the way the den is drawn — a warm-brown outline round everything,
+   flat colour, rounded shapes — but on the dark cave page, so the stone she
+   places is still the brightest thing here after Ember. The lattice under it
+   is exact: every hollow and every pebble sits on the same grid as before,
+   because the rows ARE the mathematics.
+
+   Four kinds of spot, told apart by more than colour:
+     empty    — a hollow pressed into the straw
+     hers     — a pale pebble with an outline and a shine
+     Ember's  — a mossy pebble, no shine, speckled, a little smaller
+     kept     — a warm pebble with a second ring, from the stage before */
 
 .nest { position: relative; touch-action: manipulation; }
 
+/* The straw bed under the lattice. */
+.nest::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border: 3px solid #5b3a2e;
+  border-radius: 26px;
+  background:
+    repeating-linear-gradient(28deg, rgba(214, 170, 98, 0.10) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(-34deg, rgba(214, 170, 98, 0.08) 0 2px, transparent 2px 11px),
+    #2c2219;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
 .cell {
   position: absolute;
-  border-radius: 22%;
-  background: var(--stone-dim);
-  transition: background 0.14s, transform 0.14s;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 62%, #15100b 0 38%, #221a13 58%, transparent 74%);
+  transition: transform 0.14s;
 }
-.cell.on { background: var(--stone); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.18); }
 
-/* Ember's own stones, before she has touched them: duller and a little green,
-   so the board reads as EMBER'S mess at first glance and becomes the
-   player's as she works. The instant she moves one, it stops being Ember's. */
-.cell.on.his { background: #6f8472; box-shadow: none; }
+/* A pebble: outlined, rounded, a shine top-left, a shadow underneath. The
+   shapes vary a little so it reads as stones, not tiles. */
+.cell.on {
+  border: 2.5px solid #5b3a2e;
+  border-radius: 48% 52% 46% 54% / 54% 46% 56% 44%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85) 0 9%, transparent 18%),
+    radial-gradient(circle at 40% 35%, #eef3f7 0%, var(--stone) 55%, #8e9fad 100%);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  animation: drop 0.16s ease-out;
+}
+.cell.on:nth-child(3n)   { border-radius: 54% 46% 52% 48% / 46% 56% 44% 54%; }
+.cell.on:nth-child(3n+1) { border-radius: 50% 50% 44% 56% / 52% 48% 52% 48%; }
 
-/* Stones carried over from the previous stage stay warm, so when a hard fact
-   is broken into two easy ones she can see both pieces at once. */
-.cell.kept { background: var(--ember-hot); }
+/* Ember's own stones, before she has touched them: mossy, speckled, no shine,
+   a little smaller — so the board reads as EMBER'S mess at first glance and
+   becomes the player's as she works. The instant she moves one, it stops
+   being Ember's. */
+.cell.on.his {
+  background:
+    radial-gradient(circle at 30% 40%, #4f6052 0 7%, transparent 9%),
+    radial-gradient(circle at 64% 62%, #4f6052 0 6%, transparent 8%),
+    radial-gradient(circle at 58% 28%, #4f6052 0 5%, transparent 7%),
+    #6f8472;
+  box-shadow: none;
+  transform: scale(0.88);
+  animation: none;
+}
+
+/* Stones carried over from the previous stage stay warm, with a second ring,
+   so when a hard fact is broken into two easy ones she can see both pieces. */
+.cell.on.kept {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.8) 0 9%, transparent 18%),
+    radial-gradient(circle at 40% 35%, #ffe2a0 0%, var(--ember-hot) 55%, #e09a2a 100%);
+  box-shadow: inset 0 0 0 3px rgba(91, 58, 46, 0.45), 0 3px 0 rgba(0, 0, 0, 0.35);
+}
 
 .cell:active { transform: scale(0.88); }
 
+@keyframes drop { from { transform: scale(0.6) translateY(-4px); } to { transform: none; } }
+
+/* Twigs: an empty slot is a faint dashed mark; a laid twig is a twig, with
+   the same outline as everything else and a knot or two. */
 .twig {
   position: absolute;
   border-radius: 999px;
-  background: var(--stone-dim);
-  transition: background 0.14s, transform 0.14s;
+  border: 2px dashed rgba(192, 139, 82, 0.35);
+  transition: transform 0.14s;
 }
-.twig.on { background: var(--twig); }
+.twig.on {
+  border: 2px solid #5b3a2e;
+  background:
+    radial-gradient(circle at 30% 50%, #8a5a30 0 12%, transparent 16%),
+    radial-gradient(circle at 72% 50%, #8a5a30 0 10%, transparent 14%),
+    linear-gradient(#d9a066, var(--twig) 60%, #9c6a3a);
+}
 .twig:active { transform: scale(0.8); }
 
 /* --- the reveal ----------------------------------------------------------- */
@@ -414,6 +479,30 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   border-radius: 999px;
   background: #ffffff;
   font-size: 15px;
+}
+
+.keep-tip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 2.5px dashed var(--line);
+  border-radius: 16px;
+  background: #fff4d6;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.keep-tip[hidden] { display: none; }
+.keep-tip p { margin: 0; flex: 1; }
+.keep-tip .share { width: 18px; height: 18px; vertical-align: -3px; color: #2f7de1; }
+.keep-ok {
+  flex: none;
+  padding: 7px 12px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--line);
+  font-weight: 800;
 }
 
 /* --- the room --- */

@@ -39,7 +39,8 @@ Ember can do out there is exactly what the player managed to teach her.
 
 ## Ember's den
 
-Out of the cave and into daylight. Ember has a den the player furnishes the way
+Out of the cave and into daylight — and where every visit starts; the lessons
+are one tap away. Ember has a den the player furnishes the way
 she does rooms in the games she already loves: dress Ember up (a crown, heart
 glasses, a scarf), drag furniture around with one finger, feed her a fish or a
 fire pepper. Whatever Ember wears, she keeps wearing in the lessons.
@@ -72,6 +73,19 @@ then on Ember uses her name and the game titles itself after her.
 Her name is kept in her phone's own storage and nowhere else. **It is not in
 this repository**, which is public — that is why it is typed rather than
 written in.
+
+## Her save, on an iPhone
+
+Everything she has done lives in her phone's storage, and iPhone Safari may
+clear a website's storage after about a week without a visit. An app on the
+home screen is exempt, so the den shows a tip, on an iPhone, to **Share → Add
+to Home Screen**.
+
+The catch: that app gets storage of its own, empty. So on an iPhone the
+address quietly carries her save after a `#`, which never leaves the phone,
+and the home-screen app takes it in when it first opens — only ever into an
+empty save, never over progress. That is also why there is deliberately no web
+app manifest: without one, iOS keeps the address she was on.
 
 ## The standards
 

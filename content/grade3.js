@@ -10,7 +10,10 @@
      emberSays  — what Ember gets WRONG, in her own voice. The mistake is
                   always Ember's. The player is never the one who failed
                   at something.
-     task       — one line. If it needs two lines it is two stages.
+     task       — one line. If it needs two lines it is two stages. Said
+                  as a little challenge or a plea, never as an instruction
+                  ("Rescue her nest!", not "Build it the other way round"),
+                  and it still has to say exactly what to build.
      check      — a named rule plus its numbers. The rule lives in the engine.
 
    And one thing that must come LAST:
@@ -38,7 +41,7 @@ const GRADE3 = {
       stages: [{
         mood: "muddled",
         emberSays: "I built my nest! It took me <em>ages</em>. I counted every single stone, one at a time, and I got eleven. Then I counted again and got thirteen.",
-        task: "Move her stones so every row has the same number.",
+        task: "Her nest is a wobbly mess! Make every row match.",
         grid: { rows: 5, cols: 6 },
         /* Ember's attempt: twelve stones in ragged rows. A real mistake — this is
            what a pile looks like before anybody thinks of rows. */
@@ -60,7 +63,7 @@ const GRADE3 = {
       stages: [{
         mood: "curious",
         emberSays: "I'm going to be much bigger by spring. I need four rows, with five stones in each. That's... I'll start counting. One, two, three—",
-        task: "Lay 4 rows of 5 stones for her.",
+        task: "Save her from counting to twenty — lay 4 rows of 5.",
         grid: { rows: 5, cols: 6 },
         check: { rule: "exact", rows: 4, cols: 5 },
         reveal: {
@@ -79,7 +82,7 @@ const GRADE3 = {
       stages: [{
         mood: "worried",
         emberSays: "My nest is 3 rows of 8. But the ledge I want is only <em>three</em> stones wide. If I turn the whole thing sideways I'll have to throw some stones off the cliff, won't I?",
-        task: "Build it the other way round: 8 rows of 3.",
+        task: "Rescue her nest! Turn it into 8 rows of 3 — no stones lost.",
         grid: { rows: 8, cols: 5 },
         check: { rule: "exact", rows: 8, cols: 3 },
         reveal: {
@@ -99,7 +102,7 @@ const GRADE3 = {
         {
           mood: "curious",
           emberSays: "Floor's done. Now I need twigs all the way round the outside, or I'll roll straight off it in the night.",
-          task: "Put a twig on every edge around the nest.",
+          task: "Fence time! A twig on every edge so she can't roll out.",
           grid: { rows: 3, cols: 4 },
           /* The floor is already laid and cannot be touched. This stage is
              about the OUTSIDE — the two ideas must not be muddled by letting
@@ -117,7 +120,7 @@ const GRADE3 = {
         {
           mood: "thinking",
           emberSays: "So a <em>longer</em> rim always means a <em>bigger</em> floor. Obviously. More twigs, more room. That's just how it works.",
-          task: "Same 14 twigs round it — but fewer stones inside.",
+          task: "Prove her wrong! Same 14 twigs round it, fewer stones inside.",
           grid: { rows: 5, cols: 7 },
           hint: "Long and thin.",
           check: { rule: "samePerimeterLessArea", perimeter: 14, lessThan: 12 },
@@ -139,7 +142,7 @@ const GRADE3 = {
         {
           mood: "worried",
           emberSays: "Six rows of seven. I know my <em>fives</em>. I don't know sevens. I'm never going to know sevens.",
-          task: "Start with what she does know: 6 rows of 5.",
+          task: "Start with the bit she knows — 6 rows of 5. Easy-peasy.",
           grid: { rows: 6, cols: 7 },
           check: { rule: "exact", rows: 6, cols: 5 },
           reveal: {
@@ -152,7 +155,7 @@ const GRADE3 = {
         {
           mood: "curious",
           emberSays: "But that's only five in each row. I need <em>seven</em>.",
-          task: "Now add 2 more to the end of every row.",
+          task: "Now sneak 2 more stones onto the end of every row.",
           grid: { rows: 6, cols: 7 },
           /* Her first thirty stones stay on the board and stay marked, so the
              two pieces are visible at the same time. That is the whole idea:

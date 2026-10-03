@@ -185,5 +185,38 @@ GRADE3.lessons.forEach(l => {
   });
 });
 
+/* ---- the readout's voice ----------------------------------------------------
+
+   The readout says a few words in front of its numbers. Two rules, checked
+   rather than trusted: every number it used to show is still there, and the
+   words never depend on the ANSWER — the same nest gets the same words
+   whatever she was asked to build, so poking until it cheers cannot win. */
+
+const STEER = /closer|warmer|colder|almost|nearly|so close|getting there|keep going|right|wrong/i;
+const words = Object.values(Lessons.SAY).flat();
+ok(words.every(w => !STEER.test(w)), "no reaction says how close she is (" + words.filter(w => STEER.test(w)).join(" / ") + ")");
+
+const strip = h => h.replace(/<[^>]+>/g, " ");
+const sayOf = h => (/<span class="say">([^<]*)<\/span>/.exec(h) || [])[1] || "";
+const asked = [{ rule: "exact", rows: 4, cols: 5 }, { rule: "exact", rows: 8, cols: 3 }, { rule: "equalRows", total: 12 }];
+
+let keepsNumbers = true, sameWords = true, everyNest = 0;
+const ragged = [[[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[2,0]], [[0,0],[1,0],[1,1],[2,0],[2,1],[2,2]]];
+const nests = ragged.concat([rect(3, 4), rect(4, 5), rect(2, 2), rect(1, 6), rect(6, 7)]);
+nests.forEach(cells => {
+  const rep = reportFor(cells, 8, 8);
+  const outs = asked.map(c => Lessons.describe(c, rep));
+  everyNest++;
+  if (new Set(outs.map(sayOf)).size !== 1) sameWords = false;
+  const text = strip(outs[0]);
+  const want = rep.shape.ok ? [rep.shape.rows, rep.shape.cols, rep.shape.total] : rep.rowCounts.length > 1 ? rep.rowCounts : [rep.total];
+  want.forEach(n => { if (!new RegExp("\\b" + n + "\\b").test(text)) keepsNumbers = false; });
+});
+ok(everyNest === nests.length && keepsNumbers, "every number is still in the readout, voice and all");
+ok(sameWords, "the same nest gets the same words whatever she was asked to build");
+
+const wob = Lessons.describe({ rule: "equalRows", total: 12 }, reportFor(ragged[0], 5, 6));
+ok(/not the same yet/.test(wob) && sayOf(wob).length > 0, "ragged rows get a voice and still say 'not the same yet': " + strip(wob).trim());
+
 console.log((fails ? "FAILED" : "ok") + " — " + (checks - fails) + "/" + checks + " checks");
 process.exit(fails ? 1 : 0);
