@@ -309,7 +309,31 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 
 .cell.on.lit { box-shadow: 0 0 0 3px var(--ember-hot), 0 3px 0 rgba(0, 0, 0, 0.35); }
 
-.cell.on.ask, .twig.on.ask { animation: breathe 1.3s ease-in-out infinite; cursor: pointer; }
+.cell.on.ask, .twig.on.ask {
+  animation: breathe 1.3s ease-in-out infinite;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(243, 233, 216, 0.9), 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* She tapped the sum instead of a row: every part still waiting flashes. */
+.nest.nudge .cell.on.ask, .nest.nudge .twig.on.ask {
+  animation: flash 0.3s ease-in-out 3;
+  box-shadow: 0 0 0 5px var(--ember-hot), 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+@keyframes flash { 0%, 100% { transform: none; } 50% { transform: scale(1.12); } }
+
+/* The pointing hand on the next part to tap. */
+.point-hint {
+  position: absolute;
+  display: none;
+  text-align: center;
+  pointer-events: none;
+  z-index: 3;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
+  animation: point 0.9s ease-in-out infinite;
+}
+.point-hint.on { display: block; }
+@keyframes point { 0%, 100% { transform: translateY(6px); } 50% { transform: translateY(-2px); } }
 .cell.on.counted {
   background:
     radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85) 0 9%, transparent 18%),
@@ -382,7 +406,8 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cell.on.ask, .twig.on.ask { animation: none; box-shadow: 0 0 0 2px var(--stone); }
+  .cell.on.ask, .twig.on.ask { animation: none; }
+  .point-hint { animation: none; }
   .fly { display: none; }
 }
 

@@ -160,6 +160,10 @@ const Lessons = (function () {
        sides   each side drops its length: 4 + 3 + 4 + 3 = 14
        blocks  the part Ember knew and the new part: 30 + 12 = 42
 
+     `task` says where to tap and `nudge` says it again, shorter, if she taps
+     the sum instead: the empty places under the nest look like where the
+     answer goes, and they are not where she acts.
+
      Fractions on the line have no such step yet, so they return null. */
   function bridge(stage, rep) {
     const check = stage.check, s = rep.shape;
@@ -176,7 +180,8 @@ const Lessons = (function () {
         ask: check.rule === "rim"
           ? "Hang on, {name}, how many twigs is that? How did you <em>know</em>? Show me!"
           : "Wait, {name}, let me put twigs round yours. How many is that? Show me!",
-        task: "Tap each side to drop its length into the sum.",
+        task: "Tap each side of twigs to drop its length into the sum.",
+        nudge: "Tap a side of the fence!",
         fold(vals) {
           const total = vals.reduce((a, b) => a + b, 0);
           return { html: sum(vals, 0, total), say: vals.join(" plus ") + " equals " + total };
@@ -197,6 +202,7 @@ const Lessons = (function () {
         ],
         ask: "So how many is that <em>altogether</em>, {name}? Show me the two bits!",
         task: "Tap the bit she knew, then the bit you added.",
+        nudge: "Tap the stones!",
         fold(vals) {
           const total = vals.reduce((a, b) => a + b, 0);
           return { html: sum(vals, 0, total), say: vals.join(" plus ") + " equals " + total };
@@ -212,7 +218,8 @@ const Lessons = (function () {
       kind: "rows",
       parts,
       ask: "Hang on, {name}, how many stones is that? How did you <em>know</em>? Show me!",
-      task: "Tap each row to drop its count into the sum.",
+      task: "Tap each row of stones to drop its count into the sum.",
+      nudge: "Tap a row of stones!",
       fold(vals) {
         return {
           html: sum(vals, 0) + BREAK +

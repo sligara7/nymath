@@ -209,7 +209,7 @@ ok(($("readout").innerHTML.match(/class="slot"/g) || []).length === 3, "the sum 
 
 /* A stone tapped now is counted, not moved. */
 nestBox.children[0 * 6 + 1].fire("pointerdown");
-ok(nestBox.children.filter(c => c.className.includes(" on")).length === 12, "tapping a row lifts no stone");
+ok(nestBox.children.filter(c => /^cell\b/.test(c.className) && c.className.includes(" on")).length === 12, "tapping a row lifts no stone");
 ok(nestBox.children.filter(c => c.className.includes("counted")).length === 4, "the whole row of 4 is counted");
 nestBox.children[0 * 6 + 3].fire("pointerdown");
 ok(($("readout").innerHTML.match(/class="term"/g) || []).length === 1, "and a row drops its number in only once");

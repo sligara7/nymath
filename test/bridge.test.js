@@ -123,7 +123,23 @@ const tap = node => node.fire("pointerdown");
   await sleep(700);
   ok(p.$("revealWrap").hidden === true, "built right, and the reveal has NOT come");
   ok(/how did you/i.test(p.$("emberSays").innerHTML), "Ember asks how she knew");
-  ok(p.$("task").textContent === "Tap each row to drop its count into the sum.", "and the task says how to answer");
+  ok(p.$("task").textContent === "Tap each row of stones to drop its count into the sum.", "and the task says how to answer");
+
+  /* THE FIRST WALK OF BUILD 10 FAILED HERE. The empty places in the sum look
+     like where the answer goes, so that is what got tapped, and they did
+     nothing at all: the action was on the rows and nothing on the screen
+     said so. The check that passed knew where to tap. So: the place she
+     acts must LOOK like it, a tap on the sum must be answered by pointing at
+     the rows, and Ember must say the instruction, not only the question. */
+  ok(p.box.children.filter(c => c.className.split(" ")[0] === "point-hint" && c.className.includes(" on")).length === 1,
+     "a pointing hand sits on a row she has not tapped yet");
+  ok(p.spoken.some(t => /tap each row of stones/i.test(t)), "Ember says HOW to answer aloud, not only the question");
+  const saidBefore = p.spoken.length;
+  p.$("readout").fire("pointerdown");
+  ok(p.box.className.includes("nudge"), "tapping the empty sum is answered: the rows flash");
+  ok(p.spoken.length === saidBefore + 1 && /tap a row of stones/i.test(p.spoken[p.spoken.length - 1]),
+     "and Ember says where to tap: " + p.spoken[p.spoken.length - 1]);
+  ok(text(p.$("readout").innerHTML) === "+++", "the sum itself is unchanged by that tap");
 
   [2, 0, 3].forEach(r => tap(cellAt(p, 6, r, 2)));
   ok(text(p.$("readout").innerHTML) === "5+5+5+", "three rows in, the sum reads 5 + 5 + 5 + (one place empty)");
@@ -131,6 +147,8 @@ const tap = node => node.fire("pointerdown");
   ok(p.$("revealWrap").hidden === true, "three of four rows: still no reveal, however long she waits");
 
   tap(cellAt(p, 6, 1, 4));
+  ok(p.box.children.filter(c => c.className.split(" ")[0] === "point-hint" && c.className.includes(" on")).length === 0,
+     "the pointing hand goes once every row is in");
   await sleep(700);
   ok(text(p.$("readout").innerHTML) === "5+5+5+54×5=20", "the sum folds into 4 × 5 = 20");
   ok(p.spoken[p.spoken.length - 1] === "5 plus 5 plus 5 plus 5. 4 times 5 equals 20", "and Ember says so");

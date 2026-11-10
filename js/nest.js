@@ -44,6 +44,10 @@ const Nest = (function () {
   let picked = new Set();
   let onPick = null;
   let frozen = false;
+  /* A pointing hand on the next part to tap. The sum under the nest looks
+     like where the answer goes, and on the first walk of this that is what
+     got tapped; the hand says the answer starts HERE, on her own stones. */
+  let hintEl = null;
 
   const key = (r, c) => r + "," + c;
 
@@ -154,12 +158,30 @@ const Nest = (function () {
         (!rim.has(id) && glowTwigs.has(id) ? " glow" : "") +
         (part ? (picked.has(part.id) ? " counted" : " ask") : "");
     });
+    placeHint();
     sideEls.forEach((el, side) => {
       const part = asking ? (asking.find(p => p.side === side) || null) : null;
       const show = part ? picked.has(part.id) : sideOrder.includes(side);
       el.textContent = String(sideLen(side));
       el.className = "side-len" + (show ? " on" : "");
     });
+  }
+
+  /* The hand sits on the middle of the first part she has not tapped. */
+  function placeHint() {
+    if (!hintEl) return;
+    const next = asking && onPick ? asking.find(p => !picked.has(p.id)) : null;
+    const node = next ? (cellEls.get(next.anchor) || twigEls.get(next.anchor)) : null;
+    if (!node) { hintEl.className = "point-hint"; return; }
+    const px = v => parseFloat(v) || 0;
+    const size = Math.max(26, Math.round(cellSize() * 0.7));
+    hintEl.style.width = size + "px";
+    hintEl.style.height = size + "px";
+    hintEl.style.fontSize = Math.round(size * 0.82) + "px";
+    hintEl.style.lineHeight = size + "px";
+    hintEl.style.left = (px(node.style.left) + px(node.style.width) / 2 - size / 2) + "px";
+    hintEl.style.top = (px(node.style.top) + px(node.style.height) * 0.45) + "px";
+    hintEl.className = "point-hint on";
   }
 
   /* She tapped something while Ember is asking: it stands for its whole part. */
@@ -277,6 +299,7 @@ const Nest = (function () {
       glowCells = new Set(); glowTwigs = new Set();
       litCells = new Set(); sideOrder = []; sideEls = new Map();
       asking = null; picked = new Set(); onPick = null; frozen = false;
+      hintEl = null;
 
       host.innerHTML = "";
       box = document.createElement("div");
@@ -454,12 +477,29 @@ const Nest = (function () {
             for (let c = p.rect.c0; c < p.rect.c0 + p.rect.cols; c++) cells.add(key(r, c));
         }
         if (p.side) twigEls.forEach((el, id) => { if (id[0] === p.side) twigs.add(id); });
-        return { id: p.id, side: p.side || null, cells, twigs };
+        /* Where the pointing hand rests: the middle of the part's top row,
+           or the middle twig of a side. */
+        const ids = [...twigs];
+        const anchor = p.rect ? key(p.rect.r0, p.rect.c0 + Math.floor((p.rect.cols - 1) / 2))
+          : ids[Math.floor((ids.length - 1) / 2)];
+        return { id: p.id, side: p.side || null, cells, twigs, anchor };
       });
+      hintEl = document.createElement("div");
+      hintEl.className = "point-hint";
+      hintEl.textContent = "👆";
+      box.appendChild(hintEl);
       paint();
     },
 
-    endAsk() { onPick = null; },
+    endAsk() { onPick = null; paint(); },
+
+    /* She tapped somewhere that is not a part (the empty sum, usually):
+       every part still waiting flashes, so the eye goes to the stones. */
+    nudge() {
+      if (!asking || !onPick || !box) return;
+      box.classList.add("nudge");
+      setTimeout(() => { if (box) box.classList.remove("nudge"); }, 900);
+    },
 
     onChange(fn) { listener = fn; },
     relayout: layout

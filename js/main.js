@@ -179,6 +179,7 @@
     stage = lesson.stages[si];
     passed = false;
     bridging = false;
+    asked = null;
     counted = -1;
 
     /* The one she asked to stop on rests until another day. */
@@ -304,14 +305,28 @@
     } catch (e) {}
   }
 
+  /* The sum is where the answer SHOWS, not where she acts — but it looks like
+     the place to tap, and the first time this was played that is exactly
+     what was tapped, to no effect. A tap there is now answered: the rows
+     flash and Ember says where to tap. */
+  let asked = null;
+  el.readout.addEventListener("pointerdown", () => {
+    if (!asked || !bridging) return;
+    Nest.nudge();
+    Ambience.say(asked.nudge);
+  });
+
   function showBridge(B, rep) {
     const mine = stage;
     bridging = true;
     hideClues();
     Ember.draw(el.emberHolder, "curious");
     el.emberSays.innerHTML = Lessons.fill(B.ask);
-    Ambience.say(Lessons.fill(B.ask));
+    /* The question AND how to answer it, aloud: a question alone left her
+       looking at the empty sum with no idea the rows were the way in. */
+    Ambience.say(Lessons.fill(B.ask) + " " + B.task);
     el.task.textContent = B.task;
+    asked = null;
 
     const vals = [];
     const paint = () => { el.readout.innerHTML = Lessons.sum(vals, B.parts.length - vals.length); };
@@ -319,6 +334,7 @@
     const begin = () => {
       if (stage !== mine) return;
       paint();
+      asked = B;
       Nest.ask(B.parts, (id, at) => {
         const part = B.parts.find(p => p.id === id);
         vals.push(part.value);
@@ -326,6 +342,7 @@
         Ambience.say(part.value);
         paint();
         if (vals.length < B.parts.length) return;
+        asked = null;
         Nest.endAsk();
         setTimeout(() => {
           if (stage !== mine) return;
