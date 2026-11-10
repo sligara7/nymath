@@ -12,6 +12,8 @@
     task: $("task"), surface: $("surface"), readout: $("readout"), recalls: $("recalls"),
     naming: $("naming"), namingArt: $("namingArt"), nameInput: $("nameInput"), nameBtn: $("nameBtn"),
     clearBtn: $("clearBtn"), nextBtn: $("nextBtn"), clueBtn: $("clueBtn"), clueText: $("clueText"),
+    cards: $("cards"), cardStreak: $("cardStreak"), cardCount: $("cardCount"), card: $("card"), cardQ: $("cardQ"),
+    cardA: $("cardA"), cardModel: $("cardModel"), cardPad: $("cardPad"), actions: $("actions"),
     revealWrap: $("revealWrap"), revealBody: $("revealBody"), revealNext: $("revealNext"), revealDen: $("revealDen"),
     stopWrap: $("stopWrap"), stopArt: $("stopArt"), stopSays: $("stopSays"), stopReview: $("stopReview"), stopDen: $("stopDen")
   };
@@ -181,6 +183,7 @@
     bridging = false;
     asked = null;
     counted = -1;
+    cardsDone();
 
     /* The one she asked to stop on rests until another day. */
     if (Save.isParked(stageKey())) { showStop(); return; }
@@ -275,9 +278,10 @@
       const B = Lessons.bridge(stage, rep);
       if (!B) {
         Ambience.learned();
-        /* A beat before the reveal, so she gets to look at the thing she just
-           built before anything covers it up. */
-        setTimeout(() => showReveal(rep), 620);
+        /* A beat before what comes next, so she gets to look at the thing
+           she just built before anything covers it up. */
+        const here = stage;
+        setTimeout(() => { if (stage === here) solved(null, rep); }, 620);
         return;
       }
       /* Built — but not finished. Nothing moves from here; Ember wants to
@@ -286,8 +290,58 @@
       el.clearBtn.hidden = true;
       Ambience.built();
       const mine = stage;
-      setTimeout(() => { if (stage === mine) showBridge(B, rep); }, 620);
+      setTimeout(() => { if (stage === mine) showBridge(B, rep, { done: () => solved(B, rep) }); }, 620);
     }
+  }
+
+  /* ---- the end of a lesson: her cards, then "what did I learn today?" ------
+
+     The last stage of a lesson used to end on a summary she tapped past.
+     Now it ends on a short run of flash cards made from the facts she has
+     just built (plus any earlier ones that are due), and then Ember asks
+     what she learned, answered by building the lesson's sentence one more
+     time. Only after that is the stage paid and the lesson counted. */
+
+  const lastStage = () => si === lesson.stages.length - 1;
+  const cardEls = () => ({
+    wrap: el.cards, streak: el.cardStreak, count: el.cardCount, card: el.card, q: el.cardQ, a: el.cardA,
+    model: el.cardModel, pad: el.cardPad, says: el.emberSays
+  });
+
+  function cardsDone() {
+    Cards.hide(cardEls());
+    el.surface.hidden = false;
+    el.readout.hidden = false;
+    el.actions.hidden = false;
+    el.task.hidden = false;
+  }
+
+  /* She has built it, and (where there is one) built its sentence. */
+  function solved(B, rep) {
+    const mine = stage;
+    Cards.learn(lesson.id, Lessons.facts(stage, rep));
+    if (!lastStage()) { showReveal(rep); return; }
+
+    bridging = true;                 /* nothing on the nest counts from here */
+    hideClues();
+    el.surface.hidden = true;
+    el.readout.hidden = true;
+    el.actions.hidden = true;
+    Ember.draw(el.emberHolder, "curious");
+    el.emberSays.innerHTML = Lessons.fill("Quick ones now, {name}! No clock. No rush. Tell me each answer.");
+    el.task.hidden = true;            /* the card says what to do; the room is for the pad */
+
+    const ran = Cards.run(lesson.id, cardEls(), () => {
+      if (stage !== mine) return;
+      cardsDone();
+      if (!B) { showReveal(rep); return; }
+      showBridge(B, rep, {
+        again: true,
+        ask: "So, {name}, what did I learn today? Show me one more time!",
+        done: () => showReveal(rep)
+      });
+    });
+    if (!ran) return;
   }
 
   /* ---- she shows Ember the arithmetic --------------------------------------
@@ -328,15 +382,19 @@
     Ambience.say(asked.nudge);
   });
 
-  function showBridge(B, rep) {
+  /* `opts.done` is what happens once the sentence is whole. `opts.again`
+     is the second time round, at the very end of a lesson: Ember's question
+     is different and any rim she laid is already there. */
+  function showBridge(B, rep, opts) {
     const mine = stage;
+    const ask = opts.ask || B.ask;
     bridging = true;
     hideClues();
     Ember.draw(el.emberHolder, "curious");
-    el.emberSays.innerHTML = Lessons.fill(B.ask);
+    el.emberSays.innerHTML = Lessons.fill(ask);
     /* The question AND how to answer it, aloud: a question alone left her
        looking at the empty sum with no idea the rows were the way in. */
-    Ambience.say(Lessons.fill(B.ask) + " " + B.task);
+    Ambience.say(Lessons.fill(ask) + " " + B.task);
     el.task.textContent = B.task;
     asked = null;
 
@@ -364,12 +422,12 @@
           Ambience.learned();
           Ember.draw(el.emberHolder, "delighted");
           emberHop();
-          setTimeout(() => { if (stage === mine) showReveal(rep); }, 1500);
+          setTimeout(() => { if (stage === mine) opts.done(); }, 1500);
         }, 550);
       });
     };
 
-    if (B.needsRim) Nest.layRim(45).then(begin); else begin();
+    if (B.needsRim && !opts.again) Nest.layRim(45).then(begin); else begin();
   }
 
   Nest.onChange(judge);
@@ -462,7 +520,9 @@
       '<div style="width:96px;margin:0 auto 6px">' + el.emberHolder.innerHTML + "</div>" +
       '<p class="sentence">' + Lessons.fill(r.sentence, rep) + "</p>" +
       '<p class="said">' + Lessons.fill(r.said, rep) + "</p>" +
-      (r.learned ? '<p class="learned">' + Lessons.fill(r.learned) + "</p>" : "") +
+      /* At the end of a lesson the cards have done the summing-up; the line
+         she used to tap past is not shown again. */
+      (r.learned && !lastStage() ? '<p class="learned">' + Lessons.fill(r.learned) + "</p>" : "") +
       '<p class="earned">Ember found ' + Den.coinsHtml(got) + " for you!</p>";
     el.revealNext.textContent = nextLabel();
     /* The den is offered only once a whole lesson is done. */
@@ -514,6 +574,7 @@
     el.nextBtn.hidden = true;
     el.denBtn.hidden = true;          /* she is watching; home can wait */
     hideClues();
+    cardsDone();
 
     Quest.start(QUEST3, {
       ember: el.emberHolder, says: el.emberSays, recalls: el.recalls,
@@ -540,6 +601,7 @@
     el.denBtn.hidden = false;         /* the grade is done: home is earned */
     onQuest = false;
     hideClues();
+    cardsDone();
 
     Ember.drawSleeping(el.emberHolder);
 

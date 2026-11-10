@@ -113,6 +113,30 @@ const { Save, Den, GRADE3 } = globalThis.__page;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+/* What a card is asking, worked out here rather than read from the game. */
+function answerOf(q) {
+  const m = /^(\d+) (.) (\d+)$/.exec(q);
+  const a = Number(m[1]), b = Number(m[3]);
+  return { "×": a * b, "÷": a / b, "+": a + b, "−": a - b }[m[2]];
+}
+/* Type on the game's own number pad, the way a thumb would. */
+function typeOnPad($, text) {
+  const keys = $("cardPad").children;
+  String(text).split("").forEach(ch => keys.find(k => k.textContent === ch).fire("click"));
+  keys.find(k => k.textContent === "Tell Ember").fire("click");
+}
+/* Answer every card correctly; returns the questions that were asked. */
+async function playCards($) {
+  const asked = [];
+  while (!$("cards").hidden && asked.length < 9) {
+    const q = $("cardQ").textContent;
+    asked.push(q);
+    typeOnPad($, answerOf(q));
+    await sleep(600);
+  }
+  return asked;
+}
+
 (async () => {
 
 /* ---- the door ------------------------------------------------------------ */
@@ -222,7 +246,26 @@ await sleep(700);
 ok($("readout").innerHTML.replace(/<[^>]+>/g, "") .includes("3×4=12"), "and it folds into 3 × 4 = 12: " + $("readout").innerHTML.replace(/<[^>]+>/g, " "));
 ok(spoken[spoken.length - 1] === "4 plus 4 plus 4. 3 times 4 equals 12", "which Ember says aloud: " + spoken[spoken.length - 1]);
 await sleep(1600);
+
+/* ---- the lesson ends on her cards ------------------------------------------
+
+   Lesson one has a single stage, so this is the end of the lesson: a few
+   quick cards from what she just built, then Ember asks what she learned and
+   she builds the sentence once more. THEN the reveal and the coins. */
+
+ok($("revealWrap").hidden === true && $("cards").hidden === false, "the sentence brings her cards, not the reveal");
+ok($("surface").hidden === true, "the nest steps aside for them");
+const asked1 = await playCards($);
+ok(asked1.length >= 3 && asked1.length <= 5, "three to five cards: " + asked1.join(" | "));
+ok(asked1.every(q => /\b(3|4|12)\b/.test(q)), "all of them from the 3 by 4 she just built");
+ok($("cards").hidden === true && $("surface").hidden === false && $("revealWrap").hidden === true,
+   "after the cards the nest is back, and still no reveal");
+ok(/what did I learn today/i.test($("emberSays").innerHTML), "Ember asks what she learned today");
+ok(!Save.struggleOf(KEY1)[0].solved && Save.den() === null, "still not paid");
+[0, 1, 2].forEach(r => nestBox.children[r * 6 + 1].fire("pointerdown"));
+await sleep(2300);
 ok($("revealWrap").hidden === false, "NOW the reveal arrives");
+ok(Object.keys(Save.cards().facts).join() === "x:3:4", "and 3 x 4 is on her cards for good");
 ok(Save.struggleOf(KEY1)[0].solved && Save.struggleOf(KEY1)[0].level === "moderate",
    "solved after two clues is a moderate struggle: " + JSON.stringify(Save.struggleOf(KEY1)[0]));
 

@@ -89,6 +89,26 @@ skipped. So now:
 
 The fraction lesson has no such step yet.
 
+## Her cards
+
+A lesson no longer ends on a summary she taps past. It ends on three to five
+flash cards, then Ember asks "what did I learn today?" and she builds the
+lesson's sentence once more. Only then is the lesson paid.
+
+- **Only facts she has built.** Four rows of five puts 4 × 5 on her cards,
+  and with it the whole family: 4 × 5, 5 × 4, 20 ÷ 4, 20 ÷ 5 are one array
+  looked at four ways. A fence gives its side pair and that pair doubled.
+- **No clock.** Nothing counts down and nothing rewards speed. She answers
+  on a number pad the game draws.
+- **A miss is not a penalty.** The card turns over to the picture she built
+  and she reads the answer off it. A second miss puts the whole sentence
+  under the picture. The fact just comes back sooner.
+- **Spaced.** A fact she knew returns after 1, 3, 7, then 14 days; one she
+  missed returns in the very next run. Skipping days costs nothing. The
+  record lives on her phone and travels in her save code.
+
+The fractions lesson ends on review cards alone.
+
 ## When she is stuck
 
 "Want a clue?" gives help in three steps, only when she asks: a nudge in words,
@@ -176,7 +196,7 @@ if an asset is missing its stamp, or if two of them disagree. The build number
 is logged to the console at boot, which is the fastest way to find out whether
 somebody is looking at an old copy.
 
-Tests: `node test/boot.test.js`, `node test/bridge.test.js`, `node test/lessons.test.js`,
+Tests: `node test/boot.test.js`, `node test/bridge.test.js`, `node test/cards.test.js`, `node test/lessons.test.js`,
 `node test/keep.test.js` and `node test/den.test.js`. No
 dependencies. They check that the front door and the den open, that every
 lesson can actually be finished on the lattice it is given, that Ember's own

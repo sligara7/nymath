@@ -12,7 +12,7 @@ const Save = (function () {
   const KEY = "nymath.ember.v1";
 
   const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false, name: "", questDone: false, keepTipSeen: false,
-    struggle: {}, parked: null, den: null });
+    struggle: {}, parked: null, den: null, cards: { best: 0, facts: {} } });
 
   /* Ember's den: her coins, what she owns, what she wears, where things are.
      `null` until the den first opens, so a save from before the den existed
@@ -47,6 +47,36 @@ const Save = (function () {
     return out;
   };
 
+  /* Her flash cards: every fact family she has built, which of five boxes it
+     sits in, and when it is next worth asking. Also the record of which
+     facts she knows, for a grown-up. Read through the same door as
+     everything else, so a save code cannot smuggle anything in. */
+  const DAY = /^\d{4}-\d{2}-\d{2}$/;
+  const modelOf = m => {
+    if (!m || typeof m !== "object") return null;
+    if (m.kind === "array") return { kind: "array", rows: n0(m.rows), cols: n0(m.cols) };
+    if (m.kind === "split") return { kind: "split", rows: n0(m.rows), colsA: n0(m.colsA), colsB: n0(m.colsB) };
+    if (m.kind === "bar") return { kind: "bar", a: n0(m.a), b: n0(m.b) };
+    return null;
+  };
+  const cardsOf = c => {
+    const out = { best: n0(c && c.best), facts: {} };
+    const facts = (c && c.facts && typeof c.facts === "object") ? c.facts : {};
+    Object.keys(facts).forEach(id => {
+      const f = facts[id];
+      if (!f || (f.op !== "x" && f.op !== "+") || !/^[x+]:\d+:\d+$/.test(id)) return;
+      out.facts[id] = {
+        op: f.op, a: n0(f.a), b: n0(f.b), model: modelOf(f.model),
+        lesson: typeof f.lesson === "string" ? f.lesson.slice(0, 40) : "",
+        box: Math.min(4, n0(f.box)),
+        due: DAY.test(f.due) ? f.due : "",
+        seen: DAY.test(f.seen) ? f.seen : "",
+        asked: n0(f.asked) % 1000
+      };
+    });
+    return out;
+  };
+
   /* One clue minor, two moderate, three (or asking to stop) severe. */
   const LEVELS = ["none", "minor", "moderate", "severe"];
   const levelOf = a => a.stopped ? "severe" : LEVELS[Math.min(3, a.clues)];
@@ -71,7 +101,8 @@ const Save = (function () {
     struggle: struggleOf(s.struggle),
     parked: (s.parked && typeof s.parked.key === "string" && typeof s.parked.day === "string")
       ? { key: s.parked.key, day: s.parked.day } : null,
-    den: denOf(s.den)
+    den: denOf(s.den),
+    cards: cardsOf(s.cards)
   });
 
   function read() {
@@ -202,6 +233,18 @@ const Save = (function () {
         if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
       } catch (e) {}
     },
+
+    /* Her flash cards' corner of the save: read it, or change it through
+       `cards(fn)` so the write always happens. Teaching it all again does
+       not empty this: what she knows, she knows. */
+    cards(fn) {
+      if (fn) { state.cards = cardsOf(fn(state.cards) || state.cards); flush(); }
+      return state.cards;
+    },
+
+    /* Today by the phone's calendar. For setting a hard challenge aside and
+       for spacing her cards; never for timing her. */
+    today,
 
     /* The den's own corner of the save. Changes go through `den(fn)` so the
        write always happens; reading it returns null until the den has been

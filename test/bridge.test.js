@@ -25,6 +25,30 @@ const ok = (cond, what) => { checks++; if (!cond) { fails++; console.log("  FAIL
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const text = html => String(html).replace(/<[^>]+>/g, "");
 
+/* What a card is asking, worked out here rather than read from the game. */
+function answerOf(q) {
+  const m = /^(\d+) (.) (\d+)$/.exec(q);
+  const a = Number(m[1]), b = Number(m[3]);
+  return { "×": a * b, "÷": a / b, "+": a + b, "−": a - b }[m[2]];
+}
+/* Type on the game's own number pad, the way a thumb would. */
+function typeOnPad($, text) {
+  const keys = $("cardPad").children;
+  String(text).split("").forEach(ch => keys.find(k => k.textContent === ch).fire("click"));
+  keys.find(k => k.textContent === "Tell Ember").fire("click");
+}
+/* Answer every card correctly; returns the questions that were asked. */
+async function playCards($) {
+  const asked = [];
+  while (!$("cards").hidden && asked.length < 9) {
+    const q = $("cardQ").textContent;
+    asked.push(q);
+    typeOnPad($, answerOf(q));
+    await sleep(600);
+  }
+  return asked;
+}
+
 /* ---- a page, booted at one stage ---------------------------------------- */
 
 function makeEl(id) {
@@ -51,7 +75,7 @@ function makeEl(id) {
 
 const HTML = read("index.html");
 const ORDER = [...HTML.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1].split("?")[0]);
-const SOURCE = ORDER.map(read).join("\n;\n") + "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3, Ambience };";
+const SOURCE = ORDER.map(read).join("\n;\n") + "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3, Ambience, Cards, Den };";
 
 function boot(hash, muted) {
   const byId = new Map();
@@ -165,6 +189,12 @@ const tap = node => node.fire("pointerdown");
      "the biggest sound, and another hop, are kept for the finished sentence");
   ok(!p.page.Save.struggleOf("g3-fast-count:0")[0].solved, "not yet marked solved while the sentence is still being read");
   await sleep(1600);
+  /* The end of the lesson: her cards, then the sentence once more. */
+  ok(p.$("revealWrap").hidden === true && p.$("cards").hidden === false, "the last stage of a lesson goes on to her cards");
+  await playCards(p.$);
+  ok(/what did I learn today/i.test(p.$("emberSays").innerHTML), "then Ember asks what she learned today");
+  [0, 1, 2, 3].forEach(r => tap(cellAt(p, 6, r, 0)));
+  await sleep(2300);
   ok(p.$("revealWrap").hidden === false, "then, and only then, the reveal");
   ok(p.page.Save.struggleOf("g3-fast-count:0")[0].solved, "and it is solved");
   ok(text(p.$("revealBody").innerHTML).includes("4 × 5 = 20"), "the reveal carries the same sentence");
@@ -223,6 +253,12 @@ const tap = node => node.fire("pointerdown");
   await sleep(700);
   ok(text(p.$("readout").innerHTML) === "5+2+5+2=14", "her sentence is the rim: 5 + 2 + 5 + 2 = 14");
   await sleep(1600);
+  const rimCards = await playCards(p.$);
+  ok(rimCards.length >= 3 && rimCards.every(q => /^(5 \+ 2|2 \+ 5|7 − 2|7 − 5|2 × 7|7 × 2|14 ÷ 2|14 ÷ 7)$/.test(q)),
+     "the fence gives its side pair and that pair doubled: " + rimCards.join(" | "));
+  ok(twigs(p).length === 14, "her fence is still there for the last question, not laid a second time");
+  [T[0], T[10], T[1], T[11]].forEach(tap);
+  await sleep(2300);
   ok(p.$("revealWrap").hidden === false && text(p.$("revealBody").innerHTML).includes("only 10 inside"),
      "and the reveal adds that there are only 10 inside");
 }
@@ -241,6 +277,11 @@ const tap = node => node.fire("pointerdown");
   await sleep(700);
   ok(text(p.$("readout").innerHTML) === "30+12=42", "her sentence: 30 + 12 = 42");
   await sleep(1600);
+  const apart = await playCards(p.$);
+  ok(apart.some(q => /[×÷]/.test(q)) && apart.some(q => /[+−]/.test(q)),
+     "breaking it apart gives both 6 x 7 and 30 + 12: " + apart.join(" | "));
+  tap(cellAt(p, 7, 3, 2)); tap(cellAt(p, 7, 0, 6));
+  await sleep(2300);
   ok(p.$("revealWrap").hidden === false, "then the reveal");
 }
 

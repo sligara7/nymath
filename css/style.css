@@ -185,6 +185,76 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 
 @keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }
 
+/* --- her cards -------------------------------------------------------------
+
+   One fact, large, and a number pad drawn by the game (the phone's own
+   keyboard would cover half the screen and bring its suggestions with it).
+   Keys are big enough for a thumb. Nothing here moves on its own or counts
+   down. */
+
+.cards { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.card-top {
+  margin: 0; width: min(100%, 340px); display: flex; justify-content: space-between;
+  color: var(--ink-soft); font-size: 14px; min-height: 1.4em;
+}
+.card-streak b { color: var(--ember-hot); }
+
+.card {
+  width: min(100%, 340px);
+  padding: 22px 12px;
+  border: 3px solid #5b3a2e;
+  border-radius: 22px;
+  background: var(--bg-lift);
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  font-size: clamp(30px, 10vw, 44px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  animation: pop 0.22s ease-out;
+}
+.card-eq { color: var(--ink-soft); }
+.card-a {
+  min-width: 2.2em; min-height: 1.5em; padding: 0 10px;
+  border-radius: 14px; border: 3px dashed var(--stone-dim);
+  text-align: center; color: var(--ember-hot);
+}
+.card-a.has { border-style: solid; border-color: var(--ember); }
+.card.right { border-color: var(--good); }
+.card.right .card-a { border-color: var(--good); color: var(--good); }
+/* With her model out, the card shrinks so the picture and the whole number
+   pad still fit on one screen: she must never have to scroll to answer. */
+.card.flipped { background: #2c2219; padding: 8px 12px; font-size: clamp(22px, 7vw, 30px); }
+
+/* Her own model, turned up when a card is missed: the stones or twigs she
+   laid, small, in the same colours as the nest. */
+.card-model { width: min(100%, 340px); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.dots { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 16px; background: #2c2219; border: 2px solid #5b3a2e; }
+.dotrow { display: flex; gap: 4px; align-items: center; }
+.dotrow i { display: block; width: var(--d, 18px); height: var(--d, 18px); border-radius: 50%; background: var(--stone); border: 1.5px solid #5b3a2e; }
+.dotrow i.kept { background: var(--ember-hot); }
+.dotrow.twigs i { width: 24px; height: 9px; border-radius: 999px; background: var(--twig); }
+.dotrow.twigs i.twig-b { background: #e0b98a; }
+.dotrow .gap { display: block; width: 10px; }
+.model-says { margin: 0; font-size: 20px; font-weight: 800; color: var(--ember-hot); font-variant-numeric: tabular-nums; }
+
+.pad { width: min(100%, 300px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.key {
+  padding: 11px 0;
+  border-radius: 16px;
+  background: var(--bg-lift);
+  border: 2px solid var(--stone-dim);
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  touch-action: manipulation;
+}
+.key:active { transform: translateY(1px); background: var(--stone-dim); }
+.key.soft { color: var(--ink-soft); }
+/* "Tell Ember" sits in the pad's last corner rather than on a row of its
+   own: one row fewer is what keeps the pad on screen beside a model. */
+.key.go { background: var(--ember); border-color: var(--ember); color: #22160c; font-size: 15px; }
+.key.go:disabled { opacity: 0.4; }
+
 /* --- buttons -------------------------------------------------------------- */
 
 .actions { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }

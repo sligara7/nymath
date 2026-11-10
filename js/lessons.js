@@ -231,6 +231,36 @@ const Lessons = (function () {
     };
   }
 
+  /* ---- the facts a build puts on her cards -------------------------------
+
+     A fact joins her flash cards only once she has built it (js/cards.js),
+     and each carries the model she built so a missed card can show it back
+     to her. An array is a multiplication family. A fence is its side pair
+     and that pair doubled. An array broken apart is also the sum of its two
+     pieces. Fractions put nothing on the cards yet. */
+  function facts(stage, rep) {
+    const check = stage.check, s = rep.shape;
+    if (stage.surface === "line" || !s || !s.ok) return [];
+
+    if (check.rule === "rim" || check.rule === "samePerimeterLessArea") {
+      return [
+        { op: "+", a: s.cols, b: s.rows, model: { kind: "bar", a: s.cols, b: s.rows } },
+        { op: "x", a: 2, b: s.cols + s.rows, model: { kind: "array", rows: 2, cols: s.cols + s.rows } }
+      ];
+    }
+    if (check.rule !== "exact" && check.rule !== "equalRows") return [];
+
+    const out = [{ op: "x", a: s.rows, b: s.cols, model: { kind: "array", rows: s.rows, cols: s.cols } }];
+    const f = stage.carry && stage.fill;
+    if (f && f.rows === s.rows && f.cols < s.cols) {
+      out.push({
+        op: "+", a: f.rows * f.cols, b: s.rows * (s.cols - f.cols),
+        model: { kind: "split", rows: s.rows, colsA: f.cols, colsB: s.cols - f.cols }
+      });
+    }
+    return out;
+  }
+
   /* The sum as it stands: the numbers she has dropped in, an empty place for
      each one still to come, and the total once it is known. */
   function sum(vals, waiting, total) {
@@ -346,5 +376,5 @@ const Lessons = (function () {
       .replace(/\b(\d)\/(\d)\b/g, (_, a, b) => frac(a, b));
   }
 
-  return { RULES, SAY, frac, passes, describe, counting, bridge, sum, fill, chips, setName(n) { playerName = n || ""; } };
+  return { RULES, SAY, frac, passes, describe, counting, bridge, facts, sum, fill, chips, setName(n) { playerName = n || ""; } };
 })();
