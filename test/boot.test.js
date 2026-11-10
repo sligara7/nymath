@@ -58,7 +58,13 @@ IDS.forEach(id => byId.set(id, makeEl(id)));
 const BUILD = (read("index.html").match(/<meta name="build" content="(\d+)">/) || [])[1] || "";
 
 const store = {};
-global.window = { addEventListener: () => {}, innerHeight: 740 };
+/* What Ember says aloud, caught instead of spoken. */
+const spoken = [];
+global.SpeechSynthesisUtterance = function (t) { this.text = t; };
+global.window = {
+  addEventListener: () => {}, innerHeight: 740,
+  speechSynthesis: { speak: u => spoken.push(u.text), cancel() {} }
+};
 global.location = { hash: "" };
 global.document = {
   title: "",
@@ -182,8 +188,41 @@ ok(Save.struggleOf(KEY1)[0].clues === 2 && Save.struggleOf(KEY1)[0].restarts ===
 [[2, 4], [3, 0], [1, 2], [1, 3]].forEach(([r, c]) => nestBox.children[r * 6 + c].fire("pointerdown"));
 ok($("readout").innerHTML.includes("3</b> rows of <b>4"), "her nest reads 3 rows of 4");
 ok($("clueBtn").hidden === true, "the clue button goes once it is solved");
+ok(spoken.join(",") === "8,12", "Ember counted the finished rows aloud as they were finished: " + spoken.join(","));
+ok(nestBox.children.filter(c => c.className.includes("lit")).length === 12, "and all three finished rows are lit");
+
+/* ---- she shows Ember the arithmetic ---------------------------------------
+
+   THE STEP SHE USED TO TAP PAST. Building it right is no longer the end: the
+   reveal, the coins and "Next lesson" stay away until she has tapped each of
+   her rows into the sum. */
+
+$("revealWrap").hidden = true;      /* as the page starts; the shim cannot read the attribute */
 await sleep(700);
-ok($("revealWrap").hidden === false, "the reveal arrives");
+ok($("revealWrap").hidden === true, "building it right does NOT bring the reveal");
+ok(!Save.struggleOf(KEY1)[0].solved && Save.den() === null, "nor is it solved or paid for yet");
+ok(/how did you/i.test($("emberSays").innerHTML) && $("emberSays").innerHTML.includes("Wren"),
+   "Ember asks how many, and how she knew: " + $("emberSays").innerHTML);
+ok(spoken.some(t => /how many stones/i.test(t)), "and asks it aloud");
+ok($("clearBtn").hidden === true, "her nest cannot be started again now");
+ok(($("readout").innerHTML.match(/class="slot"/g) || []).length === 3, "the sum is waiting for three numbers, one per row");
+
+/* A stone tapped now is counted, not moved. */
+nestBox.children[0 * 6 + 1].fire("pointerdown");
+ok(nestBox.children.filter(c => c.className.includes(" on")).length === 12, "tapping a row lifts no stone");
+ok(nestBox.children.filter(c => c.className.includes("counted")).length === 4, "the whole row of 4 is counted");
+nestBox.children[0 * 6 + 3].fire("pointerdown");
+ok(($("readout").innerHTML.match(/class="term"/g) || []).length === 1, "and a row drops its number in only once");
+nestBox.children[2 * 6 + 0].fire("pointerdown");
+await sleep(900);
+ok($("revealWrap").hidden === true, "two rows of three is still not enough");
+nestBox.children[1 * 6 + 2].fire("pointerdown");
+ok(($("readout").innerHTML.match(/class="term"/g) || []).length === 3, "4 + 4 + 4 is on the screen");
+await sleep(700);
+ok($("readout").innerHTML.replace(/<[^>]+>/g, "") .includes("3×4=12"), "and it folds into 3 × 4 = 12: " + $("readout").innerHTML.replace(/<[^>]+>/g, " "));
+ok(spoken[spoken.length - 1] === "4 plus 4 plus 4. 3 times 4 equals 12", "which Ember says aloud: " + spoken[spoken.length - 1]);
+await sleep(1600);
+ok($("revealWrap").hidden === false, "NOW the reveal arrives");
 ok(Save.struggleOf(KEY1)[0].solved && Save.struggleOf(KEY1)[0].level === "moderate",
    "solved after two clues is a moderate struggle: " + JSON.stringify(Save.struggleOf(KEY1)[0]));
 

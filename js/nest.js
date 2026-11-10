@@ -30,6 +30,20 @@ const Nest = (function () {
   /* Where a clue is pointing: hollows and twig slots that glow. A glow only
      ever shows WHERE; she still lays every stone herself. */
   let glowCells = new Set(), glowTwigs = new Set();
+  /* The model counting as she builds: stones in rows the lesson says are
+     finished, and the sides of the rim in the order she finished them. Which
+     rows count is the lesson's business; the nest only lights what it is told. */
+  let litCells = new Set();
+  let sideOrder = [];         /* "t" | "r" | "b" | "l", oldest first */
+  let sideEls = new Map();    /* the little length badge beside each side */
+  let rimTappable = false;
+  /* After she has built it, Ember asks how she knew, and she answers by
+     tapping PARTS of her own model: rows, sides, or blocks. While that is
+     going on a tap picks a part instead of moving a stone. */
+  let asking = null;          /* [{ id, cells:Set, twigs:Set }] */
+  let picked = new Set();
+  let onPick = null;
+  let frozen = false;
 
   const key = (r, c) => r + "," + c;
 
@@ -81,7 +95,42 @@ const Nest = (function () {
       if (side === "l") { el.style.top = (cy - tw / 2) + "px"; el.style.left = left0 + "px"; }
       if (side === "r") { el.style.top = (cy - tw / 2) + "px"; el.style.left = right0 + "px"; }
     });
+
+    /* A badge outside the middle of each side, for its length. */
+    if (R) sideEls.forEach((el, side) => {
+      const b = Math.max(20, Math.round(s * 0.5));
+      const out = Math.round(pad * 0.62) + b + 2;
+      const midX = pad + R.c0 * step + (R.cols * step - gap) / 2;
+      const midY = pad + R.r0 * step + (R.rows * step - gap) / 2;
+      const x0 = pad + R.c0 * step, x1 = pad + (R.c0 + R.cols) * step - gap;
+      const y0 = pad + R.r0 * step, y1 = pad + (R.r0 + R.rows) * step - gap;
+      el.style.width = b + "px"; el.style.height = b + "px";
+      el.style.lineHeight = b + "px"; el.style.fontSize = Math.round(b * 0.62) + "px";
+      if (side === "t") { el.style.left = (midX - b / 2) + "px"; el.style.top = (y0 - out) + "px"; }
+      if (side === "b") { el.style.left = (midX - b / 2) + "px"; el.style.top = (y1 + out - b) + "px"; }
+      if (side === "l") { el.style.top = (midY - b / 2) + "px"; el.style.left = (x0 - out) + "px"; }
+      if (side === "r") { el.style.top = (midY - b / 2) + "px"; el.style.left = (x1 + out - b) + "px"; }
+    });
   }
+
+  const sideLen = side => (rimRect ? (side === "t" || side === "b" ? rimRect.cols : rimRect.rows) : 0);
+
+  function sideFull(side) {
+    const n = sideLen(side);
+    if (!n) return false;
+    for (let i = 0; i < n; i++) if (!rim.has(side + i)) return false;
+    return true;
+  }
+
+  /* Keep the order she finished the sides in, so the running sum only ever
+     grows at its end: 4, then 4 + 3, never reshuffled under her. */
+  function tallySides() {
+    sideOrder = sideOrder.filter(sideFull);
+    ["t", "r", "b", "l"].forEach(sd => { if (sideFull(sd) && !sideOrder.includes(sd)) sideOrder.push(sd); });
+  }
+
+  const partOf = (k, isTwig) =>
+    (asking || []).find(p => (isTwig ? p.twigs : p.cells).has(k)) || null;
 
   function paint() {
     cellEls.forEach((el, k) => {
@@ -90,15 +139,42 @@ const Nest = (function () {
          EMBER'S — so the board reads as Ember's mess before the player starts,
          and becomes the player's as she moves it. One tap on a cell clears its
          `his` mark for good (the name is older than Ember being a girl). */
+      const part = asking ? partOf(k, false) : null;
       el.className = "cell" +
         (on ? " on" : "") +
         (hisStones.has(k) ? " his" : "") +
         (on && keptStones.has(k) ? " kept" : "") +
-        (!on && glowCells.has(k) ? " glow" : "");
+        (!on && glowCells.has(k) ? " glow" : "") +
+        (on && litCells.has(k) ? " lit" : "") +
+        (part ? (picked.has(part.id) ? " counted" : " ask") : "");
     });
     twigEls.forEach((el, id) => {
-      el.className = "twig" + (rim.has(id) ? " on" : "") + (!rim.has(id) && glowTwigs.has(id) ? " glow" : "");
+      const part = asking ? partOf(id, true) : null;
+      el.className = "twig" + (rim.has(id) ? " on" : "") +
+        (!rim.has(id) && glowTwigs.has(id) ? " glow" : "") +
+        (part ? (picked.has(part.id) ? " counted" : " ask") : "");
     });
+    sideEls.forEach((el, side) => {
+      const part = asking ? (asking.find(p => p.side === side) || null) : null;
+      const show = part ? picked.has(part.id) : sideOrder.includes(side);
+      el.textContent = String(sideLen(side));
+      el.className = "side-len" + (show ? " on" : "");
+    });
+  }
+
+  /* She tapped something while Ember is asking: it stands for its whole part. */
+  function pick(k, isTwig, node) {
+    const part = partOf(k, isTwig);
+    if (!part || picked.has(part.id)) return;
+    picked.add(part.id);
+    Ambience.stone();
+    paint();
+    let at = null;
+    try {
+      const b = node.getBoundingClientRect();
+      at = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+    } catch (e) {}
+    if (onPick) onPick(part.id, at);
   }
 
   function announce() {
@@ -107,7 +183,8 @@ const Nest = (function () {
   }
 
   function tapCell(k) {
-    if (cfg.locked || lockedStones.has(k)) return;
+    if (asking) { pick(k, false, cellEls.get(k)); return; }
+    if (frozen || cfg.locked || lockedStones.has(k)) return;
     if (stones.has(k)) { stones.delete(k); Ambience.lift(); }
     else { stones.add(k); Ambience.stone(); }
     hisStones.delete(k);
@@ -123,8 +200,11 @@ const Nest = (function () {
   }
 
   function tapTwig(id) {
+    if (asking) { pick(id, true, twigEls.get(id)); return; }
+    if (frozen || !rimTappable) return;
     if (rim.has(id)) { rim.delete(id); Ambience.lift(); }
     else { rim.add(id); Ambience.stone(); }
+    tallySides();
     announce();
   }
 
@@ -132,17 +212,29 @@ const Nest = (function () {
      inert during the quest, where Ember lays them herself. */
   function makeRim(rect, interactive) {
     rimRect = rect;
+    rimTappable = !!interactive;
+    sideOrder = [];
     twigEls.forEach(el => el.remove ? el.remove() : 0);
+    sideEls.forEach(el => el.remove ? el.remove() : 0);
     twigEls = new Map();
+    sideEls = new Map();
     const ids = [];
     for (let c = 0; c < rect.cols; c++) { ids.push("t" + c); ids.push("b" + c); }
     for (let r = 0; r < rect.rows; r++) { ids.push("l" + r); ids.push("r" + r); }
     ids.forEach(id => {
       const d = document.createElement("div");
       d.className = "twig";
-      if (interactive) d.addEventListener("pointerdown", ev => { ev.preventDefault(); tapTwig(id); });
+      /* Always listening: twigs Ember laid herself cannot be moved, but they
+         can still be tapped when she asks how long each side is. */
+      d.addEventListener("pointerdown", ev => { ev.preventDefault(); tapTwig(id); });
       box.appendChild(d);
       twigEls.set(id, d);
+    });
+    ["t", "r", "b", "l"].forEach(side => {
+      const d = document.createElement("div");
+      d.className = "side-len";
+      box.appendChild(d);
+      sideEls.set(side, d);
     });
     layout();
   }
@@ -183,6 +275,8 @@ const Nest = (function () {
       rim = new Set();
       doneRows = new Set();
       glowCells = new Set(); glowTwigs = new Set();
+      litCells = new Set(); sideOrder = []; sideEls = new Map();
+      asking = null; picked = new Set(); onPick = null; frozen = false;
 
       host.innerHTML = "";
       box = document.createElement("div");
@@ -236,14 +330,32 @@ const Nest = (function () {
       return [...m.keys()].sort((a, b) => a - b).map(r => m.get(r));
     },
 
+    /* Every row that has stones, top to bottom: where it starts, how many,
+       and whether they sit side by side with no hole. */
+    rows() {
+      const m = new Map();
+      stones.forEach(k => {
+        const [r, c] = k.split(",").map(Number);
+        if (!m.has(r)) m.set(r, []);
+        m.get(r).push(c);
+      });
+      return [...m.keys()].sort((a, b) => a - b).map(r => {
+        const cs = m.get(r), c0 = Math.min(...cs), c1 = Math.max(...cs);
+        return { r, c0, n: cs.length, solid: c1 - c0 + 1 === cs.length };
+      });
+    },
+
     report() {
       const sh = api.shape();
       return {
         shape: sh,
         total: stones.size,
         rowCounts: api.rowCounts(),
+        rows: api.rows(),
         rim: rim.size,
         rimNeeded: rimRect ? 2 * (rimRect.rows + rimRect.cols) : 0,
+        /* Finished sides of the rim, in the order she finished them. */
+        sides: sideOrder.map(sd => ({ id: sd, len: sideLen(sd) })),
         mode: cfg ? cfg.mode : "floor"
       };
     },
@@ -251,6 +363,7 @@ const Nest = (function () {
     clear() {
       if (!cfg) return;
       stones = new Set(); rim = new Set(); doneRows = new Set(); keptStones = new Set();
+      litCells = new Set(); sideOrder = [];
       if (cfg.fill) for (let r = 0; r < cfg.fill.rows; r++) for (let c = 0; c < cfg.fill.cols; c++) stones.add(key(r, c));
       hisStones = new Set((cfg.his || []).map(p => key(p[0], p[1])));
       hisStones.forEach(k => stones.add(k));
@@ -311,6 +424,42 @@ const Nest = (function () {
       }
       paint();
     },
+
+    /* Light the stones in these rows: the model counting as she builds. */
+    lightRows(rowList) {
+      const want = new Set(rowList || []);
+      litCells = new Set();
+      stones.forEach(k => { if (want.has(Number(k.split(",")[0]))) litCells.add(k); });
+      paint();
+    },
+
+    /* What she built is finished; nothing moves from here on. */
+    freeze() { frozen = true; },
+
+    /* Ember asks how she knew. Each part is { id } plus EITHER
+       rect: { r0, c0, rows, cols } (stones) OR side: "t" | "r" | "b" | "l"
+       (the twigs along one side of the rim). A tap anywhere on a part picks
+       the whole part, once, and calls back with its id and where on the
+       screen it was tapped. */
+    ask(parts, fn) {
+      frozen = true;
+      litCells = new Set();
+      glowCells = new Set(); glowTwigs = new Set();
+      picked = new Set();
+      onPick = fn;
+      asking = parts.map(p => {
+        const cells = new Set(), twigs = new Set();
+        if (p.rect) {
+          for (let r = p.rect.r0; r < p.rect.r0 + p.rect.rows; r++)
+            for (let c = p.rect.c0; c < p.rect.c0 + p.rect.cols; c++) cells.add(key(r, c));
+        }
+        if (p.side) twigEls.forEach((el, id) => { if (id[0] === p.side) twigs.add(id); });
+        return { id: p.id, side: p.side || null, cells, twigs };
+      });
+      paint();
+    },
+
+    endAsk() { onPick = null; },
 
     onChange(fn) { listener = fn; },
     relayout: layout

@@ -1,4 +1,5 @@
-/* AMBIENCE — wind, a low cave drone, and the occasional far-off bell.
+/* AMBIENCE — wind, a low cave drone, the occasional far-off bell, and
+   Ember's voice when she counts.
 
    Synthesized, not downloaded. The owner already proved this route in
    musicjug: audio files would be the heaviest thing on the page, over a phone
@@ -110,6 +111,26 @@ const Ambience = (function () {
     setMuted(v) {
       muted = !!v;
       if (master) master.gain.setTargetAtTime(muted ? 0 : 1, ctx.currentTime, 0.08);
+      if (muted) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+    },
+
+    /* Ember says it out loud, in case the words on the screen are the part
+       that gets skipped. The phone's own voice, so there is still no audio
+       file on this site; pitched up a little, because she is small. A new
+       line cuts off the last one, so fast taps do not queue up a speech.
+       Where a browser has no voice this does nothing at all. */
+    say(text) {
+      if (muted) return;
+      try {
+        const synth = window.speechSynthesis;
+        if (!synth || typeof SpeechSynthesisUtterance === "undefined") return;
+        const u = new SpeechSynthesisUtterance(String(text).replace(/<[^>]+>/g, "").replace(/×/g, " times "));
+        u.lang = "en-US";
+        u.rate = 0.95;
+        u.pitch = 1.35;
+        synth.cancel();
+        synth.speak(u);
+      } catch (e) { /* silence is an acceptable outcome; a crash is not */ }
     },
 
     /* A stone going down. Short, soft, and pitched a little differently every

@@ -27,6 +27,8 @@
   let li = 0, si = 0;         /* which lesson, which stage */
   let stage = null, lesson = null;
   let passed = false;          /* so the reveal fires once, not on every tap */
+  let bridging = false;        /* Ember is asking how she knew; the nest is answering */
+  let counted = -1;            /* rows or sides the model has counted so far; -1 = just loaded */
   let onQuest = false;
 
   /* ---- the door ---------------------------------------------------------- */
@@ -176,6 +178,8 @@
     lesson = G.lessons[li];
     stage = lesson.stages[si];
     passed = false;
+    bridging = false;
+    counted = -1;
 
     /* The one she asked to stop on rests until another day. */
     if (Save.isParked(stageKey())) { showStop(); return; }
@@ -212,7 +216,10 @@
       his: stage.his,
       fill: stage.fill,
       locked: !!stage.locked,
-      carry: !!stage.carry
+      carry: !!stage.carry,
+      /* Room for the twigs Ember lays round it afterwards, kept from the
+         start so the nest does not jump when she does. */
+      willRim: stage.check.rule === "samePerimeterLessArea"
     });
   }
 
@@ -229,21 +236,110 @@
     });
   }
 
+  /* The model counts as she builds: finished rows light, the running total
+     ticks in the readout, and Ember says each new total aloud. Only a count
+     that GROWS is spoken, and never the one already there when a stage
+     opens, or she would be talked at before she has touched anything. */
+  function countAloud(rep) {
+    const c = Lessons.counting(stage.check, rep);
+    if (!onLine()) Nest.lightRows(c ? c.rows : []);
+    const n = c ? c.totals.length : 0;
+    if (counted >= 0 && n > counted) Ambience.say(c.totals[n - 1]);
+    counted = n;
+  }
+
   function judge(rep) {
-    if (!stage) return;
+    if (!stage || bridging) return;
     if ((rep.mode === "line") !== onLine()) return;
     el.readout.innerHTML = Lessons.describe(stage.check, rep);
     showTruth(rep);
+    countAloud(rep);
     if (passed) return;
     if (Lessons.passes(stage.check, rep)) {
       passed = true;
       el.clueBtn.hidden = true;
-      Ambience.learned();
       Ember.draw(el.emberHolder, "delighted");
-      /* A beat before the reveal, so she gets to look at the thing she just
-         built before anything covers it up. */
-      setTimeout(() => showReveal(rep), 620);
+      const B = Lessons.bridge(stage, rep);
+      if (!B) {
+        Ambience.learned();
+        /* A beat before the reveal, so she gets to look at the thing she just
+           built before anything covers it up. */
+        setTimeout(() => showReveal(rep), 620);
+        return;
+      }
+      /* Built — but not finished. Nothing moves from here; Ember wants to
+         know how she knew. The big "yes" waits for the sentence. */
+      Nest.freeze();
+      el.clearBtn.hidden = true;
+      Ambience.row();
+      const mine = stage;
+      setTimeout(() => { if (stage === mine) showBridge(B, rep); }, 620);
     }
+  }
+
+  /* ---- she shows Ember the arithmetic --------------------------------------
+
+     She built it; now she says it. Ember asks how many and how she knew, and
+     she answers by tapping her own rows (or sides): each drops its number
+     into the sum, which folds into the sentence when the last one lands.
+     The reveal, its coins and its "Go on" do not exist until then. This is
+     the step she used to tap straight past. */
+
+  function fly(text, from) {
+    try {
+      if (!from || !document.body || !el.readout.getBoundingClientRect) return;
+      const to = el.readout.getBoundingClientRect();
+      const d = document.createElement("div");
+      d.className = "fly";
+      d.textContent = text;
+      d.style.left = from.x + "px";
+      d.style.top = from.y + "px";
+      document.body.appendChild(d);
+      requestAnimationFrame(() => {
+        d.style.transform = "translate(" + (to.left + to.width / 2 - from.x) + "px," +
+          (to.top + to.height / 2 - from.y) + "px) scale(0.7)";
+        d.style.opacity = "0.2";
+      });
+      setTimeout(() => d.remove(), 420);
+    } catch (e) {}
+  }
+
+  function showBridge(B, rep) {
+    const mine = stage;
+    bridging = true;
+    hideClues();
+    Ember.draw(el.emberHolder, "curious");
+    el.emberSays.innerHTML = Lessons.fill(B.ask);
+    Ambience.say(Lessons.fill(B.ask));
+    el.task.textContent = B.task;
+
+    const vals = [];
+    const paint = () => { el.readout.innerHTML = Lessons.sum(vals, B.parts.length - vals.length); };
+
+    const begin = () => {
+      if (stage !== mine) return;
+      paint();
+      Nest.ask(B.parts, (id, at) => {
+        const part = B.parts.find(p => p.id === id);
+        vals.push(part.value);
+        fly(part.value, at);
+        Ambience.say(part.value);
+        paint();
+        if (vals.length < B.parts.length) return;
+        Nest.endAsk();
+        setTimeout(() => {
+          if (stage !== mine) return;
+          const f = B.fold(vals);
+          el.readout.innerHTML = f.html;
+          Ambience.say(f.say);
+          Ambience.learned();
+          Ember.draw(el.emberHolder, "delighted");
+          setTimeout(() => { if (stage === mine) showReveal(rep); }, 1500);
+        }, 550);
+      });
+    };
+
+    if (B.needsRim) Nest.layRim(45).then(begin); else begin();
   }
 
   Nest.onChange(judge);

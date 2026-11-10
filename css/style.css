@@ -300,6 +300,92 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 }
 .twig:active { transform: scale(0.8); }
 
+/* --- the model counts, and she shows Ember the arithmetic -------------------
+
+   A finished row gets a warm ring: the nest counting along with her. When
+   Ember asks how she knew, the parts still to be tapped breathe gently and
+   the ones she has counted turn ember-warm. Told apart by more than colour:
+   a ring, a pulse, a fill. */
+
+.cell.on.lit { box-shadow: 0 0 0 3px var(--ember-hot), 0 3px 0 rgba(0, 0, 0, 0.35); }
+
+.cell.on.ask, .twig.on.ask { animation: breathe 1.3s ease-in-out infinite; cursor: pointer; }
+.cell.on.counted {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85) 0 9%, transparent 18%),
+    radial-gradient(circle at 40% 35%, #ffd9b0 0%, var(--ember) 60%, #c8601f 100%);
+  box-shadow: 0 0 0 3px var(--ember-hot), 0 3px 0 rgba(0, 0, 0, 0.35);
+  transform: none;
+  animation: none;
+}
+.twig.on.counted { box-shadow: 0 0 0 3px var(--ember-hot); animation: none; }
+
+@keyframes breathe { 0%, 100% { transform: none; } 50% { transform: scale(0.9); } }
+
+/* How long a side is, beside the side, once it is finished. */
+.side-len {
+  position: absolute;
+  display: none;
+  border-radius: 50%;
+  background: var(--ember);
+  color: #22160c;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  z-index: 2;
+  animation: pop 0.22s ease-out;
+}
+.side-len.on { display: block; }
+
+/* The sum she is building, in the readout: a number for every part she has
+   tapped, an empty place for every part still to come. */
+.sum { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
+.sum b, .sum .term {
+  display: inline-block;
+  min-width: 1.9em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--ember);
+  color: #22160c;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  animation: pop 0.22s ease-out;
+}
+.sum .slot {
+  display: inline-block;
+  width: 1.9em;
+  height: 1.7em;
+  border-radius: 999px;
+  border: 2px dashed var(--stone-dim);
+}
+.sum .op { color: var(--ink); font-weight: 800; }
+.sum .total { background: var(--ember-hot); }
+.sum.folded { font-size: 1.3em; }
+.sum.folded b { background: var(--ember-hot); }
+
+/* A number on its way from her model to the sum. */
+.fly {
+  position: fixed;
+  z-index: 50;
+  margin: -16px 0 0 -16px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  background: var(--ember);
+  color: #22160c;
+  font-weight: 800;
+  text-align: center;
+  pointer-events: none;
+  transition: transform 0.38s ease-in, opacity 0.38s ease-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell.on.ask, .twig.on.ask { animation: none; box-shadow: 0 0 0 2px var(--stone); }
+  .fly { display: none; }
+}
+
 /* --- the fish on the number line (fractions) --------------------------------
 
    The nest's sibling, drawn the same way: warm-brown outline, flat colour,

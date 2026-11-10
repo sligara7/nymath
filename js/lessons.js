@@ -1,17 +1,23 @@
 /* THE LESSON ENGINE.
 
-   Content is data; the rules that judge it live here. There are four rules so
-   far and adding a fifth is the only reason this file should ever grow.
+   Content is data; the rules that judge it live here. Adding a rule is the
+   only reason this file should ever grow.
 
-   Two things this file is careful about.
+   Three things this file is careful about.
 
    It never says she is wrong. When what she has built does not satisfy the
    rule yet, the readout describes WHAT IS THERE — "Wobbly! rows of 4, 2, 5, 1,
    not the same yet" — and lets her see the difference herself. Nothing goes
    red, and nothing says "warmer".
 
-   And it never shows the arithmetic sentence before she has built the thing.
-   The whole design rests on that order. */
+   It never shows the arithmetic sentence before she has built the thing.
+   The whole design rests on that order.
+
+   And once she HAS built it, she is the one who writes the sentence. The
+   model counts as she builds (5, 10, 15), and after a solve Ember asks how
+   she knew: she taps her own rows or sides and each drops its number into
+   the sum. Nothing is typed and nothing is picked from a list, because either
+   of those would be a quiz wearing the model as a costume. */
 
 const Lessons = (function () {
 
@@ -108,6 +114,125 @@ const Lessons = (function () {
     return out;
   }
 
+  /* A running total as chips, the newest one lit: 5, 10, 15. */
+  function tally(totals) {
+    return totals.map((t, i) =>
+      '<span class="chip' + (i === totals.length - 1 ? " last" : "") + '">' + t + "</span>").join("");
+  }
+  const BREAK = '<span style="width:100%"></span>';
+
+  /* ---- the model counts as she builds -----------------------------------
+
+     Which rows are FINISHED, and the total after each. In a stage that names
+     its size ("4 rows of 5") a row is finished when it holds exactly that
+     many, side by side; where she is free to choose, the top row sets the
+     length and the others are finished when they match it. Finished rows
+     must line up under one another, or they are not rows of one array.
+     On the rim it is the finished sides, in the order she finished them.
+
+     Returns { rows: [row numbers], totals: [5, 10, 15] }, or null where
+     there is nothing to count this way. */
+  function counting(check, rep) {
+    if (check.rule === "rim") {
+      let t = 0;
+      return { rows: [], totals: (rep.sides || []).map(sd => (t += sd.len)) };
+    }
+    if (check.rule !== "exact" && check.rule !== "equalRows") return null;
+    if (!rep.rows) return null;
+    const rows = rep.rows, none = { rows: [], totals: [] };
+    if (!rows.length) return none;
+    const width = check.rule === "exact" ? check.cols : rows[0].n;
+    if (width < 2) return none;
+    const first = rows.find(r => r.solid && r.n === width);
+    if (!first) return none;
+    const done = rows.filter(r => r.solid && r.n === width && r.c0 === first.c0);
+    let t = 0;
+    return { width, rows: done.map(r => r.r), totals: done.map(() => (t += width)) };
+  }
+
+  /* ---- she shows Ember the arithmetic ------------------------------------
+
+     What Ember asks once the build is right, and the parts of the model she
+     taps to answer. One action per solve, never more: this is a bridge from
+     the picture to the number, not a worksheet.
+
+       rows    each row drops its count:   5 + 5 + 5, folding to 3 x 5 = 15
+       sides   each side drops its length: 4 + 3 + 4 + 3 = 14
+       blocks  the part Ember knew and the new part: 30 + 12 = 42
+
+     Fractions on the line have no such step yet, so they return null. */
+  function bridge(stage, rep) {
+    const check = stage.check, s = rep.shape;
+    if (stage.surface === "line" || !s || !s.ok) return null;
+
+    if (check.rule === "rim" || check.rule === "samePerimeterLessArea") {
+      const lens = { t: s.cols, r: s.rows, b: s.cols, l: s.rows };
+      return {
+        kind: "sides",
+        /* In the free-shape stage there is no rim yet: Ember lays one round
+           whatever she built, and then asks. */
+        needsRim: check.rule !== "rim",
+        parts: ["t", "r", "b", "l"].map(sd => ({ id: sd, value: lens[sd], side: sd })),
+        ask: check.rule === "rim"
+          ? "Hang on, {name}, how many twigs is that? How did you <em>know</em>? Show me!"
+          : "Wait, {name}, let me put twigs round yours. How many is that? Show me!",
+        task: "Tap each side to drop its length into the sum.",
+        fold(vals) {
+          const total = vals.reduce((a, b) => a + b, 0);
+          return { html: sum(vals, 0, total), say: vals.join(" plus ") + " equals " + total };
+        }
+      };
+    }
+
+    if (check.rule !== "exact" && check.rule !== "equalRows") return null;
+
+    /* A stage that carried her stones over is about the two PIECES. */
+    const f = stage.carry && stage.fill;
+    if (f && f.rows === s.rows && f.cols < s.cols && s.r0 === 0 && s.c0 === 0) {
+      return {
+        kind: "blocks",
+        parts: [
+          { id: "kept", value: f.rows * f.cols, rect: { r0: 0, c0: 0, rows: f.rows, cols: f.cols } },
+          { id: "new", value: s.rows * (s.cols - f.cols), rect: { r0: 0, c0: f.cols, rows: s.rows, cols: s.cols - f.cols } }
+        ],
+        ask: "So how many is that <em>altogether</em>, {name}? Show me the two bits!",
+        task: "Tap the bit she knew, then the bit you added.",
+        fold(vals) {
+          const total = vals.reduce((a, b) => a + b, 0);
+          return { html: sum(vals, 0, total), say: vals.join(" plus ") + " equals " + total };
+        }
+      };
+    }
+
+    const parts = [];
+    for (let r = s.r0; r < s.r0 + s.rows; r++) {
+      parts.push({ id: "row" + r, value: s.cols, rect: { r0: r, c0: s.c0, rows: 1, cols: s.cols } });
+    }
+    return {
+      kind: "rows",
+      parts,
+      ask: "Hang on, {name}, how many stones is that? How did you <em>know</em>? Show me!",
+      task: "Tap each row to drop its count into the sum.",
+      fold(vals) {
+        return {
+          html: sum(vals, 0) + BREAK +
+            '<span class="sum folded"><b>' + s.rows + '</b><span class="op">×</span><b>' + s.cols +
+            '</b><span class="op">=</span><b>' + s.total + "</b></span>",
+          say: vals.join(" plus ") + ". " + s.rows + " times " + s.cols + " equals " + s.total
+        };
+      }
+    };
+  }
+
+  /* The sum as it stands: the numbers she has dropped in, an empty place for
+     each one still to come, and the total once it is known. */
+  function sum(vals, waiting, total) {
+    const bits = vals.map(v => '<b class="term">' + v + "</b>");
+    for (let i = 0; i < (waiting || 0); i++) bits.push('<i class="slot"></i>');
+    return '<span class="sum">' + bits.join('<span class="op">+</span>') +
+      (total != null ? '<span class="op">=</span><b class="term total">' + total + "</b>" : "") + "</span>";
+  }
+
   /* A fraction, stacked the way it is written on paper. */
   const frac = (a, b) => '<span class="frac"><b>' + a + "</b><i>" + b + "</i></span>";
 
@@ -152,7 +277,8 @@ const Lessons = (function () {
 
     if (check.rule === "rim") {
       if (!rep.rim) return voice(SAY.noTwigs);
-      return voice(SAY.someTwigs) +
+      const sides = counting(check, rep).totals;
+      return (sides.length ? tally(sides) + BREAK : "") + voice(SAY.someTwigs) +
         "<span><b>" + rep.rim + "</b> of <b>" + rep.rimNeeded + "</b> twigs round the outside</span>";
     }
 
@@ -169,18 +295,20 @@ const Lessons = (function () {
     /* Not a rectangle yet: show her the rows as they stand. This is the most
        important line in the file — it is the moment she sees "4, 2, 5, 1" and
        works out for herself what is wrong with it. */
+    const c = counting(check, rep);
+    const counted = c && c.totals.length ? tally(c.totals) + BREAK : "";
+
     if (!s.ok) {
       const rc = rep.rowCounts;
       /* One span, because the readout is a flex row and loose text nodes
          between the numbers get the flex gap put in front of every comma. */
-      if (rc.length > 1) return voice(pickBy(SAY.wobbly, rep.total)) +
+      if (rc.length > 1) return counted + voice(pickBy(SAY.wobbly, rep.total)) +
         "<span>rows of <b>" + rc.join("</b>, <b>") + "</b> — not the same yet</span>";
-      return "<span><b>" + rep.total + "</b> stones " + SAY.oneRow + "</span>";
+      return counted + "<span><b>" + rep.total + "</b> stones " + SAY.oneRow + "</span>";
     }
 
     const praise = s.rows === s.cols && s.rows > 1 ? SAY.square : pickBy(SAY.rectangle, s.total);
-    return chips(s.rows, s.cols) +
-      '<span style="width:100%"></span>' +
+    return (c ? counted : chips(s.rows, s.cols) + BREAK) +
       voice(praise) +
       "<span><b>" + s.rows + "</b> rows of <b>" + s.cols + "</b> · <b>" + s.total + "</b> stones</span>";
   }
@@ -211,5 +339,5 @@ const Lessons = (function () {
       .replace(/\b(\d)\/(\d)\b/g, (_, a, b) => frac(a, b));
   }
 
-  return { RULES, SAY, frac, passes, describe, fill, chips, setName(n) { playerName = n || ""; } };
+  return { RULES, SAY, frac, passes, describe, counting, bridge, sum, fill, chips, setName(n) { playerName = n || ""; } };
 })();

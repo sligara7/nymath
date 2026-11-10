@@ -69,6 +69,26 @@ same size settle it.
 Everything snaps to 24ths, so every Grade 3 fraction lands exactly, but no
 tick marks are drawn: the only marks on the fish are the cuts.
 
+## She shows Ember the arithmetic
+
+Building the picture right is not the end of a stage. She was building 3 rows
+of 5 correctly, tapping straight past "3 × 5 = 15", and afterwards could not
+say what 3 × 5 is — the model was learned and the bridge to the number was
+skipped. So now:
+
+- **The nest counts as she builds.** Each finished row lights and a running
+  total ticks, 5, 10, 15; on the rim each finished side shows its length and
+  a running sum grows, 4, 7, 11, 14. Ember says each new total aloud, in the
+  phone's own voice, in case the words on the screen are the part that gets
+  skipped. The sound button silences her.
+- **Then Ember asks how she knew.** She answers by tapping her own rows (or
+  sides): each drops its number into a sum, 5 + 5 + 5, which folds into
+  3 × 5 = 15. The reveal, its coins and "Go on" do not appear until the
+  sentence is whole. One such step per solve, nothing typed, nothing picked
+  from a list.
+
+The fraction lesson has no such step yet.
+
 ## When she is stuck
 
 "Want a clue?" gives help in three steps, only when she asks: a nudge in words,
@@ -156,7 +176,8 @@ if an asset is missing its stamp, or if two of them disagree. The build number
 is logged to the console at boot, which is the fastest way to find out whether
 somebody is looking at an old copy.
 
-Tests: `node test/boot.test.js`, `node test/lessons.test.js` and `node test/den.test.js`. No
+Tests: `node test/boot.test.js`, `node test/bridge.test.js`, `node test/lessons.test.js`,
+`node test/keep.test.js` and `node test/den.test.js`. No
 dependencies. They check that the front door and the den open, that every
 lesson can actually be finished on the lattice it is given, that Ember's own
 attempt fails her own lesson, and that the hoard's arithmetic is place value
