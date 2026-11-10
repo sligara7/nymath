@@ -51,7 +51,7 @@ function makeEl(id) {
 
 const HTML = read("index.html");
 const ORDER = [...HTML.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1].split("?")[0]);
-const SOURCE = ORDER.map(read).join("\n;\n") + "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3 };";
+const SOURCE = ORDER.map(read).join("\n;\n") + "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3, Ambience };";
 
 function boot(hash, muted) {
   const byId = new Map();
@@ -101,6 +101,12 @@ const tap = node => node.fire("pointerdown");
 
 {
   const p = boot("#l2");
+  /* A build that comes right should be FELT: a note per finished row, a
+     bigger sound and Ember hopping when the build is whole, the biggest when
+     the sentence is. The sounds are caught here; that they sound good is for
+     a person with the phone in her hand. */
+  const heard = [];
+  ["count", "built", "learned"].forEach(k => { p.page.Ambience[k] = n => heard.push(k + (n ? ":" + n : "")); });
   ok(p.$("lessonName").textContent === "The fast count", "walk 1 opens on 4 rows of 5");
   ok(p.spoken.length === 0, "nothing is said before she has touched anything");
 
@@ -120,7 +126,10 @@ const tap = node => node.fire("pointerdown");
   for (let c = 0; c < 4; c++) tap(cellAt(q, 6, 0, c));
   ok(!/class="chip/.test(q.$("readout").innerHTML) && q.spoken.length === 0, "four of five stones is not a finished row: no total, nothing said");
 
-  await sleep(700);
+  ok(heard.join() === "count:1,count:2,count:3,count:4,built", "a note for each finished row, climbing, then the build's own sound: " + heard.join());
+  ok(p.$("emberHolder").className.includes("hop"), "and Ember hops when the build comes right");
+  await sleep(750);
+  ok(!p.$("emberHolder").className.includes("hop"), "once, not on a loop");
   ok(p.$("revealWrap").hidden === true, "built right, and the reveal has NOT come");
   ok(/how did you/i.test(p.$("emberSays").innerHTML), "Ember asks how she knew");
   ok(p.$("task").textContent === "Tap each row of stones to drop its count into the sum.", "and the task says how to answer");
@@ -152,6 +161,8 @@ const tap = node => node.fire("pointerdown");
   await sleep(700);
   ok(text(p.$("readout").innerHTML) === "5+5+5+54×5=20", "the sum folds into 4 × 5 = 20");
   ok(p.spoken[p.spoken.length - 1] === "5 plus 5 plus 5 plus 5. 4 times 5 equals 20", "and Ember says so");
+  ok(heard[heard.length - 1] === "learned" && p.$("emberHolder").className.includes("hop"),
+     "the biggest sound, and another hop, are kept for the finished sentence");
   ok(!p.page.Save.struggleOf("g3-fast-count:0")[0].solved, "not yet marked solved while the sentence is still being read");
   await sleep(1600);
   ok(p.$("revealWrap").hidden === false, "then, and only then, the reveal");

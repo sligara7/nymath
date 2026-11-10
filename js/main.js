@@ -245,8 +245,19 @@
     const c = Lessons.counting(stage.check, rep);
     if (!onLine()) Nest.lightRows(c ? c.rows : []);
     const n = c ? c.totals.length : 0;
-    if (counted >= 0 && n > counted) Ambience.say(c.totals[n - 1]);
+    if (counted >= 0 && n > counted) { Ambience.count(n); Ambience.say(c.totals[n - 1]); }
     counted = n;
+  }
+
+  /* Ember reacts with her whole body, not only her face: a little hop when
+     a build comes right, and again when the sentence is whole. Competence
+     felt, not just read. Small and brief; never a prize-machine flash. */
+  function emberHop() {
+    const h = el.emberHolder;
+    h.classList.remove("hop");
+    try { void h.offsetWidth; } catch (e) {}   /* so a second hop restarts */
+    h.classList.add("hop");
+    setTimeout(() => h.classList.remove("hop"), 700);
   }
 
   function judge(rep) {
@@ -260,6 +271,7 @@
       passed = true;
       el.clueBtn.hidden = true;
       Ember.draw(el.emberHolder, "delighted");
+      emberHop();
       const B = Lessons.bridge(stage, rep);
       if (!B) {
         Ambience.learned();
@@ -272,7 +284,7 @@
          know how she knew. The big "yes" waits for the sentence. */
       Nest.freeze();
       el.clearBtn.hidden = true;
-      Ambience.row();
+      Ambience.built();
       const mine = stage;
       setTimeout(() => { if (stage === mine) showBridge(B, rep); }, 620);
     }
@@ -351,6 +363,7 @@
           Ambience.say(f.say);
           Ambience.learned();
           Ember.draw(el.emberHolder, "delighted");
+          emberHop();
           setTimeout(() => { if (stage === mine) showReveal(rep); }, 1500);
         }, 550);
       });

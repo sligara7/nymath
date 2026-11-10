@@ -170,6 +170,24 @@ const Ambience = (function () {
       bell(PENT[2], t, 0.07);
     },
 
+    /* The model counting: one soft note per finished row or side, a step
+       higher each time, so the count is heard climbing even under Ember's
+       voice, and still heard where a phone has no voice at all. */
+    count(n) {
+      if (!ctx || muted) return;
+      const i = Math.max(0, (n || 1) - 1);
+      bell(PENT[i % PENT.length] * (i >= PENT.length ? 2 : 1), ctx.currentTime, 0.06);
+    },
+
+    /* The build is right. Bigger than a row, smaller than Ember
+       understanding it: that one waits for the sentence. */
+    built() {
+      if (!ctx || muted) return;
+      const t = ctx.currentTime + 0.16;
+      bell(659.25, t, 0.08);
+      bell(987.77, t + 0.11, 0.07);
+    },
+
     /* A coin: two quick bright notes, the sound of treasure. */
     coin() {
       if (!ctx || muted) return;
