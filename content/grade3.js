@@ -212,6 +212,82 @@ const GRADE3 = {
           }
         }
       ]
+    },
+
+    /* ---------------------------------------------------------------- 6 -- */
+    /* Fractions, on a fish laid along a number line from 0 to 1. Positions
+       are 24ths of the whole — every Grade 3 denominator (2, 3, 4, 6, 8)
+       lands exactly on one — but no tick marks are shown; the only marks on
+       the fish are the cuts. js/line.js draws it. */
+    {
+      id: "g3-fair-shares",
+      name: "Fair shares",
+      standards: ["NY-3.NF.1", "NY-3.NF.2", "NY-3.NF.3"],
+      stages: [
+        {
+          surface: "line",
+          mood: "delighted",
+          emberSays: "I caught a fish! I cut it into four pieces so we can share. Four pieces — that's fair, isn't it? There are <em>four</em>!",
+          task: "Fair means the same size! Slide her cuts until all 4 match.",
+          /* Ember's cuts: pieces of 3, 10, 3 and 8 twenty-fourths. Four
+             pieces, as promised, and nothing like fair. */
+          line: { lines: [{ cuts: [3, 13, 16], movable: true }] },
+          check: { rule: "equalCuts", parts: 4 },
+          clues: [
+            { say: "Fair means every piece is the same length. Find the biggest and smallest." },
+            { say: "The middle cut goes exactly halfway along the fish.", show: { cuts: [12] } },
+            { say: "Cut here, here and here: four pieces, all the same.", show: { cuts: [6, 12, 18] } }
+          ],
+          reveal: {
+            sentence: "4 equal pieces · each is 1/4",
+            said: "Oh! Fair isn't about <em>how many</em> pieces. It's every piece being the same size. One of them is a quarter.",
+            learned: "1/4 is one of 4 equal parts of a whole. NY-3.NF.1"
+          }
+        },
+        {
+          surface: "line",
+          mood: "worried",
+          emberSays: "I ate three of the pieces. How much fish is that? Three... three what? Three <em>fish</em>?",
+          task: "Count 3 pieces from 0 and plant the flag where they end.",
+          line: { lines: [{ cuts: [6, 12, 18], flag: true }] },
+          check: { rule: "flagAt", flags: [{ line: 0, a: 3, b: 4 }] },
+          clues: [
+            { say: "Start at 0 and count the pieces she ate, one by one." },
+            { say: "One piece from 0 ends here. Keep counting to three.", show: { flags: [{ line: 0, at: 6 }] } },
+            { say: "Three pieces from 0 end right here.", show: { flags: [{ line: 0, at: 18 }] } }
+          ],
+          reveal: {
+            sentence: "3/4",
+            said: "Three quarters! Three pieces of the four. <em>That's</em> how much fish is in my tummy.",
+            learned: "3/4 is 3 lengths of 1/4, counted from 0. NY-3.NF.2"
+          }
+        },
+        {
+          surface: "line",
+          mood: "thinking",
+          emberSays: "Next time I want 1/8 of a fish, not 1/4. Eight is <em>much</em> bigger than four. Obviously.",
+          task: "Flag 1/4 on the top fish and 1/8 on the bottom one.",
+          /* The same size fish, so the comparison is fair: the standard
+             says comparisons only mean something for the same whole. */
+          line: {
+            lines: [
+              { cuts: [6, 12, 18], flag: true, label: "quarters" },
+              { cuts: [3, 6, 9, 12, 15, 18, 21], flag: true, label: "eighths" }
+            ]
+          },
+          check: { rule: "flagAt", flags: [{ line: 0, a: 1, b: 4 }, { line: 1, a: 1, b: 8 }] },
+          clues: [
+            { say: "Both fish are the same size. Which one has the bigger pieces?" },
+            { say: "One quarter of the top fish ends here.", show: { flags: [{ line: 0, at: 6 }] } },
+            { say: "One eighth of the bottom fish ends here. Look how short!", show: { flags: [{ line: 0, at: 6 }, { line: 1, at: 3 }] } }
+          ],
+          reveal: {
+            sentence: "1/8 < 1/4",
+            said: "Eight pieces means every piece is <em>smaller</em>. I nearly asked for the tiny one!",
+            learned: "Same whole: more pieces, smaller pieces. NY-3.NF.3"
+          }
+        }
+      ]
     }
 
   ],
@@ -219,7 +295,7 @@ const GRADE3 = {
   /* What Ember can do once the player is finished, and what is waiting after it. */
   finale: {
     title: "She has a nest.",
-    line: "Ember can lay out a nest, count it the fast way, turn it round without losing anything, tell the rim from the floor, and break a hard number into two easy ones.",
+    line: "Ember can lay out a nest, count it the fast way, turn it round without losing anything, tell the rim from the floor, break a hard number into two easy ones, and share a fish fairly.",
     next: "Wings come next. They only work if both sides match — which turns out to be a thing you can measure."
   }
 };

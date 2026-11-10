@@ -21,6 +21,26 @@ const Lessons = (function () {
 
   const RULES = {
 
+    /* ---- on the line (fractions). Positions are 24ths of the whole. ---- */
+
+    /* Her cuts make p.parts pieces, every one the same length. */
+    equalCuts(rep, p) {
+      const L = rep.lines && rep.lines[0];
+      if (!L || L.cuts.length !== p.parts - 1) return false;
+      const step = 24 / p.parts;
+      return L.cuts.every((c, i) => c === step * (i + 1));
+    },
+
+    /* Every flag asked for is planted — let go of — exactly at a/b. */
+    flagAt(rep, p) {
+      return !!rep.lines && p.flags.every(f => {
+        const L = rep.lines[f.line];
+        return !!L && L.placed && L.flag === 24 * f.a / f.b;
+      });
+    },
+
+    /* ---- in the nest ---- */
+
     /* Any solid rectangle of the right size. She chooses the shape — 3 by 4,
        4 by 3, 2 by 6 are all genuinely correct and the reveal reads back
        whichever one she actually built. */
@@ -73,7 +93,9 @@ const Lessons = (function () {
     empty: "All empty! Tap a hollow to lay a stone.",
     noTwigs: "No fence yet! Tap an edge to lay a twig.",
     someTwigs: "Twig, twig, twig…",
-    lumpy: "Lumpy!"
+    lumpy: "Lumpy!",
+    noFlag: "Drag the flag along the fish, or tap where it goes.",
+    fair: ["Fair and square!", "Perfectly fair!", "Same, same, same!"]
   };
   const pickBy = (list, n) => list[n % list.length];
   const voice = w => '<span class="say">' + w + "</span>";
@@ -86,8 +108,47 @@ const Lessons = (function () {
     return out;
   }
 
+  /* A fraction, stacked the way it is written on paper. */
+  const frac = (a, b) => '<span class="frac"><b>' + a + "</b><i>" + b + "</i></span>";
+
+  /* What a flag on a fish says: how many equal pieces from 0, if the fish is
+     cut into equal pieces and the flag sits on a cut or the end. */
+  function flagWords(L) {
+    if (L.flag == null || !L.placed) return "not planted yet";
+    const edges = [0].concat(L.cuts, [24]);
+    const parts = edges.length - 1, step = 24 / parts;
+    const equal = edges.every((e, i) => e === i * step);
+    if (equal && L.flag % step === 0) {
+      const k = L.flag / step;
+      return "<b>" + k + "</b> piece" + (k === 1 ? "" : "s") + " from 0 — " + frac(k, parts);
+    }
+    return "between two cuts";
+  }
+
   function describe(check, rep) {
     const s = rep.shape;
+
+    if (check.rule === "equalCuts") {
+      const L = rep.lines[0];
+      const edges = [0].concat(L.cuts, [24]);
+      const sizes = edges.slice(1).map((e, i) => e - edges[i]);
+      const n = sizes.length;
+      if (sizes.every(x => x === sizes[0])) {
+        return voice(pickBy(SAY.fair, n)) + "<span><b>" + n + "</b> equal pieces · each is " + frac(1, n) + "</span>";
+      }
+      return voice(pickBy(SAY.wobbly, L.cuts.reduce((a, b) => a + b, 0))) +
+        "<span><b>" + n + "</b> pieces — not all the same size yet</span>";
+    }
+
+    if (check.rule === "flagAt") {
+      if (rep.lines.length === 1) {
+        const L = rep.lines[0];
+        if (!L.placed) return voice(SAY.noFlag);
+        return "<span>Your flag: " + flagWords(L) + "</span>";
+      }
+      return rep.lines.map((L, i) =>
+        "<span>" + (i ? "Bottom" : "Top") + " fish: " + flagWords(L) + "</span>").join('<span style="width:100%"></span>');
+    }
 
     if (check.rule === "rim") {
       if (!rep.rim) return voice(SAY.noTwigs);
@@ -145,8 +206,10 @@ const Lessons = (function () {
       .replace(/\{cols\}/g, s.cols)
       .replace(/\{total\}/g, s.total)
       .replace(/\{area\}/g, s.rows * s.cols)
-      .replace(/\{perimeter\}/g, 2 * (s.rows + s.cols));
+      .replace(/\{perimeter\}/g, 2 * (s.rows + s.cols))
+      /* "3/4" in any text becomes a stacked fraction, written as on paper. */
+      .replace(/\b(\d)\/(\d)\b/g, (_, a, b) => frac(a, b));
   }
 
-  return { RULES, SAY, passes, describe, fill, chips, setName(n) { playerName = n || ""; } };
+  return { RULES, SAY, frac, passes, describe, fill, chips, setName(n) { playerName = n || ""; } };
 })();

@@ -110,8 +110,19 @@ const SOLUTIONS = {
   "g3-the-rim:0":         { cells: rect(3, 4), rim: 14, rimNeeded: 14 },
   "g3-the-rim:1":         { cells: rect(2, 5) },
   "g3-break-it-apart:0":  { cells: rect(6, 5) },
-  "g3-break-it-apart:1":  { cells: rect(6, 7) }
+  "g3-break-it-apart:1":  { cells: rect(6, 7) },
+  /* On the fish (24ths of the whole): where the cuts and flags must end up. */
+  "g3-fair-shares:0":     { lines: [{ cuts: [6, 12, 18] }] },
+  "g3-fair-shares:1":     { lines: [{ cuts: [6, 12, 18], flag: 18 }] },
+  "g3-fair-shares:2":     { lines: [{ cuts: [6, 12, 18], flag: 6 }, { cuts: [3, 6, 9, 12, 15, 18, 21], flag: 3 }] }
 };
+
+/* A line report, as js/line.js makes one. */
+const lineRep = lines => ({
+  mode: "line", total: 0,
+  lines: lines.map(l => ({ cuts: (l.cuts || []).slice().sort((a, b) => a - b),
+                           flag: l.flag == null ? null : l.flag, placed: l.flag != null && l.placed !== false }))
+});
 
 GRADE3.lessons.forEach(lesson => {
   lesson.stages.forEach((stage, i) => {
@@ -119,6 +130,16 @@ GRADE3.lessons.forEach(lesson => {
     const sol = SOLUTIONS[key];
     ok(!!sol, key + " has a written-out solution");
     if (!sol) return;
+
+    if (stage.surface === "line") {
+      ok(Lessons.passes(stage.check, lineRep(sol.lines)), key + " intended solution passes " + stage.check.rule);
+      ok(!Lessons.passes(stage.check, lineRep(stage.line.lines)), key + " the fish as she finds it does not pass");
+      if (stage.reveal) {
+        const s = Lessons.fill(stage.reveal.sentence) + Lessons.fill(stage.reveal.said);
+        ok(!/\{\w+\}/.test(s), key + " reveal has no unfilled {placeholders}");
+      }
+      return;
+    }
 
     /* 1. it fits on the lattice she is given */
     const maxR = Math.max(...sol.cells.map(p => p[0])) + 1;
@@ -235,6 +256,14 @@ GRADE3.lessons.forEach(l => l.stages.forEach((st, i) => {
   ok(c[1] && c[1].show && c[2] && c[2].show, id + " the second and third clues show a picture");
   const last = c[2] && c[2].show;
   if (!last) return;
+  if (st.surface === "line") {
+    /* The worked example's glow, applied to the fish as she finds it. */
+    const lines = st.line.lines.map(l => ({ cuts: l.cuts.slice(), flag: null }));
+    if (last.cuts) lines[0].cuts = last.cuts.slice();
+    (last.flags || []).forEach(f => { lines[f.line].flag = f.at; });
+    ok(Lessons.passes(st.check, lineRep(lines)), id + " the worked example really is a right answer");
+    return;
+  }
   if (st.mode === "rim") {
     ok(last.twigs === "all", id + " the worked example lights every twig slot");
     return;
@@ -246,6 +275,41 @@ GRADE3.lessons.forEach(l => l.stages.forEach((st, i) => {
   ok((last.r0 || 0) + last.rows <= st.grid.rows && (last.c0 || 0) + last.cols <= st.grid.cols,
      id + " and it fits on the lattice");
 }));
+
+/* ---- fractions on the fish -------------------------------------------------
+
+   The rules checked against the mistakes a child actually makes, not only
+   against the right answer. */
+
+(function fish() {
+  const [cut4, flag34, compare] = GRADE3.lessons.find(l => l.id === "g3-fair-shares").stages;
+  const ember = cut4.line.lines[0].cuts;
+  const sizes = [0].concat(ember, [24]).slice(1).map((e, i, a) => e - [0].concat(ember)[i]);
+  ok(ember.length === 3 && new Set(sizes).size > 1, "Ember's four pieces really are unequal: " + sizes.join(", "));
+  ok(!Lessons.passes(cut4.check, lineRep([{ cuts: [8, 16] }])), "three equal pieces are not four");
+  ok(!Lessons.passes(cut4.check, lineRep([{ cuts: [6, 12, 17] }])), "nearly-equal is not equal");
+
+  ok(!Lessons.passes(flag34.check, lineRep([{ cuts: [6, 12, 18], flag: 12 }])), "2/4 is not 3/4");
+  ok(!Lessons.passes(flag34.check, lineRep([{ cuts: [6, 12, 18], flag: 18, placed: false }])),
+     "a flag still being dragged does not count — only one she has let go of");
+  ok(!Lessons.passes(compare.check, lineRep([{ cuts: [6, 12, 18], flag: 6 }, { cuts: [3, 6, 9, 12, 15, 18, 21], flag: 6 }])),
+     "2/8 on the bottom fish is not 1/8");
+  ok(!Lessons.passes(compare.check, lineRep([{ cuts: [6, 12, 18], flag: 6 }, { cuts: [3, 6, 9, 12, 15, 18, 21] }])),
+     "both flags are needed");
+  const twoFish = compare.line.lines;
+  ok(twoFish.length === 2 && twoFish.every(l => [0].concat(l.cuts, [24]).length - 1 > 1),
+     "the comparison is on two fish of the same whole, cut 4 and 8 ways");
+
+  /* The readout: the numbers are there, and a flag is described by where IT
+     is, never by how close it is to the answer. */
+  const r1 = Lessons.describe(cut4.check, lineRep([{ cuts: ember }])).replace(/<[^>]+>/g, " ");
+  ok(/\b4\b/.test(r1) && /not all the same size yet/.test(r1), "uneven pieces: " + r1.replace(/\s+/g, " ").trim());
+  const r2 = Lessons.describe(flag34.check, lineRep([{ cuts: [6, 12, 18], flag: 12 }])).replace(/<[^>]+>/g, " ");
+  ok(/\b2\b/.test(r2) && /from 0/.test(r2) && !/(close|almost|nearly)/i.test(r2), "a placed flag is described, not judged: " + r2.replace(/\s+/g, " ").trim());
+  const r3 = Lessons.describe(flag34.check, lineRep([{ cuts: [6, 12, 18] }]));
+  ok(/flag/i.test(r3), "an unplanted flag says how to plant it");
+  ok(/class="frac"/.test(Lessons.fill("3/4")), "a fraction in any text is written stacked, as on paper");
+})();
 
 console.log((fails ? "FAILED" : "ok") + " — " + (checks - fails) + "/" + checks + " checks");
 process.exit(fails ? 1 : 0);

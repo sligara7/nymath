@@ -4,8 +4,9 @@ A math game for one fourth grader, built around a drake you have to teach.
 
 **[Play it →](https://sligara7.github.io/nymath/)**
 
-Grade 3 is playable: five lessons, and a quest Ember takes on her own at the
-end of it. Grades 4 and 5 are designed but not written.
+Grade 3 is playable: six lessons — arrays, area and perimeter in a nest of
+stones, then fractions on a fish laid along a number line — and a quest Ember
+takes on her own at the end of it. Grades 4 and 5 are designed but not written.
 
 ## What it is
 
@@ -54,6 +55,19 @@ she has — takes her straight into the next lesson that pays. Coins are copper,
 for one — which is place value — and Pip the mole, who keeps the shop, takes
 exact money and has no change. Paying 1 silver and 8 copper out of two silvers
 means breaking one into ten copper first.
+
+## Fair shares
+
+Fractions happen on a fish laid along a number line from 0 to 1. Ember cuts
+her catch into four "fair" pieces of wildly different sizes; the player slides
+the cuts until they match (a quarter). Then she counts three pieces from 0 and
+plants a flag (three quarters) — and only once she lets go of the flag does
+the true spot appear beside hers, if she missed. Then Ember insists an eighth
+must be more than a quarter, because 8 is bigger than 4, and two fish of the
+same size settle it.
+
+Everything snaps to 24ths, so every Grade 3 fraction lands exactly, but no
+tick marks are drawn: the only marks on the fish are the cuts.
 
 ## When she is stuck
 

@@ -187,7 +187,7 @@
     el.lessonStd.textContent = lesson.standards.join(" · ");
 
     Ember.draw(el.emberHolder, stage.mood || "curious");
-    el.emberSays.innerHTML = stage.emberSays;
+    el.emberSays.innerHTML = Lessons.fill(stage.emberSays);
     el.task.textContent = stage.task + (stage.hint ? "  (" + stage.hint + ")" : "");
 
     el.nextBtn.hidden = true;
@@ -197,6 +197,14 @@
     onQuest = false;
     resetClues();
 
+    /* Fractions happen on a fish laid along a number line; everything else
+       in the nest. The two surfaces report, the lesson judges. */
+    if (onLine()) {
+      el.clearBtn.textContent = "Start again";
+      Line.mount(el.surface, stage.line);
+      return;
+    }
+    el.clearBtn.textContent = "Start her nest again";
     Nest.mount(el.surface, {
       rows: stage.grid.rows,
       cols: stage.grid.cols,
@@ -208,9 +216,24 @@
     });
   }
 
-  Nest.onChange(rep => {
+  const onLine = () => !!stage && stage.surface === "line";
+  const surface = () => (onLine() ? Line : Nest);
+
+  /* On the number line, once she has LET GO of a flag that is not where it
+     belongs, the true spot appears beside hers. Never while she drags. */
+  function showTruth(rep) {
+    if (!onLine() || stage.check.rule !== "flagAt") return;
+    stage.check.flags.forEach(f => {
+      const L = rep.lines[f.line], want = 24 * f.a / f.b;
+      Line.truth(f.line, L && L.placed && L.flag !== want ? want : null);
+    });
+  }
+
+  function judge(rep) {
     if (!stage) return;
+    if ((rep.mode === "line") !== onLine()) return;
     el.readout.innerHTML = Lessons.describe(stage.check, rep);
+    showTruth(rep);
     if (passed) return;
     if (Lessons.passes(stage.check, rep)) {
       passed = true;
@@ -221,12 +244,15 @@
          built before anything covers it up. */
       setTimeout(() => showReveal(rep), 620);
     }
-  });
+  }
+
+  Nest.onChange(judge);
+  Line.onChange(judge);
 
   el.clearBtn.addEventListener("click", () => {
     if (stage) Save.note(stageKey(), "restart");
     passed = false;
-    Nest.clear();
+    surface().clear();
   });
 
   /* ---- "Want a clue?" ------------------------------------------------------
@@ -260,7 +286,7 @@
       Save.note(stageKey(), "clue");
       el.clueText.innerHTML = Lessons.fill(c.say);
       el.clueText.hidden = false;
-      Nest.glow(c.show || null);
+      surface().glow(c.show || null);
       el.clueBtn.textContent = clueStep < stage.clues.length ? "Another clue?" : "Still stuck?";
       Ambience.lift();
       return;
@@ -310,7 +336,7 @@
       '<div style="width:96px;margin:0 auto 6px">' + el.emberHolder.innerHTML + "</div>" +
       '<p class="sentence">' + Lessons.fill(r.sentence, rep) + "</p>" +
       '<p class="said">' + Lessons.fill(r.said, rep) + "</p>" +
-      (r.learned ? '<p class="learned">' + r.learned + "</p>" : "") +
+      (r.learned ? '<p class="learned">' + Lessons.fill(r.learned) + "</p>" : "") +
       '<p class="earned">Ember found ' + Den.coinsHtml(got) + " for you!</p>";
     el.revealNext.textContent = nextLabel();
     /* The den is offered only once a whole lesson is done. */
@@ -378,7 +404,7 @@
   function finale() {
     stage = null;
     el.lessonName.textContent = G.title;
-    el.lessonStd.textContent = "NY-3.OA · NY-3.MD";
+    el.lessonStd.textContent = "NY-3.OA · NY-3.MD · NY-3.NF";
     el.task.textContent = "";
     el.readout.innerHTML = "";
     el.clearBtn.hidden = true;

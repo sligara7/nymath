@@ -300,6 +300,73 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 }
 .twig:active { transform: scale(0.8); }
 
+/* --- the fish on the number line (fractions) --------------------------------
+
+   The nest's sibling, drawn the same way: warm-brown outline, flat colour,
+   on the dark page. The body runs from 0 to 1 exactly; the tail sits left of
+   0 and the head right of 1. Her flag is the brightest thing here. */
+
+.fishlines { width: 100%; display: flex; flex-direction: column; gap: 10px; padding: 4px 0; }
+.fishline { position: relative; height: 112px; touch-action: none; }
+.fish { position: absolute; left: 0; right: 0; top: 46px; height: 40px; touch-action: none; }
+.fish-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fish-eye {
+  position: absolute; right: 4%; top: 32%; width: 6px; height: 6px; border-radius: 50%;
+  background: #5b3a2e; box-shadow: 1px -1px 0 1px #fff inset;
+}
+.pieces { position: absolute; left: 0; right: 0; top: 16%; bottom: 16%; pointer-events: none; }
+.piece { position: absolute; top: 0; bottom: 0; }
+.piece.alt { background: rgba(23, 33, 43, 0.16); }
+
+.cut { position: absolute; top: 42px; height: 72px; width: 34px; transform: translateX(-50%); touch-action: none; }
+.cut::before {
+  content: ""; position: absolute; left: 50%; top: 0; width: 3px; height: 48px; margin-left: -1.5px;
+  border-radius: 2px; background: #5b3a2e;
+}
+.cut .handle { display: none; }
+/* Cuts she cannot move must not swallow a tap meant for the fish under them. */
+.cut:not(.movable) { pointer-events: none; }
+.cut.movable .handle {
+  display: block; position: absolute; left: 50%; top: 50px; width: 22px; height: 22px; margin-left: -11px;
+  border-radius: 50%; border: 2.5px solid #5b3a2e; background: var(--ink);
+}
+.cut.held .handle, .flag.held .pennant { transform: scale(1.15); }
+
+.flag { position: absolute; top: 0; width: 36px; height: 48px; transform: translateX(-50%); touch-action: none; }
+.flag .pole { position: absolute; left: 50%; top: 0; width: 3px; height: 48px; margin-left: -1.5px; background: #5b3a2e; border-radius: 2px; }
+.flag .pennant {
+  position: absolute; left: calc(50% + 1px); top: 1px; width: 0; height: 0;
+  border-top: 9px solid transparent; border-bottom: 9px solid transparent; border-left: 22px solid var(--ember);
+}
+.flag.waiting { opacity: 0.6; }
+.flag.placed .pennant { border-left-color: var(--ember-hot); }
+
+/* A clue's glow: dashed gold, showing only where. */
+.ghost-cut, .ghost-flag, .truth-flag { position: absolute; pointer-events: none; transform: translateX(-1.5px); }
+.ghost-cut { top: 46px; height: 40px; border-left: 3px dashed rgba(255, 193, 77, 0.95); animation: pulse 1.6s ease-in-out infinite; }
+.ghost-flag { top: 0; height: 48px; border-left: 3px dashed rgba(255, 193, 77, 0.95); animation: pulse 1.6s ease-in-out infinite; }
+.ghost-flag::after, .truth-flag::after {
+  content: ""; position: absolute; left: 0; top: 1px; width: 0; height: 0;
+  border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 18px solid rgba(255, 193, 77, 0.6);
+}
+/* The true spot, shown only after she has let go of a flag that missed it. */
+.truth-flag { top: 0; height: 48px; border-left: 3px solid var(--good); }
+.truth-flag::after { border-left-color: var(--good); }
+@keyframes pulse { 50% { opacity: 0.45; } }
+
+.end { position: absolute; top: 90px; transform: translateX(-50%); color: var(--ink-soft); font-size: 14px; pointer-events: none; }
+.end.zero { left: 10%; }
+.end.one { left: 90%; }
+.fish-label { position: absolute; right: 0; top: 4px; color: var(--ink-soft); font-size: 12px; pointer-events: none; }
+
+/* A fraction written as on paper. */
+.frac {
+  display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle;
+  margin: 0 0.12em; line-height: 1.05; font-size: 0.82em;
+}
+.frac b { padding: 0 0.15em; border-bottom: 2px solid currentColor; }
+.frac i { font-style: normal; font-weight: 700; }
+
 /* --- "Want a clue?" ------------------------------------------------------- */
 
 .clue-btn {
