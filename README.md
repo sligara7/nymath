@@ -109,6 +109,24 @@ lesson's sentence once more. Only then is the lesson paid.
 
 The fractions lesson ends on review cards alone.
 
+## Bedtime
+
+Ember's bedtime is 10:30 at night, the same as the player's, and night runs
+until 5:00 in the morning by the phone's own clock.
+
+- **Still playing at 10:30.** Ember never interrupts a build. At the next
+  break she yawns and asks to be tucked in, and that ends the night.
+- **Opened in the night.** Ember is asleep. She wakes, asks how the player is
+  and whether everything is okay, and takes one of two answers. "Not really"
+  gets one fixed line that sends her to her dad. Ember is not understanding
+  her; the line was chosen in advance.
+- **Either way** Ember sends her back to sleep with three sentences that are
+  her father's, word for word, and the game is closed until morning.
+- **In the daytime** she can put Ember down for a nap from the den and wake
+  her again.
+
+The clock is read to know whether it is night and for nothing else.
+
 ## When she is stuck
 
 "Want a clue?" gives help in three steps, only when she asks: a nudge in words,
@@ -196,7 +214,8 @@ if an asset is missing its stamp, or if two of them disagree. The build number
 is logged to the console at boot, which is the fastest way to find out whether
 somebody is looking at an old copy.
 
-Tests: `node test/boot.test.js`, `node test/bridge.test.js`, `node test/cards.test.js`, `node test/lessons.test.js`,
+Tests: `node test/boot.test.js`, `node test/bridge.test.js`, `node test/cards.test.js`,
+`node test/bedtime.test.js`, `node test/lessons.test.js`,
 `node test/keep.test.js` and `node test/den.test.js`. No
 dependencies. They check that the front door and the den open, that every
 lesson can actually be finished on the lattice it is given, that Ember's own

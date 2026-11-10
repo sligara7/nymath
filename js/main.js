@@ -15,6 +15,8 @@
     cards: $("cards"), cardStreak: $("cardStreak"), cardCount: $("cardCount"), card: $("card"), cardQ: $("cardQ"),
     cardA: $("cardA"), cardModel: $("cardModel"), cardPad: $("cardPad"), actions: $("actions"),
     revealWrap: $("revealWrap"), revealBody: $("revealBody"), revealNext: $("revealNext"), revealDen: $("revealDen"),
+    night: $("night"), nightArt: $("nightArt"), nightSays: $("nightSays"), nightA: $("nightA"), nightB: $("nightB"),
+    nightFoot: $("nightFoot"), den: $("den"), denBed: $("denBed"), shopWrap: $("shopWrap"),
     stopWrap: $("stopWrap"), stopArt: $("stopArt"), stopSays: $("stopSays"), stopReview: $("stopReview"), stopDen: $("stopDen")
   };
 
@@ -32,6 +34,40 @@
   let bridging = false;        /* Ember is asking how she knew; the nest is answering */
   let counted = -1;            /* rows or sides the model has counted so far; -1 = just loaded */
   let onQuest = false;
+
+  /* ---- Ember's bedtime ---------------------------------------------------
+
+     Night is 10:30 pm to 5:00 am by her phone's clock. If she came in while
+     Ember was awake and bedtime arrives, Ember asks to be tucked in at the
+     next break (never in the middle of a build). If she opens the game in
+     the night, Ember is asleep and wakes to say goodnight. Either way the
+     game is then closed until morning. js/bedtime.js holds the scenes. */
+
+  let cameInAwake = false;
+  const nightEls = () => ({
+    wrap: el.night, art: el.nightArt, says: el.nightSays, a: el.nightA, b: el.nightB, foot: el.nightFoot
+  });
+
+  function clearTheRoom() {
+    el.door.hidden = true; el.naming.hidden = true; el.bar.hidden = true; el.scene.hidden = true;
+    el.den.hidden = true; el.revealWrap.hidden = true; el.stopWrap.hidden = true; el.shopWrap.hidden = true;
+  }
+
+  function morning() {
+    el.night.hidden = true;
+    cameInAwake = true;
+    goFromSave();
+  }
+
+  /* Called at every break: entering a stage, the den, or the quest. True
+     means the night has taken over and nothing else should open. */
+  function bedtimeGate() {
+    if (!Bedtime.isNight()) { cameInAwake = true; return false; }
+    clearTheRoom();
+    if (cameInAwake) Bedtime.tuckIn(nightEls(), morning);
+    else Bedtime.late(nightEls(), morning);
+    return true;
+  }
 
   /* ---- the door ---------------------------------------------------------- */
 
@@ -121,6 +157,8 @@
     Ambience.setMuted(s.muted);
     paintSound();
     Save.persist();
+    /* Opened in the night: Ember is asleep, whoever is at the door. */
+    if (bedtimeGate()) return;
     if (!s.name) { askName(); return; }
     /* Every session starts with teaching. The den is the celebration after
        a lesson, never the first stop (short sessions, decorating at the end). */
@@ -150,6 +188,7 @@
      lesson. Leaving by "‹ Lessons" puts her where her save says she was. */
 
   function openDen() {
+    if (bedtimeGate()) return;
     el.door.hidden = true;
     el.revealWrap.hidden = true;
     el.stopWrap.hidden = true;
@@ -172,6 +211,14 @@
 
   el.denBtn.addEventListener("click", openDen);
 
+  /* She puts Ember to bed herself, from the den. In the daytime it is a nap
+     and she can wake her; once it is night, it is bedtime. */
+  el.denBed.addEventListener("click", () => {
+    if (bedtimeGate()) return;
+    clearTheRoom();
+    Bedtime.nap(nightEls(), () => { el.night.hidden = true; openDen(); });
+  });
+
   /* ---- a stage ----------------------------------------------------------- */
 
   const stageKey = () => lesson.id + ":" + si;
@@ -189,6 +236,9 @@
     if (Save.isParked(stageKey())) { showStop(); return; }
 
     Save.at(li, si);
+    /* After her place is saved, so the stage she just finished is never
+       lost to bedtime: she picks up here in the morning. */
+    if (bedtimeGate()) return;
     Save.attempt(stageKey());
 
     el.lessonName.textContent = lesson.name;
@@ -563,6 +613,7 @@
   /* ---- the quest Ember takes alone ---------------------------------------- */
 
   function startQuest(fromBeat) {
+    if (bedtimeGate()) return;
     onQuest = true;
     stage = null;
     el.revealWrap.hidden = true;

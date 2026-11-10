@@ -32,20 +32,36 @@ function makeEl(id) {
   return e;
 }
 
+/* The game reads the clock to know whether it is Ember's bedtime. A test
+   must not depend on what time it happens to be run, so each page gets a
+   clock of its own: mid-afternoon unless a test says otherwise. */
+function clockAt(y, mo, d, h, mi) {
+  const Real = Date, fixed = new Real(y, mo - 1, d, h, mi).getTime();
+  return class extends Real {
+    constructor(...a) { if (a.length) super(...a); else super(fixed); }
+    static now() { return fixed; }
+  };
+}
+
 const HTML = read("index.html");
 const ORDER = [...HTML.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1].split("?")[0]);
 const SOURCE = ORDER.map(read).join("\n;\n") +
-  "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3, Ambience, Cards, Den };";
+  "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3, Ambience, Cards, Den, Bedtime };";
 
 /* `store` is the phone's storage: pass the same object to a second boot and
-   it is the same phone, reopened. */
-function boot(hash, store) {
+   it is the same phone, reopened. `when` is [hour, minute] on the page's
+   clock; left out, it is three in the afternoon. */
+function boot(hash, store, when) {
   const byId = new Map();
   [...HTML.matchAll(/\bid="([^"]+)"/g)].forEach(m => byId.set(m[1], makeEl(m[1])));
+  /* Whatever index.html marks `hidden` starts hidden, as in a browser. */
+  [...HTML.matchAll(/<[a-z]+\b[^>]*\bid="([^"]+)"[^>]*>/g)]
+    .forEach(m => { if (/\shidden(\s|>|=)/.test(m[0])) byId.get(m[1]).hidden = true; });
   store = store || {};
   const spoken = [];
   const ctx = {
     console: { log() {} }, setTimeout, clearTimeout,
+    Date: clockAt(2026, 11, 10, when ? when[0] : 15, when ? when[1] : 0),
     requestAnimationFrame: fn => setTimeout(fn, 0),
     SpeechSynthesisUtterance: function (t) { this.text = t; },
     TextEncoder, TextDecoder, btoa, atob,

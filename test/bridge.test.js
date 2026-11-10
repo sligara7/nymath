@@ -85,6 +85,8 @@ function boot(hash, muted) {
   const spoken = [];
   const ctx = {
     console: { log() {} }, setTimeout, clearTimeout,
+    /* Mid-afternoon, whenever this is run: bedtime must not walk in on it. */
+    Date: (R => class extends R { constructor(...a) { if (a.length) super(...a); else super(2026, 10, 10, 15, 0); } })(Date),
     requestAnimationFrame: fn => setTimeout(fn, 0),
     SpeechSynthesisUtterance: function (t) { this.text = t; },
     location: { hash },

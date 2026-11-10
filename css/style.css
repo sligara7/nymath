@@ -76,6 +76,22 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .door-line { margin: 0; color: var(--ink-soft); font-size: clamp(15px, 4.2vw, 19px); }
 .door-foot { margin: 0; min-height: 1.4em; color: var(--ink-soft); font-size: 13px; opacity: 0.75; }
 
+/* Night: the door's layout, darker, and Ember's words large enough to be
+   read by someone who has just woken up. */
+.night { background: #0e151c; }
+.night .night-says { color: var(--ink); font-size: clamp(17px, 4.8vw, 21px); max-width: 30ch; }
+/* The second answer is a full button, the same size as the first. "Not
+   really" must be as easy to tap as "I'm okay", or the screen is steering
+   her toward the answer that asks nothing of anyone. */
+.night .ghost {
+  padding: 13px 28px;
+  min-width: min(74vw, 260px);
+  border: 2px solid var(--ember);
+  color: var(--ink);
+  font-size: clamp(16px, 4.6vw, 19px);
+  font-weight: 700;
+}
+
 /* --- the bar -------------------------------------------------------------- */
 
 .bar {
@@ -769,6 +785,7 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   white-space: nowrap;
 }
 .den-earn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); }
+.den-bed { background: #c9b8f5; }
 
 .purse-mini {
   display: flex;

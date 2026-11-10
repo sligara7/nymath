@@ -57,6 +57,10 @@ IDS.forEach(id => byId.set(id, makeEl(id)));
 /* The build number index.html declares, so the boot log can be checked. */
 const BUILD = (read("index.html").match(/<meta name="build" content="(\d+)">/) || [])[1] || "";
 
+/* Mid-afternoon, whenever this is run: the game reads the clock for Ember's
+   bedtime, and a test must not depend on when it happens to be run. */
+global.Date = (R => class extends R { constructor(...a) { if (a.length) super(...a); else super(2026, 10, 10, 15, 0); } })(Date);
+
 const store = {};
 /* What Ember says aloud, caught instead of spoken. */
 const spoken = [];

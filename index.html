@@ -17,7 +17,7 @@
 
 <!-- Bumped on every deploy. If somebody reports a stale page, this number in
      their console says which build they are actually running. -->
-<meta name="build" content="13">
+<meta name="build" content="14">
 
 <!-- On her iPhone, Add to Home Screen makes Ember an app of her own, which
      iPhone Safari's week-long clear-out cannot touch. Deliberately NO web app
@@ -26,9 +26,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Ember">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=13">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=14">
 
-<link rel="stylesheet" href="css/style.css?v=13">
+<link rel="stylesheet" href="css/style.css?v=14">
 </head>
 <body>
 
@@ -72,6 +72,17 @@
          maxlength="14" placeholder="type your name" aria-label="Your name">
   <button class="big" id="nameBtn">Tell her</button>
   <p class="door-foot">It stays on this phone.</p>
+</main>
+
+<!-- NIGHT. Ember's bedtime is 10:30, the same as the player's. Tucking her
+     in, her goodnight to a late visitor, and a daytime nap all happen here.
+     js/bedtime.js. -->
+<main class="door night" id="night" hidden>
+  <div class="door-art" id="nightArt"></div>
+  <p class="door-line night-says" id="nightSays"></p>
+  <button class="big" id="nightA" hidden></button>
+  <button class="ghost" id="nightB" hidden></button>
+  <p class="door-foot" id="nightFoot"></p>
 </main>
 
 <main class="scene" id="scene" hidden>
@@ -132,6 +143,8 @@
       <!-- The answer to "how do I get more coins?": straight into the lesson
            that pays. The same place Pip's button sends her. -->
       <button class="den-earn" id="denEarn">+ Get more coins</button>
+      <!-- Putting Ember to bed is one of the ways she looks after her. -->
+      <button class="den-earn den-bed" id="denBed">☾ Bedtime</button>
     </div>
   </div>
 
@@ -210,20 +223,21 @@
   </div>
 </div>
 
-<script src="content/grade3.js?v=13"></script>
-<script src="content/quest3.js?v=13"></script>
-<script src="content/den.js?v=13"></script>
-<script src="js/save.js?v=13"></script>
-<script src="js/keep.js?v=13"></script>
-<script src="js/audio.js?v=13"></script>
-<script src="js/ember.js?v=13"></script>
-<script src="js/nest.js?v=13"></script>
-<script src="js/line.js?v=13"></script>
-<script src="js/lessons.js?v=13"></script>
-<script src="js/cards.js?v=13"></script>
-<script src="js/quest.js?v=13"></script>
-<script src="js/hoard.js?v=13"></script>
-<script src="js/den.js?v=13"></script>
-<script src="js/main.js?v=13"></script>
+<script src="content/grade3.js?v=14"></script>
+<script src="content/quest3.js?v=14"></script>
+<script src="content/den.js?v=14"></script>
+<script src="js/save.js?v=14"></script>
+<script src="js/keep.js?v=14"></script>
+<script src="js/audio.js?v=14"></script>
+<script src="js/ember.js?v=14"></script>
+<script src="js/nest.js?v=14"></script>
+<script src="js/line.js?v=14"></script>
+<script src="js/lessons.js?v=14"></script>
+<script src="js/cards.js?v=14"></script>
+<script src="js/bedtime.js?v=14"></script>
+<script src="js/quest.js?v=14"></script>
+<script src="js/hoard.js?v=14"></script>
+<script src="js/den.js?v=14"></script>
+<script src="js/main.js?v=14"></script>
 </body>
 </html>
