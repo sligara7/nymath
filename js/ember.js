@@ -72,11 +72,31 @@ const Ember = (function () {
      copy inside a hidden screen is how a dragon turns invisible. */
   let drawn = 0;
 
-  function svg(mood) {
+  /* Her wings, by how far she has grown. 0 is the hatchling's stubs, far too
+     small to lift her, which is the whole of Grade 3. 1 and 2 exist only in
+     her dreams (js/dreams.js) for now: growing, then spread wide and raised
+     to fly. The same scalloped wing, made bigger, so she is still herself. */
+  const STUB_L = '<path d="M27 78 q-19 -17 -18 2 q9 -3 5 6 q7 -3 6 5 q6 -4 10 1 z" fill="url(#U)"/>';
+  const STUB_R = '<path d="M97 78 q19 -17 18 2 q-9 -3 -5 6 q-7 -3 -6 5 q-6 -4 -10 1 z" fill="url(#U)"/>';
+  function wings(n, u) {
+    const l = STUB_L.replace("#U", "#" + u + "wing"), r = STUB_R.replace("#U", "#" + u + "wing");
+    if (!n) return l + r;
+    const grow = n === 1 ? "scale(1.5)" : "rotate(24) scale(2.4)";
+    const growR = n === 1 ? "scale(1.5)" : "rotate(-24) scale(2.4)";
+    return '<g transform="translate(29 77) ' + grow + ' translate(-27 -78)">' + l + "</g>" +
+           '<g transform="translate(95 77) ' + growR + ' translate(-97 -78)">' + r + "</g>";
+  }
+
+  function svg(mood, opts) {
+    return '<svg viewBox="0 0 124 128" width="100%" aria-hidden="true">' + inner(mood, opts) + "</svg>";
+  }
+
+  /* Her drawing without its frame, in her own 124 x 128 coordinates, so a
+     dream can set her anywhere in a bigger picture. */
+  function inner(mood, opts) {
     const m = EYES[mood] ? mood : "curious";
     const u = "e" + (++drawn);
     return (
-'<svg viewBox="0 0 124 128" width="100%" aria-hidden="true">' +
   '<defs>' +
     '<linearGradient id="' + u + 'hide" x1="0" y1="0" x2="0" y2="1">' +
       '<stop offset="0" stop-color="#ff9a4d"/><stop offset="1" stop-color="#e05f28"/>' +
@@ -91,11 +111,9 @@ const Ember = (function () {
   '<path d="M86 104 q26 4 24 -16 q-2 -14 -13 -13" fill="none" stroke="#d4551f" stroke-width="9" stroke-linecap="round"/>' +
   '<path d="M97 76 l10 -5 l-1 11 z" fill="#d4551f"/>' +
 
-  /* Stub wings. Scalloped along the bottom, because that edge is most of what
-     makes a shape read as a wing — and they are far too small to lift her,
-     which is the whole of Grade 3. */
-  '<path d="M27 78 q-19 -17 -18 2 q9 -3 5 6 q7 -3 6 5 q6 -4 10 1 z" fill="url(#' + u + 'wing)"/>' +
-  '<path d="M97 78 q19 -17 18 2 q-9 -3 -5 6 q-7 -3 -6 5 q-6 -4 -10 1 z" fill="url(#' + u + 'wing)"/>' +
+  /* Wings. Scalloped along the bottom, because that edge is most of what
+     makes a shape read as a wing. */
+  wings((opts && opts.wings) | 0, u) +
 
   /* Body */
   '<ellipse cx="62" cy="88" rx="32" ry="26" fill="url(#' + u + 'hide)"/>' +
@@ -126,8 +144,7 @@ const Ember = (function () {
      six moods in register instead of editing thirty coordinates. */
   '<g transform="translate(2,4)">' + EYES[m] + MOUTH[m] + '</g>' +
 
-  worn.neck + worn.face + worn.head +
-'</svg>');
+  worn.neck + worn.face + worn.head);
   }
 
   /* One extra flourish for the very end of the grade, when Ember curls up in the
@@ -141,6 +158,14 @@ const Ember = (function () {
   return {
     draw(el, mood) { el.innerHTML = svg(mood); },
     drawSleeping(el) { el.innerHTML = sleeping(); },
+    /* Ember inside a bigger drawing: centred on (x, y), `size` wide, tilted
+       `tilt` degrees, with wings grown to `wings` (0, 1 or 2). */
+    figure(mood, o) {
+      o = o || {};
+      const s = (o.size || 60) / 124;
+      return '<g transform="translate(' + (o.x || 0) + " " + (o.y || 0) + ") rotate(" + (o.tilt || 0) + ") scale(" + s + ') translate(-62 -70)">' +
+        inner(mood, { wings: o.wings }) + "</g>";
+    },
     /* { head, face, neck }: SVG drawn in her coordinates, or empty. */
     dress(o) { worn = { neck: (o && o.neck) || "", face: (o && o.face) || "", head: (o && o.head) || "" }; },
     moods: Object.keys(EYES)

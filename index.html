@@ -17,7 +17,7 @@
 
 <!-- Bumped on every deploy. If somebody reports a stale page, this number in
      their console says which build they are actually running. -->
-<meta name="build" content="15">
+<meta name="build" content="16">
 
 <!-- On her iPhone, Add to Home Screen makes Ember an app of her own, which
      iPhone Safari's week-long clear-out cannot touch. Deliberately NO web app
@@ -26,9 +26,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Ember">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=15">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=16">
 
-<link rel="stylesheet" href="css/style.css?v=15">
+<link rel="stylesheet" href="css/style.css?v=16">
 </head>
 <body>
 
@@ -83,6 +83,30 @@
   <button class="big" id="nightA" hidden></button>
   <button class="ghost" id="nightB" hidden></button>
   <p class="door-foot" id="nightFoot"></p>
+</main>
+
+<!-- EMBER'S DREAMS. Her own idea: in a daytime nap Ember dreams, and each
+     dream is a 10-piece jigsaw whose pieces snap in as she answers her flash
+     cards. Two dreams, then Ember wakes up happy. No clock. js/dreams.js. -->
+<main class="dream" id="dream" hidden>
+  <div class="dream-top">
+    <div class="dream-ember" id="dreamEmber"></div>
+    <p class="dream-says" id="dreamSays"></p>
+    <button class="ghost dream-wake" id="dreamWake">Wake Ember up</button>
+  </div>
+  <div class="dream-frame" id="dreamFrame"></div>
+  <section class="cards" id="dreamCards" hidden>
+    <p class="card-top"><span id="dreamPieces"></span><span class="card-streak" id="dreamStreak"></span></p>
+    <div class="card" id="dreamCard">
+      <span class="card-q" id="dreamQ"></span><span class="card-eq">=</span><span class="card-a" id="dreamA"></span>
+    </div>
+    <div class="card-model" id="dreamModel" hidden></div>
+    <div class="pad" id="dreamPad"></div>
+  </section>
+  <div class="dream-done" id="dreamDone" hidden>
+    <p class="dream-caption" id="dreamCaption"></p>
+    <button class="big" id="dreamNext"></button>
+  </div>
 </main>
 
 <main class="scene" id="scene" hidden>
@@ -145,6 +169,8 @@
       <button class="den-earn" id="denEarn">+ Get more coins</button>
       <!-- Putting Ember to bed is one of the ways she looks after her. -->
       <button class="den-earn den-bed" id="denBed">☾ Bedtime</button>
+      <!-- After her first finished dream: every picture Ember has dreamt. -->
+      <button class="den-earn den-book" id="denBook" hidden>✦ Dream book</button>
     </div>
   </div>
 
@@ -212,6 +238,16 @@
   </div>
 </div>
 
+<!-- Ember's dream book: the pictures she has dreamt, in the order of the
+     story, and an empty frame for each one still to come. js/dreams.js. -->
+<div class="reveal-wrap" id="bookWrap" hidden>
+  <div class="reveal book">
+    <h2 class="book-title">Ember's dream book</h2>
+    <div class="book-grid" id="bookGrid"></div>
+    <button class="big" id="bookClose">Close the book</button>
+  </div>
+</div>
+
 <!-- When three clues were not enough and she asked to stop: Ember is kind
      about it, and the hard one waits until another day. -->
 <div class="reveal-wrap" id="stopWrap" hidden>
@@ -223,21 +259,22 @@
   </div>
 </div>
 
-<script src="content/grade3.js?v=15"></script>
-<script src="content/quest3.js?v=15"></script>
-<script src="content/den.js?v=15"></script>
-<script src="js/save.js?v=15"></script>
-<script src="js/keep.js?v=15"></script>
-<script src="js/audio.js?v=15"></script>
-<script src="js/ember.js?v=15"></script>
-<script src="js/nest.js?v=15"></script>
-<script src="js/line.js?v=15"></script>
-<script src="js/lessons.js?v=15"></script>
-<script src="js/cards.js?v=15"></script>
-<script src="js/bedtime.js?v=15"></script>
-<script src="js/quest.js?v=15"></script>
-<script src="js/hoard.js?v=15"></script>
-<script src="js/den.js?v=15"></script>
-<script src="js/main.js?v=15"></script>
+<script src="content/grade3.js?v=16"></script>
+<script src="content/quest3.js?v=16"></script>
+<script src="content/den.js?v=16"></script>
+<script src="js/save.js?v=16"></script>
+<script src="js/keep.js?v=16"></script>
+<script src="js/audio.js?v=16"></script>
+<script src="js/ember.js?v=16"></script>
+<script src="js/nest.js?v=16"></script>
+<script src="js/line.js?v=16"></script>
+<script src="js/lessons.js?v=16"></script>
+<script src="js/cards.js?v=16"></script>
+<script src="js/bedtime.js?v=16"></script>
+<script src="js/dreams.js?v=16"></script>
+<script src="js/quest.js?v=16"></script>
+<script src="js/hoard.js?v=16"></script>
+<script src="js/den.js?v=16"></script>
+<script src="js/main.js?v=16"></script>
 </body>
 </html>

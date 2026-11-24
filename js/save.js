@@ -12,7 +12,16 @@ const Save = (function () {
   const KEY = "nymath.ember.v1";
 
   const blank = () => ({ lesson: 0, stage: 0, learned: [], muted: false, name: "", questDone: false, keepTipSeen: false,
-    struggle: {}, parked: null, den: null, cards: { best: 0, facts: {} } });
+    struggle: {}, parked: null, den: null, cards: { best: 0, facts: {} }, dreams: { done: 0, placed: 0 } });
+
+  /* Ember's dreams (js/dreams.js): how many she has finished, which also says
+     which pictures are in her dream book and which dream comes next, and how
+     many pieces of the dream under way are already in. An unfinished dream
+     waits, exactly as she left it. */
+  const dreamsOf = d => ({
+    done: Math.min(100000, n0(d && d.done)),
+    placed: Math.min(9, n0(d && d.placed))
+  });
 
   /* Ember's den: her coins, what she owns, what she wears, where things are.
      `null` until the den first opens, so a save from before the den existed
@@ -102,7 +111,8 @@ const Save = (function () {
     parked: (s.parked && typeof s.parked.key === "string" && typeof s.parked.day === "string")
       ? { key: s.parked.key, day: s.parked.day } : null,
     den: denOf(s.den),
-    cards: cardsOf(s.cards)
+    cards: cardsOf(s.cards),
+    dreams: dreamsOf(s.dreams)
   });
 
   function read() {
@@ -240,6 +250,12 @@ const Save = (function () {
     cards(fn) {
       if (fn) { state.cards = cardsOf(fn(state.cards) || state.cards); flush(); }
       return state.cards;
+    },
+
+    /* Ember's dreams: read them, or change them through `dreams(fn)`. */
+    dreams(fn) {
+      if (fn) { state.dreams = dreamsOf(fn(state.dreams) || state.dreams); flush(); }
+      return state.dreams;
     },
 
     /* Today by the phone's calendar. For setting a hard challenge aside and

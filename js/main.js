@@ -17,6 +17,11 @@
     revealWrap: $("revealWrap"), revealBody: $("revealBody"), revealNext: $("revealNext"), revealDen: $("revealDen"),
     night: $("night"), nightArt: $("nightArt"), nightSays: $("nightSays"), nightA: $("nightA"), nightB: $("nightB"),
     nightFoot: $("nightFoot"), den: $("den"), denBed: $("denBed"), shopWrap: $("shopWrap"),
+    dream: $("dream"), dreamEmber: $("dreamEmber"), dreamSays: $("dreamSays"), dreamWake: $("dreamWake"),
+    dreamFrame: $("dreamFrame"), dreamCards: $("dreamCards"), dreamPieces: $("dreamPieces"), dreamStreak: $("dreamStreak"),
+    dreamCard: $("dreamCard"), dreamQ: $("dreamQ"), dreamA: $("dreamA"), dreamModel: $("dreamModel"), dreamPad: $("dreamPad"),
+    dreamDone: $("dreamDone"), dreamCaption: $("dreamCaption"), dreamNext: $("dreamNext"),
+    denBook: $("denBook"), bookWrap: $("bookWrap"), bookGrid: $("bookGrid"), bookClose: $("bookClose"),
     stopWrap: $("stopWrap"), stopArt: $("stopArt"), stopSays: $("stopSays"), stopReview: $("stopReview"), stopDen: $("stopDen")
   };
 
@@ -51,6 +56,7 @@
   function clearTheRoom() {
     el.door.hidden = true; el.naming.hidden = true; el.bar.hidden = true; el.scene.hidden = true;
     el.den.hidden = true; el.revealWrap.hidden = true; el.stopWrap.hidden = true; el.shopWrap.hidden = true;
+    el.dream.hidden = true; el.bookWrap.hidden = true;
   }
 
   function morning() {
@@ -206,6 +212,8 @@
       el.surface.innerHTML = "";
       enter(at);
     });
+    /* Her dream book appears once there is a dream in it. */
+    el.denBook.hidden = !(Dreams.finishedCount() > 0);
     Keep.offer();
   }
 
@@ -216,8 +224,41 @@
   el.denBed.addEventListener("click", () => {
     if (bedtimeGate()) return;
     clearTheRoom();
-    Bedtime.nap(nightEls(), () => { el.night.hidden = true; openDen(); });
+    Bedtime.nap(nightEls(), () => { el.night.hidden = true; openDen(); }, () => {
+      /* Asleep. With facts on her cards, Ember dreams (js/dreams.js). */
+      if (!Dreams.ready()) return false;
+      el.night.hidden = true;
+      dream();
+      return true;
+    });
   });
+
+  /* ---- Ember's dreams ------------------------------------------------------ */
+
+  const dreamCardEls = () => ({
+    wrap: el.dreamCards, streak: el.dreamStreak, count: document.createElement("span"), card: el.dreamCard,
+    q: el.dreamQ, a: el.dreamA, model: el.dreamModel, pad: el.dreamPad, says: el.dreamSays
+  });
+
+  function dream() {
+    Dreams.nap({
+      wrap: el.dream, ember: el.dreamEmber, says: el.dreamSays, wake: el.dreamWake, frame: el.dreamFrame,
+      pieces: el.dreamPieces, cards: dreamCardEls(), done: el.dreamDone, caption: el.dreamCaption, next: el.dreamNext
+    }, {
+      /* Woken mid-dream: back to the den, and the dream waits. */
+      woke: openDen,
+      /* Two dreams, and she wakes up happy. */
+      wokeHappy: () => Bedtime.wakeHappy(nightEls(), () => { el.night.hidden = true; openDen(); }),
+      /* Between dreams is a break: if it is now night, bedtime takes over. */
+      atBreak: () => bedtimeGate()
+    });
+  }
+
+  el.denBook.addEventListener("click", () => {
+    el.bookGrid.innerHTML = Dreams.bookHtml();
+    el.bookWrap.hidden = false;
+  });
+  el.bookClose.addEventListener("click", () => { el.bookWrap.hidden = true; });
 
   /* ---- a stage ----------------------------------------------------------- */
 

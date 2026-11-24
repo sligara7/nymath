@@ -127,6 +127,27 @@ until 5:00 in the morning by the phone's own clock.
 
 The clock is read to know whether it is night and for nothing else.
 
+## Ember's dreams
+
+Her own idea: a jigsaw to do once Ember is tucked in. The night stays closed,
+so it lives in the daytime nap. She tucks Ember in from the den, Ember falls
+asleep, and her dream is a 10-piece jigsaw.
+
+- **Each piece is one of her cards.** A piece snaps in when she answers one of
+  her flash cards, so a finished picture is ten facts she has built. Due
+  facts come first. A miss turns up her own model, as at the end of a lesson,
+  and the piece goes in when she gets there.
+- **No clock.** The next dream comes when she finishes one. Wake Ember mid-dream
+  and the pieces stay where they are, waiting for the next nap.
+- **Two dreams, then Ember wakes up happy.** A nap has an end.
+- **The pictures are Ember growing up and flying**, a story told in order: her
+  wings growing, a first hop, a first glide, over the mountains, past the
+  castles, the prince and princess and their baby, home at sunset. Each
+  finished picture goes into her dream book in the den.
+- **No coins.** The picture is the prize; only teaching fills the hoard.
+- If she has no cards yet, a nap is just a nap. A dream is never cut off at
+  10:30; at the end of it the night takes over, as at any break.
+
 ## When she is stuck
 
 "Want a clue?" gives help in three steps, only when she asks: a nudge in words,
@@ -215,7 +236,7 @@ is logged to the console at boot, which is the fastest way to find out whether
 somebody is looking at an old copy.
 
 Tests: `node test/boot.test.js`, `node test/bridge.test.js`, `node test/cards.test.js`,
-`node test/bedtime.test.js`, `node test/lessons.test.js`,
+`node test/bedtime.test.js`, `node test/dreams.test.js`, `node test/lessons.test.js`,
 `node test/keep.test.js` and `node test/den.test.js`. No
 dependencies. They check that the front door and the den open, that every
 lesson can actually be finished on the lattice it is given, that Ember's own
@@ -226,7 +247,7 @@ Those run on a stub page with no layout, so none of them can see whether
 something FITS on a phone. `node test/fit.browser.js` does: it lays the real
 page out in a browser engine at Safari's screen size on five iPhones and
 checks that every flash-card key, "Tell Ember" too, stays on screen after a
-miss. It needs a browser, once: `npx -y playwright-core@1.60.0 install chromium`.
+miss, at the end of a lesson and in Ember's dreams. It needs a browser, once: `npx -y playwright-core@1.60.0 install chromium`.
 
 Side doors, for checking one part without replaying the rest: `#l3` opens the
 third lesson, `#l4.2` its second stage, `#quest` the quest, `#quest.11` one

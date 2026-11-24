@@ -23,7 +23,11 @@
    her best is kept.
 
    No card pays coins of its own. The run is the end of teaching a lesson,
-   and the lesson pays when it is done. */
+   and the lesson pays when it is done.
+
+   The same cards are the pieces of Ember's dreams (js/dreams.js): a nap's
+   jigsaw fills in one piece per card. A dream asks due facts first and may
+   ask one early, and an early card is practice: see `record`. */
 
 const Cards = (function () {
 
@@ -134,14 +138,54 @@ const Cards = (function () {
     return out;
   }
 
+  /* The cards for one of Ember's dreams: `n` of them, one per missing piece
+     (js/dreams.js). Facts that are due come first, weakest and longest-
+     waiting first; then every other family she has built, the one she has
+     gone longest without seeing first. Each family is asked a different way
+     each time it comes round, and a small deck goes round again rather than
+     leave a piece without a card, never asking the same question twice in a
+     row. Only facts she has built: none, and there is no dream to have. */
+  function dreamDeck(n) {
+    const c = store(), day = today();
+    const all = Object.keys(c.facts).sort().map(id => Object.assign({ id }, c.facts[id]));
+    if (!all.length || !(n > 0)) return [];
+    const cmp = (x, y) => (x < y ? -1 : x > y ? 1 : 0);
+    const isDue = f => !f.due || f.due <= day;
+    const due = all.filter(isDue).sort((x, y) => x.box - y.box || cmp(x.due, y.due));
+    const rest = all.filter(f => !isDue(f)).sort((x, y) => cmp(x.seen, y.seen));
+    const order = due.concat(rest);
+    const out = [], used = {};
+    let last = "";
+    for (let round = 0; out.length < n && round < 4 * n; round++) {
+      for (const f of order) {
+        if (out.length >= n) break;
+        const w = ways(f), k = used[f.id] || 0;
+        const way = w[(f.asked + k) % w.length];
+        used[f.id] = k + 1;
+        if (way.q === last) continue;
+        out.push({ id: f.id, fact: f, way });
+        last = way.q;
+      }
+    }
+    return out;
+  }
+
   /* Write down how a card went. Right first time moves the fact up a box;
-     a miss sends it back to the first, to be asked again next run. */
-  function record(id, firstTry) {
+     a miss sends it back to the first, to be asked again next run.
+
+     In a dream a card can come up before its fact is due. That is practice,
+     and practice early must not make a fact look better known than it is:
+     a miss still brings it back sooner, but a right answer leaves its box
+     and its day alone. */
+  function record(id, firstTry, dream) {
     Save.cards(c => {
       const f = c.facts[id];
       if (!f) return c;
-      f.box = firstTry ? Math.min(GAPS.length - 1, f.box + 1) : 0;
-      f.due = addDays(today(), GAPS[f.box]);
+      const early = dream && f.due && f.due > today();
+      if (!(early && firstTry)) {
+        f.box = firstTry ? Math.min(GAPS.length - 1, f.box + 1) : 0;
+        f.due = addDays(today(), GAPS[f.box]);
+      }
       f.seen = today();
       f.asked = (f.asked + 1) % 1000;
       if (firstTry) { streak++; if (streak > c.best) c.best = streak; } else streak = 0;
@@ -175,11 +219,13 @@ const Cards = (function () {
 
   /* ---- the run ------------------------------------------------------------ */
 
-  let ui = null, deck = [], at = 0, typed = "", tries = 0, done = null, padBuilt = false, busy = false;
+  let ui = null, deck = [], at = 0, typed = "", tries = 0, done = null, busy = false;
+  let onRight = null, dreaming = false;
 
+  /* Each screen that asks cards (the end of a lesson, a dream) has its own
+     pad, built once and kept. */
   function buildPad() {
-    if (padBuilt) return;
-    padBuilt = true;
+    if (ui.pad.__ok) { ui.ok = ui.pad.__ok; return; }
     const key = (label, cls, fn) => {
       const b = document.createElement("button");
       b.className = "key" + (cls ? " " + cls : "");
@@ -191,7 +237,7 @@ const Cards = (function () {
     ["1", "2", "3", "4", "5", "6", "7", "8", "9"].forEach(d => key(d, "", () => press(d)));
     key("⌫", "soft", () => { if (!busy) { typed = typed.slice(0, -1); paint(); } });
     key("0", "", () => press("0"));
-    ui.ok = key("Tell Ember", "go", submit);
+    ui.ok = ui.pad.__ok = key("Tell Ember", "go", submit);
   }
 
   function press(d) {
@@ -241,11 +287,13 @@ const Cards = (function () {
     if (busy || !typed) return;
     const c = deck[at];
     if (Number(typed) === c.way.answer) {
-      if (tries === 0) record(c.id, true);
+      if (tries === 0) record(c.id, true, dreaming);
       busy = true;
       ui.card.className = "card right";
       Ambience.count(Math.max(1, Math.min(8, streak)));
       paint();
+      /* In a dream, this is the moment a piece snaps in. */
+      if (onRight) onRight(at);
       setTimeout(() => {
         at++;
         if (at >= deck.length) { finish(); return; }
@@ -258,7 +306,7 @@ const Cards = (function () {
     tries++;
     typed = "";
     if (tries === 1) {
-      record(c.id, false);
+      record(c.id, false, dreaming);
       ui.card.className = "card flipped";
       ui.model.innerHTML = modelHtml(c.fact);
       ui.model.hidden = false;
@@ -276,29 +324,42 @@ const Cards = (function () {
 
   function finish() {
     const d = done;
-    done = null; deck = [];
+    done = null; deck = []; onRight = null;
     ui.wrap.hidden = true;
     if (d) d();
   }
 
+  function start(d, els, onDone, right, isDream) {
+    ui = els; deck = d; at = 0; done = onDone; onRight = right || null; dreaming = !!isDream;
+    buildPad();
+    ui.wrap.hidden = false;
+    show();
+  }
+
   return {
-    ways, idOf, learn, plan, record, modelHtml, sentence, addDays, GAPS,
+    ways, idOf, learn, plan, dreamDeck, record, modelHtml, sentence, addDays, GAPS,
 
     /* Run the cards for the lesson just taught, then call back. With no
        cards to ask (a first lesson that built nothing countable) it calls
        back at once and returns false. */
     run(lessonId, els, onDone) {
-      ui = els;
-      deck = plan(lessonId);
-      if (!deck.length) { ui.wrap.hidden = true; onDone(); return false; }
-      done = onDone; at = 0;
-      buildPad();
-      ui.wrap.hidden = false;
-      show();
+      const d = plan(lessonId);
+      if (!d.length) { els.wrap.hidden = true; onDone(); return false; }
+      start(d, els, onDone, null, false);
       return true;
     },
 
-    hide(els) { if (els && els.wrap) els.wrap.hidden = true; done = null; deck = []; },
+    /* Run `n` cards for one of Ember's dreams. `onPiece` is called as each
+       is answered (a piece snaps in), `onDone` after the last. False, and
+       nothing shown, if she has no cards at all. */
+    dream(els, n, onPiece, onDone) {
+      const d = dreamDeck(n);
+      if (!d.length) { els.wrap.hidden = true; return false; }
+      start(d, els, onDone, onPiece, true);
+      return true;
+    },
+
+    hide(els) { if (els && els.wrap) els.wrap.hidden = true; done = null; deck = []; onRight = null; },
     streak: () => streak,
     /* For checks: a different calendar, and a fresh sitting. */
     setToday(fn) { today = fn; },

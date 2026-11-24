@@ -46,12 +46,14 @@ function clockAt(y, mo, d, h, mi) {
 const HTML = read("index.html");
 const ORDER = [...HTML.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1].split("?")[0]);
 const SOURCE = ORDER.map(read).join("\n;\n") +
-  "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3, Ambience, Cards, Den, Bedtime };";
+  "\n;globalThis.__page = { Save, Nest, Lessons, GRADE3, Ambience, Cards, Den, Bedtime, Dreams };";
 
 /* `store` is the phone's storage: pass the same object to a second boot and
    it is the same phone, reopened. `when` is [hour, minute] on the page's
-   clock; left out, it is three in the afternoon. */
-function boot(hash, store, when) {
+   clock; left out, it is three in the afternoon. `opts.quick` shortens the
+   game's own little pauses (a card turning green, then the next) so a test
+   that answers many cards does not wait out every one. */
+function boot(hash, store, when, opts) {
   const byId = new Map();
   [...HTML.matchAll(/\bid="([^"]+)"/g)].forEach(m => byId.set(m[1], makeEl(m[1])));
   /* Whatever index.html marks `hidden` starts hidden, as in a browser. */
@@ -60,7 +62,9 @@ function boot(hash, store, when) {
   store = store || {};
   const spoken = [];
   const ctx = {
-    console: { log() {} }, setTimeout, clearTimeout,
+    console: { log() {} },
+    setTimeout: (opts && opts.quick) ? (fn, ms) => setTimeout(fn, Math.min(ms || 0, 15)) : setTimeout,
+    clearTimeout,
     Date: clockAt(2026, 11, 10, when ? when[0] : 15, when ? when[1] : 0),
     requestAnimationFrame: fn => setTimeout(fn, 0),
     SpeechSynthesisUtterance: function (t) { this.text = t; },

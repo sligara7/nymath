@@ -18,6 +18,9 @@
    checks that every key is on screen, thumb-sized, and that the question has
    not slid up under the bar.
 
+   It walks Ember's dreams too (js/dreams.js): the jigsaw, a card and the
+   pad, as a dream opens and after a miss.
+
    Needs a browser, so it is not one of the no-dependency tests. Once:
        npx -y playwright-core@1.60.0 install chromium
    then:
@@ -152,6 +155,56 @@ function answerOf(q) {
     const after = await page.evaluate(() => ({ y: scrollY, cls: document.getElementById("scene").className }));
     ok(after.y === 0, where + ": after the cards, the page is back at the top for \"what did I learn today?\" (scrollY " + after.y + ")");
     ok(!/\bcarding\b/.test(after.cls), where + ": and Ember is back to her full size");
+    await ctx.close();
+  }
+
+  /* Ember's dreams (js/dreams.js): the jigsaw, a card and the whole pad on
+     one screen, at the start of a dream and after a miss, with "Wake Ember
+     up" reachable without scrolling when the dream opens. */
+  for (const phone of PHONES) {
+    const where = phone.name + ", a dream";
+    const ctx = await browser.newContext({ viewport: { width: phone.width, height: phone.height }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+    const facts = { [SHAPES["a tall array (8 rows of 3)"][0]]: SHAPES["a tall array (8 rows of 3)"][1] };
+    const save = { name: "Sam", lesson: 1, stage: 0, learned: ["g3-ragged-nest"], cards: { best: 0, facts } };
+    await ctx.addInitScript(s => { if (!localStorage.getItem("nymath.ember.v1")) localStorage.setItem("nymath.ember.v1", s); }, JSON.stringify(save));
+    const page = await ctx.newPage();
+    await page.goto(url);
+    /* Daytime, whatever the clock says where this runs: the nap is the point. */
+    await page.evaluate(() => Bedtime.setNow(() => new Date(2026, 10, 24, 15, 0)));
+    await page.locator("#startBtn").tap();
+    await page.waitForSelector("#scene:not([hidden])");
+    await page.evaluate(() => document.getElementById("denBtn").click());
+    await page.locator("#denBed").tap();
+    await page.locator("#nightA").tap();
+    await page.waitForSelector("#dream:not([hidden])");
+
+    const fit = async moment => {
+      await sleep(700);
+      const f = await page.evaluate(() => {
+        const keys = [...document.querySelectorAll("#dreamPad .key")].map(k => k.getBoundingClientRect());
+        return {
+          vh: innerHeight, y: scrollY,
+          padBottom: Math.max(...keys.map(k => k.bottom)),
+          minKey: Math.min(...keys.map(k => k.height)),
+          wakeTop: document.getElementById("dreamWake").getBoundingClientRect().top,
+          sideways: document.documentElement.scrollWidth > innerWidth
+        };
+      });
+      ok(f.padBottom <= f.vh, where + ", " + moment + ": every key is on screen (pad ends at " + Math.round(f.padBottom) + " of " + f.vh + ")");
+      ok(f.minKey >= 44, where + ", " + moment + ": keys stay thumb-sized (" + Math.round(f.minKey) + " px)");
+      ok(!f.sideways, where + ", " + moment + ": nothing scrolls sideways");
+      return f;
+    };
+    const press = async s => {
+      for (const ch of String(s)) await page.evaluate(ch => [...document.querySelectorAll("#dreamPad .key")].find(k => k.textContent === ch).click(), ch);
+      await page.evaluate(() => document.querySelector("#dreamPad .key.go").click());
+    };
+    const open = await fit("as the dream opens");
+    ok(open.y === 0 && open.wakeTop >= 0, where + ", as the dream opens: no scrolling, and \"Wake Ember up\" is on screen (scrollY " + open.y + ")");
+    await press(999);
+    await fit("after a miss");
+    await press(answerOf(await page.locator("#dreamQ").innerText()));
+    await fit("the next card");
     await ctx.close();
   }
 

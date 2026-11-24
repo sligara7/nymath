@@ -45,7 +45,9 @@ const Bedtime = (function () {
     tucked: "Goodnight, {name}. " + THREE,
     closed: "Ember is asleep. She'll be up in the morning.",
     nap: "A nap? Mmm. Yes please. Tuck me in?",
-    napping: "Zzz…"
+    napping: "Zzz…",
+    /* After her dreams (js/dreams.js). */
+    wokeHappy: "*Stretch.* {name}! I dreamt I could FLY. It felt so real!"
   };
 
   let now = () => new Date();
@@ -122,15 +124,27 @@ const Bedtime = (function () {
       });
     },
 
-    /* A daytime nap, from the den. Waking her calls back. */
-    nap(els, onWake) {
+    /* A daytime nap, from the den. Waking her calls back. Once she is tucked
+       in, `onAsleep` may take her into a dream (js/dreams.js) and return
+       true; otherwise she just naps. */
+    nap(els, onWake, onAsleep) {
       ui = els; wire();
       ui.wrap.hidden = false;
       beat({
         mood: "sleepy", says: SAY.nap, a: "Tuck Ember in", b: "Not now",
         onB: onWake,
-        onA: () => beat({ sleeping: true, says: SAY.napping, quiet: true, a: "Wake Ember up", onA: onWake })
+        onA: () => {
+          if (onAsleep && onAsleep()) return;
+          beat({ sleeping: true, says: SAY.napping, quiet: true, a: "Wake Ember up", onA: onWake });
+        }
       });
+    },
+
+    /* The end of a nap with dreams in it: she wakes up happy. */
+    wakeHappy(els, onDone) {
+      ui = els; wire();
+      ui.wrap.hidden = false;
+      beat({ mood: "delighted", says: SAY.wokeHappy, a: "Hello, sleepyhead!", onA: onDone });
     },
 
     /* For checks: a different clock. */
