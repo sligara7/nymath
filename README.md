@@ -222,6 +222,12 @@ lesson can actually be finished on the lattice it is given, that Ember's own
 attempt fails her own lesson, and that the hoard's arithmetic is place value
 with nothing lost in a trade.
 
+Those run on a stub page with no layout, so none of them can see whether
+something FITS on a phone. `node test/fit.browser.js` does: it lays the real
+page out in a browser engine at Safari's screen size on five iPhones and
+checks that every flash-card key, "Tell Ember" too, stays on screen after a
+miss. It needs a browser, once: `npx -y playwright-core@1.60.0 install chromium`.
+
 Side doors, for checking one part without replaying the rest: `#l3` opens the
 third lesson, `#l4.2` its second stage, `#quest` the quest, `#quest.11` one
 beat of it.

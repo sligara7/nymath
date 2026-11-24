@@ -221,6 +221,20 @@ const Cards = (function () {
     ui.card.className = "card";
     paint();
     Ambience.say(deck[at].way.say);
+    keepPadOnScreen();
+  }
+
+  /* Whatever the phone, every key must be on the screen. If the card and
+     her model have pushed "Tell Ember" below the bottom edge (a small phone,
+     a tall model), bring it up rather than leave her to go and find it. */
+  function keepPadOnScreen() {
+    const check = () => {
+      try {
+        const over = ui.ok.getBoundingClientRect().bottom + 10 - window.innerHeight;
+        if (over > 0) window.scrollBy({ top: over, behavior: "smooth" });
+      } catch (e) { /* nothing laid out to measure: nothing to do */ }
+    };
+    try { requestAnimationFrame(check); } catch (e) { /* no frames, no layout */ }
   }
 
   function submit() {
@@ -257,6 +271,7 @@ const Cards = (function () {
       Ambience.say(sentence(c.fact).replace("=", "equals").replace("−", "take away").replace("÷", "divided by"));
     }
     paint();
+    keepPadOnScreen();
   }
 
   function finish() {

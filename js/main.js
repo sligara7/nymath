@@ -360,6 +360,10 @@
 
   function cardsDone() {
     Cards.hide(cardEls());
+    el.scene.classList.remove("carding");
+    /* A miss may have brought the pad up on a short screen; what follows
+       ("what did I learn today?") needs the top of the page again. */
+    try { if (window.scrollY) window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {}
     el.surface.hidden = false;
     el.readout.hidden = false;
     el.actions.hidden = false;
@@ -380,6 +384,7 @@
     Ember.draw(el.emberHolder, "curious");
     el.emberSays.innerHTML = Lessons.fill("Quick ones now, {name}! No clock. No rush. Tell me each answer.");
     el.task.hidden = true;            /* the card says what to do; the room is for the pad */
+    el.scene.classList.add("carding"); /* and Ember steps back to make it (style.css) */
 
     const ran = Cards.run(lesson.id, cardEls(), () => {
       if (stage !== mine) return;

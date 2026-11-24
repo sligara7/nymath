@@ -271,6 +271,16 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 .key.go { background: var(--ember); border-color: var(--ember); color: #22160c; font-size: 15px; }
 .key.go:disabled { opacity: 0.4; }
 
+/* While her cards are up the room is for the pad: Ember steps back to a
+   smaller size, and on a short screen the keys give up a little padding, so
+   the card, her model after a miss and every key fit on a phone. Measured
+   2026-11-24: with Ember at full size, a miss pushed "Tell Ember" below the
+   bottom of an iPhone 13's screen. test/fit.browser.js keeps it honest. */
+.scene.carding .ember-holder { width: clamp(60px, 17vw, 80px); }
+@media (max-height: 700px) {
+  .key { padding: 8px 0; }
+}
+
 /* --- buttons -------------------------------------------------------------- */
 
 .actions { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; }
