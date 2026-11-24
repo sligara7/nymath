@@ -143,6 +143,86 @@ for (const answer of ["I'm okay", "Not really"]) {
   ok(/tuck me in/i.test(p.$("nightSays").innerHTML) && p.$("nightB").hidden, "after 10:30 the same button is bedtime, with no way back");
 }
 
+/* ---- coming back to the game in the night --------------------------------------
+   dec:night-return-and-stage-directions: whatever she left open, coming back
+   after bedtime is opening the game after bedtime. */
+
+{
+  /* The case the Bedtime walk found: a stage open at 9 pm, picked up at 2 am. */
+  const p = boot("#l4.1", named(), [21, 0]);
+  const T = p.box.children.filter(c => c.className.split(" ")[0] === "twig");
+  T.slice(0, 5).forEach(tap);
+  p.away(true);
+  p.page.Bedtime.setNow(() => new Date(2026, 10, 11, 2, 0));
+  p.away(false);
+  ok(p.$("night").hidden === false && open(p).length === 0 && /asleep/i.test(p.$("nightSays").innerHTML),
+     "a stage left open at 9 pm and picked up at 2 am: Ember is asleep, at once, and nothing else is open");
+  p.$("nightA").fire("click");
+  ok(/how are you/i.test(p.$("nightSays").innerHTML) && /everything okay/i.test(p.$("nightSays").innerHTML) && p.$("nightB").textContent === "Not really",
+     "and she wakes to ask how she is and whether everything is okay, with both answers");
+  p.$("nightB").fire("click");
+  ok(p.$("nightSays").innerHTML === "That sounds hard. Can you go tell Dad? He'd want to know.", "'Not really' still gets the line sending her to her dad");
+  p.$("nightA").fire("click");
+  ok(p.$("nightSays").innerHTML.endsWith(THREE), "then the three sentences");
+  ok(p.page.Save.get().lesson === 3 && p.page.Save.get().stage === 0, "her place in the lessons is kept: the rim, from the start of the stage, in the morning");
+}
+{
+  /* Tucked in at 10:31, the closed screen left on, picked up at 1:00 am. */
+  const p = boot("#l4.1", named(), [22, 20]);
+  p.page.Bedtime.setNow(() => new Date(2026, 10, 10, 22, 31));
+  p.$("denBtn").fire("click");
+  ok(/tuck me in/i.test(p.$("nightSays").innerHTML), "at 10:31 the break brings the tuck-in, as before");
+  p.$("nightA").fire("click"); p.$("nightA").fire("click");
+  ok(p.$("nightA").hidden, "tucked in, the game is closed");
+  p.away(true);
+  p.page.Bedtime.setNow(() => new Date(2026, 10, 11, 1, 0));
+  p.away(false);
+  p.$("nightA").fire("click");
+  ok(/everything okay/i.test(p.$("nightSays").innerHTML), "picked up again at 1:00 am, Ember wakes and checks on her, as a fresh open would");
+}
+{
+  /* A dream left open in the afternoon, picked up at 11 pm. */
+  const p = boot("#l4.1", { "nymath.ember.v1": JSON.stringify({ name: "Wren", lesson: 3,
+    cards: { best: 0, facts: { "x:4:5": { op: "x", a: 4, b: 5, lesson: "g3-fast-count", box: 0, due: "2026-11-10", seen: "", asked: 0 } } } }) }, [15, 0]);
+  p.$("denBtn").fire("click"); p.$("denBed").fire("click"); p.$("nightA").fire("click");
+  ok(p.$("dream").hidden === false, "an afternoon nap: Ember dreams");
+  p.away(true);
+  p.page.Bedtime.setNow(() => new Date(2026, 10, 10, 23, 0));
+  p.away(false);
+  ok(p.$("dream").hidden === true && p.$("dreamCards").hidden === true && p.$("night").hidden === false && /asleep/i.test(p.$("nightSays").innerHTML),
+     "the dream left open and picked up at 11 pm: the night, not the dream");
+}
+{
+  /* Safari hands back a page it kept, in the night. */
+  const p = boot("#l2", named(), [16, 0]);
+  p.page.Bedtime.setNow(() => new Date(2026, 10, 10, 23, 30));
+  p.restored();
+  ok(p.$("night").hidden === false && open(p).length === 0, "a page Safari restores from its cache in the night meets sleeping Ember too");
+}
+{
+  /* What must not change. */
+  const p = boot("#l2", named(), [16, 0]);
+  p.away(true); p.away(false);
+  ok(p.$("night").hidden === true && p.$("scene").hidden === false, "put down and picked up in the daytime: nothing changes");
+  const q = boot("", named(), [23, 0]);
+  q.away(true); q.away(false);
+  ok(q.$("door").hidden === false && q.$("night").hidden === true, "still on the front door at night: the door stays, and her tap brings the night as before");
+  const r = boot("#l4.1", named(), [22, 20]);
+  r.page.Bedtime.setNow(() => new Date(2026, 10, 10, 22, 31));
+  ok(r.$("night").hidden === true && r.$("scene").hidden === false, "still playing across 10:30 without leaving: never interrupted");
+}
+
+/* ---- Ember's acted bits --------------------------------------------------------- */
+
+{
+  const p = boot("#l2", named(), [22, 20]);
+  p.page.Bedtime.setNow(() => new Date(2026, 10, 10, 22, 40));
+  p.$("denBtn").fire("click");
+  const s = p.$("nightSays").innerHTML;
+  ok(s.startsWith('<i class="act">Yaaawn.</i> ') && !s.includes("*"), "'Yaaawn.' shows in italics, with no asterisks: " + s);
+  ok(!/yaaawn|\*/i.test(p.spoken[p.spoken.length - 1]), "and is not read aloud: " + p.spoken[p.spoken.length - 1]);
+}
+
 console.log((fails ? "FAILED" : "ok") + " — " + (checks - fails) + "/" + checks + " checks");
 process.exit(fails ? 1 : 0);
 

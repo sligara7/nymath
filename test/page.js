@@ -61,6 +61,7 @@ function boot(hash, store, when, opts) {
     .forEach(m => { if (/\shidden(\s|>|=)/.test(m[0])) byId.get(m[1]).hidden = true; });
   store = store || {};
   const spoken = [];
+  const docOn = {}, winOn = {};
   const ctx = {
     console: { log() {} },
     setTimeout: (opts && opts.quick) ? (fn, ms) => setTimeout(fn, Math.min(ms || 0, 15)) : setTimeout,
@@ -71,7 +72,8 @@ function boot(hash, store, when, opts) {
     TextEncoder, TextDecoder, btoa, atob,
     location: { hash },
     document: {
-      title: "",
+      title: "", hidden: false,
+      addEventListener: (t, fn) => { (docOn[t] = docOn[t] || []).push(fn); },
       getElementById: id => byId.get(id) || null,
       querySelector: () => null,
       createElement: () => makeEl()
@@ -83,7 +85,7 @@ function boot(hash, store, when, opts) {
     }
   };
   ctx.window = {
-    addEventListener: () => {}, innerHeight: 740,
+    addEventListener: (t, fn) => { (winOn[t] = winOn[t] || []).push(fn); }, innerHeight: 740,
     speechSynthesis: { speak: u => spoken.push(u.text), cancel() {} }
   };
   ctx.globalThis = ctx;
@@ -91,7 +93,11 @@ function boot(hash, store, when, opts) {
   vm.runInContext(SOURCE, ctx);
   const $ = id => byId.get(id);
   $("revealWrap").hidden = true;      /* as the page starts; the shim cannot read the attribute */
-  return { $, box: $("surface").children[0], spoken, store, page: ctx.__page };
+  /* She puts the phone down (true) or picks it up again (false). */
+  const away = hidden => { ctx.document.hidden = hidden; (docOn.visibilitychange || []).forEach(fn => fn({})); };
+  /* Safari hands back a page it kept in its cache. */
+  const restored = () => (winOn.pageshow || []).forEach(fn => fn({ persisted: true }));
+  return { $, box: $("surface").children[0], spoken, store, page: ctx.__page, away, restored };
 }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));

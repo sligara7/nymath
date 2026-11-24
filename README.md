@@ -120,6 +120,9 @@ until 5:00 in the morning by the phone's own clock.
   and whether everything is okay, and takes one of two answers. "Not really"
   gets one fixed line that sends her to her dad. Ember is not understanding
   her; the line was chosen in advance.
+- **Coming back to it in the night** counts as opening it. If she left the game
+  open and picks it up after bedtime, whatever was on screen, Ember is asleep
+  and wakes to check on her: the same thing a reload would show.
 - **Either way** Ember sends her back to sleep with three sentences that are
   her father's, word for word, and the game is closed until morning.
 - **In the daytime** she can put Ember down for a nap from the den and wake

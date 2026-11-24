@@ -71,7 +71,9 @@ const Bedtime = (function () {
      tapped. A button with no label is not there. */
   function beat(o) {
     if (o.sleeping) Ember.drawSleeping(ui.art); else Ember.draw(ui.art, o.mood || "sleepy");
-    ui.says.innerHTML = Lessons.fill(o.says);
+    /* *Yaaawn.* is acted, not said: shown in italics, and left out of her
+       voice below. */
+    ui.says.innerHTML = Lessons.fill(o.says).replace(/\*([^*]+)\*/g, '<i class="act">$1</i>');
     ui.foot.textContent = o.foot || "";
     ui.a.textContent = o.a || ""; ui.a.hidden = !o.a;
     ui.b.textContent = o.b || ""; ui.b.hidden = !o.b;

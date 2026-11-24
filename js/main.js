@@ -75,6 +75,30 @@
     return true;
   }
 
+  /* COMING BACK IN THE NIGHT IS OPENING THE GAME IN THE NIGHT. She left the
+     game open and returns to it after bedtime: whatever she left on screen,
+     Ember is asleep, wakes, and asks how she is, as on a fresh open. Safari
+     often reloads a page left for hours, and a reload already lands on the
+     door and then this scene; a page the phone happened to keep must not
+     skip the check-in (dec:night-return-and-stage-directions). Still
+     playing across 10:30 without leaving is different: the build is never
+     interrupted, and the tuck-in comes at the next break. Not yet past the
+     door, her tap on it does all of this already. */
+  function cameBack() {
+    if (document.hidden) return;
+    if (!el.door.hidden || !el.naming.hidden) return;
+    if (!Bedtime.isNight()) return;
+    cameInAwake = false;
+    Cards.hide(cardEls());
+    Cards.hide(dreamCardEls());
+    clearTheRoom();
+    Bedtime.late(nightEls(), morning);
+  }
+  try {
+    document.addEventListener("visibilitychange", cameBack);
+    window.addEventListener("pageshow", ev => { if (ev && ev.persisted) cameBack(); });
+  } catch (e) { /* no such events here: a reload will do it instead */ }
+
   /* ---- the door ---------------------------------------------------------- */
 
   Ember.draw(el.doorArt, "sleepy");
